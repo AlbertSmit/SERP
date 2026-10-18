@@ -72,7 +72,9 @@ Because covered query words lose ~88% of their weight after a single strong matc
 
 For multi-hop queries where required evidence chunks do not share keywords with the prompt, Stage 1 extracts non-query candidate bridge symbols $b \notin Q$ from the top-3 seed chunks and ranks them by **Anomalous Bridge Salience**:
 
-$$\Psi_{\text{bridge}}(b) = (\text{seed\_hits}(b))^{1.5} \cdot \ln\left(\frac{M}{N_b}\right) \cdot \left(\frac{T_b}{N_b}\right)^{-0.4}$$
+```math
+\Psi_{\text{bridge}}(b) = (\operatorname{seedHits}(b))^{1.5} \cdot \ln\left(\frac{M}{N_b}\right) \cdot \left(\frac{T_b}{N_b}\right)^{-0.4}
+```
 
 The top-5 high-surprise, low-clumpiness bridge entities are injected into the Stage-2 candidate pool after primary seed selection, recovering 1-hop evidence in milliseconds without vector embeddings or GraphRAG.
 
