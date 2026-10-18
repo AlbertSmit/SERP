@@ -7,10 +7,7 @@
     "test": "node --test test/*.test.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "kci": "kci",
-    "kci:scan": "kci scan . --set lint",
-    "kci:check": "kci check . --set lint",
-    "check": "npm run lint && npm run kci:scan",
+    "check": "npm run lint && npm test",
     "start": "node src/mcp/server.js",
     "demo:codebase": "node scripts/index-codebase.js",
     "stress": "node scripts/stress-test.js"
@@ -32,7 +29,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@kaliber/code-cli": "file:../../../../../Volumes/Development/kaliber-code-intelligence/apps/code-cli",
     "eslint": "^10.11.0",
     "globals": "^17.12.0"
   },

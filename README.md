@@ -16,11 +16,6 @@ native C scorer.
 Use Node.js 24 or newer. `better-sqlite3` is a native dependency, so installing it
 may require a compiler toolchain when a prebuilt binary is unavailable.
 
-The development dependency `@kaliber/code-cli` links to a private, installed
-`kaliber-code-intelligence` checkout. The current link points to
-`/Volumes/Development/kaliber-code-intelligence/apps/code-cli`. Install that
-checkout's workspace dependencies with `pnpm install` at its root first.
-
 Clone the repository, then install dependencies:
 
 ```sh
@@ -30,15 +25,6 @@ npm install
 npm test
 npm run check
 ```
-
-If your KCI checkout lives elsewhere, update the local dependency:
-
-```sh
-npm install --save-dev /path/to/kaliber-code-intelligence/apps/code-cli
-```
-
-KCI is development tooling. Its embedding model is separate from the retrieval
-engine and is not used to store or retrieve application memory.
 
 ## Run the MCP server
 
@@ -189,22 +175,13 @@ benchmark numbers have not been rerun as part of the code cleanup.
 | `npm test` | Engine regressions and MCP integration tests |
 | `npm run lint` | ESLint across JavaScript sources |
 | `npm run lint:fix` | ESLint with automatic fixes |
-| `npm run kci:scan` | Refresh the KCI index, then run its lint rule set |
-| `npm run kci:check` | Run KCI lint against an existing, current index |
-| `npm run check` | ESLint, then the KCI scan; run tests separately |
-| `npm run kci -- scan .` | Scan all KCI rule sets |
+| `npm run check` | ESLint and the automated test suite |
 
 The tests cover 120 captured pre-refactor cases for selection order, budgets,
 temporal decay and access reinforcement, plus bridge weights, scores, empty
 inputs, explicit candidates, rare-term pooling, and MCP storage/retrieval.
 
-ESLint uses its recommended rules plus selected standalone settings from
-`kaliber-code-intelligence`. It does not import Kaliber's ESLint config package,
-plugin, or repository-local rules. Complexity, nesting, callback and parameter
-limits are configured as warnings; the current sources have zero warnings.
-
-KCI reads `code-vectors.config.json` and indexes JavaScript/TypeScript. Its index
-and embedding model live in `~/.cache/kaliber-code-vectors/`; the first scan can
-download the model. Python and C are outside these lint checks. KCI fails when it
-finds violations and refuses a stale index, so run `kci:scan` after source or
-configuration changes.
+ESLint uses its recommended rules plus project-specific checks for function
+style, unused variables, console usage, complexity, nesting, callbacks and
+parameter counts. Structural limits are configured as warnings; the current
+sources have zero warnings. Python and C are outside these lint checks.

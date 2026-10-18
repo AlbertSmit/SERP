@@ -1,8 +1,6 @@
 import js from '@eslint/js'
 import globals from 'globals'
 
-// Selected standalone rules from kaliber-code-intelligence/eslint.config.js.
-// No Kaliber ESLint presets, plugins, or repository-local rules are loaded.
 export default [
   { ignores: ['node_modules/**', 'dist/**', 'build/**', '.cache/**'] },
   {
