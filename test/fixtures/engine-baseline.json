@@ -1,0 +1,3308 @@
+{
+  "documents": [
+    {
+      "id": "doc_0",
+      "chunk": "chunk_0",
+      "content": "sqlite context retrieval lexical tokens bridge expansion rare vocabulary graph  unique0",
+      "age": 0
+    },
+    {
+      "id": "doc_1",
+      "chunk": "chunk_1",
+      "content": "bridge expansion rare vocabulary graph temporal memory decay architecture certificates sqlite  unique1",
+      "age": 100
+    },
+    {
+      "id": "doc_2",
+      "chunk": "chunk_2",
+      "content": "temporal memory decay architecture certificates crispr cas9 repair human cells sqlite sqlite  unique2",
+      "age": 200
+    },
+    {
+      "id": "doc_3",
+      "chunk": "chunk_3",
+      "content": "crispr cas9 repair human cells quantum superconductor stability kelvin sqlite sqlite sqlite  unique3",
+      "age": 300
+    },
+    {
+      "id": "doc_4",
+      "chunk": "chunk_4",
+      "content": "quantum superconductor stability kelvin compiler javascript functions syntax sqlite sqlite sqlite sqlite  unique4",
+      "age": 0
+    },
+    {
+      "id": "doc_5",
+      "chunk": "chunk_5",
+      "content": "compiler javascript functions syntax sqlite context retrieval lexical tokens  unique5",
+      "age": 100
+    },
+    {
+      "id": "doc_6",
+      "chunk": "chunk_6",
+      "content": "sqlite context retrieval lexical tokens bridge expansion rare vocabulary graph sqlite  unique6",
+      "age": 200
+    },
+    {
+      "id": "doc_7",
+      "chunk": "chunk_7",
+      "content": "bridge expansion rare vocabulary graph temporal memory decay architecture certificates sqlite sqlite  unique7",
+      "age": 300
+    },
+    {
+      "id": "doc_8",
+      "chunk": "chunk_8",
+      "content": "temporal memory decay architecture certificates crispr cas9 repair human cells sqlite sqlite sqlite  unique8",
+      "age": 0
+    },
+    {
+      "id": "doc_9",
+      "chunk": "chunk_9",
+      "content": "crispr cas9 repair human cells quantum superconductor stability kelvin sqlite sqlite sqlite sqlite  unique9",
+      "age": 100
+    },
+    {
+      "id": "doc_10",
+      "chunk": "chunk_10",
+      "content": "quantum superconductor stability kelvin compiler javascript functions syntax  unique10",
+      "age": 200
+    },
+    {
+      "id": "doc_11",
+      "chunk": "chunk_11",
+      "content": "compiler javascript functions syntax sqlite context retrieval lexical tokens sqlite  unique11",
+      "age": 300
+    },
+    {
+      "id": "doc_12",
+      "chunk": "chunk_12",
+      "content": "sqlite context retrieval lexical tokens bridge expansion rare vocabulary graph sqlite sqlite  unique12",
+      "age": 0
+    },
+    {
+      "id": "doc_13",
+      "chunk": "chunk_13",
+      "content": "bridge expansion rare vocabulary graph temporal memory decay architecture certificates sqlite sqlite sqlite  unique13",
+      "age": 100
+    },
+    {
+      "id": "doc_14",
+      "chunk": "chunk_14",
+      "content": "temporal memory decay architecture certificates crispr cas9 repair human cells sqlite sqlite sqlite sqlite  unique14",
+      "age": 200
+    },
+    {
+      "id": "doc_15",
+      "chunk": "chunk_15",
+      "content": "crispr cas9 repair human cells quantum superconductor stability kelvin  unique15",
+      "age": 300
+    },
+    {
+      "id": "doc_16",
+      "chunk": "chunk_16",
+      "content": "quantum superconductor stability kelvin compiler javascript functions syntax sqlite  unique16",
+      "age": 0
+    },
+    {
+      "id": "doc_17",
+      "chunk": "chunk_17",
+      "content": "compiler javascript functions syntax sqlite context retrieval lexical tokens sqlite sqlite  unique17",
+      "age": 100
+    },
+    {
+      "id": "doc_18",
+      "chunk": "chunk_18",
+      "content": "sqlite context retrieval lexical tokens bridge expansion rare vocabulary graph sqlite sqlite sqlite  unique18",
+      "age": 200
+    },
+    {
+      "id": "doc_19",
+      "chunk": "chunk_19",
+      "content": "bridge expansion rare vocabulary graph temporal memory decay architecture certificates sqlite sqlite sqlite sqlite  unique19",
+      "age": 300
+    },
+    {
+      "id": "doc_0",
+      "chunk": "chunk_20",
+      "content": "temporal memory decay architecture certificates crispr cas9 repair human cells  unique20",
+      "age": 0
+    },
+    {
+      "id": "doc_1",
+      "chunk": "chunk_21",
+      "content": "crispr cas9 repair human cells quantum superconductor stability kelvin sqlite  unique21",
+      "age": 100
+    },
+    {
+      "id": "doc_2",
+      "chunk": "chunk_22",
+      "content": "quantum superconductor stability kelvin compiler javascript functions syntax sqlite sqlite  unique22",
+      "age": 200
+    },
+    {
+      "id": "doc_3",
+      "chunk": "chunk_23",
+      "content": "compiler javascript functions syntax sqlite context retrieval lexical tokens sqlite sqlite sqlite  unique23",
+      "age": 300
+    },
+    {
+      "id": "doc_4",
+      "chunk": "chunk_24",
+      "content": "sqlite context retrieval lexical tokens bridge expansion rare vocabulary graph sqlite sqlite sqlite sqlite  unique24",
+      "age": 0
+    },
+    {
+      "id": "doc_5",
+      "chunk": "chunk_25",
+      "content": "bridge expansion rare vocabulary graph temporal memory decay architecture certificates  unique25",
+      "age": 100
+    },
+    {
+      "id": "doc_6",
+      "chunk": "chunk_26",
+      "content": "temporal memory decay architecture certificates crispr cas9 repair human cells sqlite  unique26",
+      "age": 200
+    },
+    {
+      "id": "doc_7",
+      "chunk": "chunk_27",
+      "content": "crispr cas9 repair human cells quantum superconductor stability kelvin sqlite sqlite  unique27",
+      "age": 300
+    },
+    {
+      "id": "doc_8",
+      "chunk": "chunk_28",
+      "content": "quantum superconductor stability kelvin compiler javascript functions syntax sqlite sqlite sqlite  unique28",
+      "age": 0
+    },
+    {
+      "id": "doc_9",
+      "chunk": "chunk_29",
+      "content": "compiler javascript functions syntax sqlite context retrieval lexical tokens sqlite sqlite sqlite sqlite  unique29",
+      "age": 100
+    },
+    {
+      "id": "doc_10",
+      "chunk": "chunk_30",
+      "content": "sqlite context retrieval lexical tokens bridge expansion rare vocabulary graph  unique30",
+      "age": 200
+    },
+    {
+      "id": "doc_11",
+      "chunk": "chunk_31",
+      "content": "bridge expansion rare vocabulary graph temporal memory decay architecture certificates sqlite  unique31",
+      "age": 300
+    },
+    {
+      "id": "doc_12",
+      "chunk": "chunk_32",
+      "content": "temporal memory decay architecture certificates crispr cas9 repair human cells sqlite sqlite  unique32",
+      "age": 0
+    },
+    {
+      "id": "doc_13",
+      "chunk": "chunk_33",
+      "content": "crispr cas9 repair human cells quantum superconductor stability kelvin sqlite sqlite sqlite  unique33",
+      "age": 100
+    },
+    {
+      "id": "doc_14",
+      "chunk": "chunk_34",
+      "content": "quantum superconductor stability kelvin compiler javascript functions syntax sqlite sqlite sqlite sqlite  unique34",
+      "age": 200
+    },
+    {
+      "id": "doc_15",
+      "chunk": "chunk_35",
+      "content": "compiler javascript functions syntax sqlite context retrieval lexical tokens  unique35",
+      "age": 300
+    },
+    {
+      "id": "doc_16",
+      "chunk": "chunk_36",
+      "content": "sqlite context retrieval lexical tokens bridge expansion rare vocabulary graph sqlite  unique36",
+      "age": 0
+    },
+    {
+      "id": "doc_17",
+      "chunk": "chunk_37",
+      "content": "bridge expansion rare vocabulary graph temporal memory decay architecture certificates sqlite sqlite  unique37",
+      "age": 100
+    },
+    {
+      "id": "doc_18",
+      "chunk": "chunk_38",
+      "content": "temporal memory decay architecture certificates crispr cas9 repair human cells sqlite sqlite sqlite  unique38",
+      "age": 200
+    },
+    {
+      "id": "doc_19",
+      "chunk": "chunk_39",
+      "content": "crispr cas9 repair human cells quantum superconductor stability kelvin sqlite sqlite sqlite sqlite  unique39",
+      "age": 300
+    },
+    {
+      "id": "doc_0",
+      "chunk": "chunk_40",
+      "content": "quantum superconductor stability kelvin compiler javascript functions syntax  unique40",
+      "age": 0
+    },
+    {
+      "id": "doc_1",
+      "chunk": "chunk_41",
+      "content": "compiler javascript functions syntax sqlite context retrieval lexical tokens sqlite  unique41",
+      "age": 100
+    },
+    {
+      "id": "doc_2",
+      "chunk": "chunk_42",
+      "content": "sqlite context retrieval lexical tokens bridge expansion rare vocabulary graph sqlite sqlite  unique42",
+      "age": 200
+    },
+    {
+      "id": "doc_3",
+      "chunk": "chunk_43",
+      "content": "bridge expansion rare vocabulary graph temporal memory decay architecture certificates sqlite sqlite sqlite  unique43",
+      "age": 300
+    },
+    {
+      "id": "doc_4",
+      "chunk": "chunk_44",
+      "content": "temporal memory decay architecture certificates crispr cas9 repair human cells sqlite sqlite sqlite sqlite  unique44",
+      "age": 0
+    },
+    {
+      "id": "doc_5",
+      "chunk": "chunk_45",
+      "content": "crispr cas9 repair human cells quantum superconductor stability kelvin  unique45",
+      "age": 100
+    },
+    {
+      "id": "doc_6",
+      "chunk": "chunk_46",
+      "content": "quantum superconductor stability kelvin compiler javascript functions syntax sqlite  unique46",
+      "age": 200
+    },
+    {
+      "id": "doc_7",
+      "chunk": "chunk_47",
+      "content": "compiler javascript functions syntax sqlite context retrieval lexical tokens sqlite sqlite  unique47",
+      "age": 300
+    },
+    {
+      "id": "doc_8",
+      "chunk": "chunk_48",
+      "content": "sqlite context retrieval lexical tokens bridge expansion rare vocabulary graph sqlite sqlite sqlite  unique48",
+      "age": 0
+    },
+    {
+      "id": "doc_9",
+      "chunk": "chunk_49",
+      "content": "bridge expansion rare vocabulary graph temporal memory decay architecture certificates sqlite sqlite sqlite sqlite  unique49",
+      "age": 100
+    },
+    {
+      "id": "doc_10",
+      "chunk": "chunk_50",
+      "content": "temporal memory decay architecture certificates crispr cas9 repair human cells  unique50",
+      "age": 200
+    },
+    {
+      "id": "doc_11",
+      "chunk": "chunk_51",
+      "content": "crispr cas9 repair human cells quantum superconductor stability kelvin sqlite  unique51",
+      "age": 300
+    },
+    {
+      "id": "doc_12",
+      "chunk": "chunk_52",
+      "content": "quantum superconductor stability kelvin compiler javascript functions syntax sqlite sqlite  unique52",
+      "age": 0
+    },
+    {
+      "id": "doc_13",
+      "chunk": "chunk_53",
+      "content": "compiler javascript functions syntax sqlite context retrieval lexical tokens sqlite sqlite sqlite  unique53",
+      "age": 100
+    },
+    {
+      "id": "doc_14",
+      "chunk": "chunk_54",
+      "content": "sqlite context retrieval lexical tokens bridge expansion rare vocabulary graph sqlite sqlite sqlite sqlite  unique54",
+      "age": 200
+    },
+    {
+      "id": "doc_15",
+      "chunk": "chunk_55",
+      "content": "bridge expansion rare vocabulary graph temporal memory decay architecture certificates  unique55",
+      "age": 300
+    },
+    {
+      "id": "doc_16",
+      "chunk": "chunk_56",
+      "content": "temporal memory decay architecture certificates crispr cas9 repair human cells sqlite  unique56",
+      "age": 0
+    },
+    {
+      "id": "doc_17",
+      "chunk": "chunk_57",
+      "content": "crispr cas9 repair human cells quantum superconductor stability kelvin sqlite sqlite  unique57",
+      "age": 100
+    },
+    {
+      "id": "doc_18",
+      "chunk": "chunk_58",
+      "content": "quantum superconductor stability kelvin compiler javascript functions syntax sqlite sqlite sqlite  unique58",
+      "age": 200
+    },
+    {
+      "id": "doc_19",
+      "chunk": "excluded_full",
+      "content": "compiler javascript functions syntax sqlite context retrieval lexical tokens sqlite sqlite sqlite sqlite  unique59",
+      "age": 300
+    },
+    {
+      "id": "doc_0",
+      "chunk": "chunk_60",
+      "content": "background filler padding60",
+      "age": 0
+    },
+    {
+      "id": "doc_1",
+      "chunk": "chunk_61",
+      "content": "background filler padding61",
+      "age": 100
+    },
+    {
+      "id": "doc_2",
+      "chunk": "chunk_62",
+      "content": "background filler padding62",
+      "age": 200
+    },
+    {
+      "id": "doc_3",
+      "chunk": "chunk_63",
+      "content": "background filler padding63",
+      "age": 300
+    },
+    {
+      "id": "doc_4",
+      "chunk": "chunk_64",
+      "content": "background filler padding64",
+      "age": 0
+    },
+    {
+      "id": "doc_5",
+      "chunk": "chunk_65",
+      "content": "background filler padding65",
+      "age": 100
+    },
+    {
+      "id": "doc_6",
+      "chunk": "chunk_66",
+      "content": "background filler padding66",
+      "age": 200
+    },
+    {
+      "id": "doc_7",
+      "chunk": "chunk_67",
+      "content": "background filler padding67",
+      "age": 300
+    },
+    {
+      "id": "doc_8",
+      "chunk": "chunk_68",
+      "content": "background filler padding68",
+      "age": 0
+    },
+    {
+      "id": "doc_9",
+      "chunk": "chunk_69",
+      "content": "background filler padding69",
+      "age": 100
+    },
+    {
+      "id": "doc_10",
+      "chunk": "chunk_70",
+      "content": "background filler padding70",
+      "age": 200
+    },
+    {
+      "id": "doc_11",
+      "chunk": "chunk_71",
+      "content": "background filler padding71",
+      "age": 300
+    },
+    {
+      "id": "doc_12",
+      "chunk": "chunk_72",
+      "content": "background filler padding72",
+      "age": 0
+    },
+    {
+      "id": "doc_13",
+      "chunk": "chunk_73",
+      "content": "background filler padding73",
+      "age": 100
+    },
+    {
+      "id": "doc_14",
+      "chunk": "chunk_74",
+      "content": "background filler padding74",
+      "age": 200
+    },
+    {
+      "id": "doc_15",
+      "chunk": "chunk_75",
+      "content": "background filler padding75",
+      "age": 300
+    },
+    {
+      "id": "doc_16",
+      "chunk": "chunk_76",
+      "content": "background filler padding76",
+      "age": 0
+    },
+    {
+      "id": "doc_17",
+      "chunk": "chunk_77",
+      "content": "background filler padding77",
+      "age": 100
+    },
+    {
+      "id": "doc_18",
+      "chunk": "chunk_78",
+      "content": "background filler padding78",
+      "age": 200
+    },
+    {
+      "id": "doc_19",
+      "chunk": "chunk_79",
+      "content": "background filler padding79",
+      "age": 300
+    },
+    {
+      "id": "doc_0",
+      "chunk": "chunk_80",
+      "content": "background filler padding80",
+      "age": 0
+    },
+    {
+      "id": "doc_1",
+      "chunk": "chunk_81",
+      "content": "background filler padding81",
+      "age": 100
+    },
+    {
+      "id": "doc_2",
+      "chunk": "chunk_82",
+      "content": "background filler padding82",
+      "age": 200
+    },
+    {
+      "id": "doc_3",
+      "chunk": "chunk_83",
+      "content": "background filler padding83",
+      "age": 300
+    },
+    {
+      "id": "doc_4",
+      "chunk": "chunk_84",
+      "content": "background filler padding84",
+      "age": 0
+    },
+    {
+      "id": "doc_5",
+      "chunk": "chunk_85",
+      "content": "background filler padding85",
+      "age": 100
+    },
+    {
+      "id": "doc_6",
+      "chunk": "chunk_86",
+      "content": "background filler padding86",
+      "age": 200
+    },
+    {
+      "id": "doc_7",
+      "chunk": "chunk_87",
+      "content": "background filler padding87",
+      "age": 300
+    },
+    {
+      "id": "doc_8",
+      "chunk": "chunk_88",
+      "content": "background filler padding88",
+      "age": 0
+    },
+    {
+      "id": "doc_9",
+      "chunk": "chunk_89",
+      "content": "background filler padding89",
+      "age": 100
+    },
+    {
+      "id": "doc_10",
+      "chunk": "chunk_90",
+      "content": "background filler padding90",
+      "age": 200
+    },
+    {
+      "id": "doc_11",
+      "chunk": "chunk_91",
+      "content": "background filler padding91",
+      "age": 300
+    },
+    {
+      "id": "doc_12",
+      "chunk": "chunk_92",
+      "content": "background filler padding92",
+      "age": 0
+    },
+    {
+      "id": "doc_13",
+      "chunk": "chunk_93",
+      "content": "background filler padding93",
+      "age": 100
+    },
+    {
+      "id": "doc_14",
+      "chunk": "chunk_94",
+      "content": "background filler padding94",
+      "age": 200
+    },
+    {
+      "id": "doc_15",
+      "chunk": "chunk_95",
+      "content": "background filler padding95",
+      "age": 300
+    },
+    {
+      "id": "doc_16",
+      "chunk": "chunk_96",
+      "content": "background filler padding96",
+      "age": 0
+    },
+    {
+      "id": "doc_17",
+      "chunk": "chunk_97",
+      "content": "background filler padding97",
+      "age": 100
+    },
+    {
+      "id": "doc_18",
+      "chunk": "chunk_98",
+      "content": "background filler padding98",
+      "age": 200
+    },
+    {
+      "id": "doc_19",
+      "chunk": "chunk_99",
+      "content": "background filler padding99",
+      "age": 300
+    },
+    {
+      "id": "doc_0",
+      "chunk": "chunk_100",
+      "content": "background filler padding100",
+      "age": 0
+    },
+    {
+      "id": "doc_1",
+      "chunk": "chunk_101",
+      "content": "background filler padding101",
+      "age": 100
+    },
+    {
+      "id": "doc_2",
+      "chunk": "chunk_102",
+      "content": "background filler padding102",
+      "age": 200
+    },
+    {
+      "id": "doc_3",
+      "chunk": "chunk_103",
+      "content": "background filler padding103",
+      "age": 300
+    },
+    {
+      "id": "doc_4",
+      "chunk": "chunk_104",
+      "content": "background filler padding104",
+      "age": 0
+    },
+    {
+      "id": "doc_5",
+      "chunk": "chunk_105",
+      "content": "background filler padding105",
+      "age": 100
+    },
+    {
+      "id": "doc_6",
+      "chunk": "chunk_106",
+      "content": "background filler padding106",
+      "age": 200
+    },
+    {
+      "id": "doc_7",
+      "chunk": "chunk_107",
+      "content": "background filler padding107",
+      "age": 300
+    },
+    {
+      "id": "doc_8",
+      "chunk": "chunk_108",
+      "content": "background filler padding108",
+      "age": 0
+    },
+    {
+      "id": "doc_9",
+      "chunk": "chunk_109",
+      "content": "background filler padding109",
+      "age": 100
+    },
+    {
+      "id": "doc_10",
+      "chunk": "chunk_110",
+      "content": "background filler padding110",
+      "age": 200
+    },
+    {
+      "id": "doc_11",
+      "chunk": "chunk_111",
+      "content": "background filler padding111",
+      "age": 300
+    },
+    {
+      "id": "doc_12",
+      "chunk": "chunk_112",
+      "content": "background filler padding112",
+      "age": 0
+    },
+    {
+      "id": "doc_13",
+      "chunk": "chunk_113",
+      "content": "background filler padding113",
+      "age": 100
+    },
+    {
+      "id": "doc_14",
+      "chunk": "chunk_114",
+      "content": "background filler padding114",
+      "age": 200
+    },
+    {
+      "id": "doc_15",
+      "chunk": "chunk_115",
+      "content": "background filler padding115",
+      "age": 300
+    },
+    {
+      "id": "doc_16",
+      "chunk": "chunk_116",
+      "content": "background filler padding116",
+      "age": 0
+    },
+    {
+      "id": "doc_17",
+      "chunk": "chunk_117",
+      "content": "background filler padding117",
+      "age": 100
+    },
+    {
+      "id": "doc_18",
+      "chunk": "chunk_118",
+      "content": "background filler padding118",
+      "age": 200
+    },
+    {
+      "id": "doc_19",
+      "chunk": "chunk_119",
+      "content": "background filler padding119",
+      "age": 300
+    },
+    {
+      "id": "doc_0",
+      "chunk": "chunk_120",
+      "content": "background filler padding120",
+      "age": 0
+    },
+    {
+      "id": "doc_1",
+      "chunk": "chunk_121",
+      "content": "background filler padding121",
+      "age": 100
+    },
+    {
+      "id": "doc_2",
+      "chunk": "chunk_122",
+      "content": "background filler padding122",
+      "age": 200
+    },
+    {
+      "id": "doc_3",
+      "chunk": "chunk_123",
+      "content": "background filler padding123",
+      "age": 300
+    },
+    {
+      "id": "doc_4",
+      "chunk": "chunk_124",
+      "content": "background filler padding124",
+      "age": 0
+    },
+    {
+      "id": "doc_5",
+      "chunk": "chunk_125",
+      "content": "background filler padding125",
+      "age": 100
+    },
+    {
+      "id": "doc_6",
+      "chunk": "chunk_126",
+      "content": "background filler padding126",
+      "age": 200
+    },
+    {
+      "id": "doc_7",
+      "chunk": "chunk_127",
+      "content": "background filler padding127",
+      "age": 300
+    },
+    {
+      "id": "doc_8",
+      "chunk": "chunk_128",
+      "content": "background filler padding128",
+      "age": 0
+    },
+    {
+      "id": "doc_9",
+      "chunk": "chunk_129",
+      "content": "background filler padding129",
+      "age": 100
+    },
+    {
+      "id": "doc_10",
+      "chunk": "chunk_130",
+      "content": "background filler padding130",
+      "age": 200
+    },
+    {
+      "id": "doc_11",
+      "chunk": "chunk_131",
+      "content": "background filler padding131",
+      "age": 300
+    },
+    {
+      "id": "doc_12",
+      "chunk": "chunk_132",
+      "content": "background filler padding132",
+      "age": 0
+    },
+    {
+      "id": "doc_13",
+      "chunk": "chunk_133",
+      "content": "background filler padding133",
+      "age": 100
+    },
+    {
+      "id": "doc_14",
+      "chunk": "chunk_134",
+      "content": "background filler padding134",
+      "age": 200
+    },
+    {
+      "id": "doc_15",
+      "chunk": "chunk_135",
+      "content": "background filler padding135",
+      "age": 300
+    },
+    {
+      "id": "doc_16",
+      "chunk": "chunk_136",
+      "content": "background filler padding136",
+      "age": 0
+    },
+    {
+      "id": "doc_17",
+      "chunk": "chunk_137",
+      "content": "background filler padding137",
+      "age": 100
+    },
+    {
+      "id": "doc_18",
+      "chunk": "chunk_138",
+      "content": "background filler padding138",
+      "age": 200
+    },
+    {
+      "id": "doc_19",
+      "chunk": "chunk_139",
+      "content": "background filler padding139",
+      "age": 300
+    },
+    {
+      "id": "doc_0",
+      "chunk": "chunk_140",
+      "content": "background filler padding140",
+      "age": 0
+    },
+    {
+      "id": "doc_1",
+      "chunk": "chunk_141",
+      "content": "background filler padding141",
+      "age": 100
+    },
+    {
+      "id": "doc_2",
+      "chunk": "chunk_142",
+      "content": "background filler padding142",
+      "age": 200
+    },
+    {
+      "id": "doc_3",
+      "chunk": "chunk_143",
+      "content": "background filler padding143",
+      "age": 300
+    },
+    {
+      "id": "doc_4",
+      "chunk": "chunk_144",
+      "content": "background filler padding144",
+      "age": 0
+    },
+    {
+      "id": "doc_5",
+      "chunk": "chunk_145",
+      "content": "background filler padding145",
+      "age": 100
+    },
+    {
+      "id": "doc_6",
+      "chunk": "chunk_146",
+      "content": "background filler padding146",
+      "age": 200
+    },
+    {
+      "id": "doc_7",
+      "chunk": "chunk_147",
+      "content": "background filler padding147",
+      "age": 300
+    },
+    {
+      "id": "doc_8",
+      "chunk": "chunk_148",
+      "content": "background filler padding148",
+      "age": 0
+    },
+    {
+      "id": "doc_9",
+      "chunk": "chunk_149",
+      "content": "background filler padding149",
+      "age": 100
+    },
+    {
+      "id": "doc_10",
+      "chunk": "chunk_150",
+      "content": "background filler padding150",
+      "age": 200
+    },
+    {
+      "id": "doc_11",
+      "chunk": "chunk_151",
+      "content": "background filler padding151",
+      "age": 300
+    },
+    {
+      "id": "doc_12",
+      "chunk": "chunk_152",
+      "content": "background filler padding152",
+      "age": 0
+    },
+    {
+      "id": "doc_13",
+      "chunk": "chunk_153",
+      "content": "background filler padding153",
+      "age": 100
+    },
+    {
+      "id": "doc_14",
+      "chunk": "chunk_154",
+      "content": "background filler padding154",
+      "age": 200
+    },
+    {
+      "id": "doc_15",
+      "chunk": "chunk_155",
+      "content": "background filler padding155",
+      "age": 300
+    },
+    {
+      "id": "doc_16",
+      "chunk": "chunk_156",
+      "content": "background filler padding156",
+      "age": 0
+    },
+    {
+      "id": "doc_17",
+      "chunk": "chunk_157",
+      "content": "background filler padding157",
+      "age": 100
+    },
+    {
+      "id": "doc_18",
+      "chunk": "chunk_158",
+      "content": "background filler padding158",
+      "age": 200
+    },
+    {
+      "id": "doc_19",
+      "chunk": "chunk_159",
+      "content": "background filler padding159",
+      "age": 300
+    },
+    {
+      "id": "doc_0",
+      "chunk": "chunk_160",
+      "content": "background filler padding160",
+      "age": 0
+    },
+    {
+      "id": "doc_1",
+      "chunk": "chunk_161",
+      "content": "background filler padding161",
+      "age": 100
+    },
+    {
+      "id": "doc_2",
+      "chunk": "chunk_162",
+      "content": "background filler padding162",
+      "age": 200
+    },
+    {
+      "id": "doc_3",
+      "chunk": "chunk_163",
+      "content": "background filler padding163",
+      "age": 300
+    },
+    {
+      "id": "doc_4",
+      "chunk": "chunk_164",
+      "content": "background filler padding164",
+      "age": 0
+    },
+    {
+      "id": "doc_5",
+      "chunk": "chunk_165",
+      "content": "background filler padding165",
+      "age": 100
+    },
+    {
+      "id": "doc_6",
+      "chunk": "chunk_166",
+      "content": "background filler padding166",
+      "age": 200
+    },
+    {
+      "id": "doc_7",
+      "chunk": "chunk_167",
+      "content": "background filler padding167",
+      "age": 300
+    },
+    {
+      "id": "doc_8",
+      "chunk": "chunk_168",
+      "content": "background filler padding168",
+      "age": 0
+    },
+    {
+      "id": "doc_9",
+      "chunk": "chunk_169",
+      "content": "background filler padding169",
+      "age": 100
+    },
+    {
+      "id": "doc_10",
+      "chunk": "chunk_170",
+      "content": "background filler padding170",
+      "age": 200
+    },
+    {
+      "id": "doc_11",
+      "chunk": "chunk_171",
+      "content": "background filler padding171",
+      "age": 300
+    },
+    {
+      "id": "doc_12",
+      "chunk": "chunk_172",
+      "content": "background filler padding172",
+      "age": 0
+    },
+    {
+      "id": "doc_13",
+      "chunk": "chunk_173",
+      "content": "background filler padding173",
+      "age": 100
+    },
+    {
+      "id": "doc_14",
+      "chunk": "chunk_174",
+      "content": "background filler padding174",
+      "age": 200
+    },
+    {
+      "id": "doc_15",
+      "chunk": "chunk_175",
+      "content": "background filler padding175",
+      "age": 300
+    },
+    {
+      "id": "doc_16",
+      "chunk": "chunk_176",
+      "content": "background filler padding176",
+      "age": 0
+    },
+    {
+      "id": "doc_17",
+      "chunk": "chunk_177",
+      "content": "background filler padding177",
+      "age": 100
+    },
+    {
+      "id": "doc_18",
+      "chunk": "chunk_178",
+      "content": "background filler padding178",
+      "age": 200
+    },
+    {
+      "id": "doc_19",
+      "chunk": "chunk_179",
+      "content": "background filler padding179",
+      "age": 300
+    }
+  ],
+  "cases": [
+    {
+      "method": "packContext",
+      "query": "sqlite bridge",
+      "options": {
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "sqlite bridge",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "sqlite bridge",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "sqlite bridge",
+      "options": {
+        "budget": 15
+      },
+      "selected": [
+        "chunk_12"
+      ],
+      "accesses": [
+        1
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "sqlite bridge",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 15
+      },
+      "selected": [
+        "chunk_12"
+      ],
+      "accesses": [
+        2
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "sqlite bridge",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 15
+      },
+      "selected": [
+        "chunk_12"
+      ],
+      "accesses": [
+        2
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "sqlite bridge",
+      "options": {
+        "budget": 50
+      },
+      "selected": [
+        "chunk_12",
+        "chunk_6",
+        "chunk_36",
+        "chunk_0"
+      ],
+      "accesses": [
+        2,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "sqlite bridge",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 50
+      },
+      "selected": [
+        "chunk_12",
+        "chunk_36",
+        "chunk_0",
+        "chunk_48"
+      ],
+      "accesses": [
+        3,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "sqlite bridge",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 50
+      },
+      "selected": [
+        "chunk_12",
+        "chunk_42",
+        "chunk_6",
+        "chunk_36"
+      ],
+      "accesses": [
+        3,
+        1,
+        1,
+        2
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "sqlite bridge",
+      "options": {
+        "budget": 250
+      },
+      "selected": [
+        "chunk_12",
+        "chunk_6",
+        "chunk_36",
+        "chunk_0",
+        "chunk_30",
+        "chunk_42",
+        "chunk_7",
+        "chunk_1",
+        "chunk_31",
+        "chunk_37",
+        "chunk_13",
+        "chunk_43",
+        "chunk_18",
+        "chunk_48",
+        "chunk_19"
+      ],
+      "accesses": [
+        3,
+        1,
+        2,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "sqlite bridge",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 250
+      },
+      "selected": [
+        "chunk_12",
+        "chunk_36",
+        "chunk_0",
+        "chunk_48",
+        "chunk_24",
+        "chunk_1",
+        "chunk_37",
+        "chunk_13",
+        "chunk_30",
+        "chunk_6",
+        "chunk_49",
+        "chunk_42",
+        "chunk_31",
+        "chunk_18",
+        "chunk_7"
+      ],
+      "accesses": [
+        4,
+        3,
+        3,
+        3,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "sqlite bridge",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 250
+      },
+      "selected": [
+        "chunk_12",
+        "chunk_42",
+        "chunk_6",
+        "chunk_36",
+        "chunk_18",
+        "chunk_48",
+        "chunk_13",
+        "chunk_43",
+        "chunk_7",
+        "chunk_37",
+        "chunk_19",
+        "chunk_49",
+        "chunk_24",
+        "chunk_54",
+        "chunk_0"
+      ],
+      "accesses": [
+        4,
+        2,
+        2,
+        3,
+        2,
+        3,
+        2,
+        1,
+        2,
+        2,
+        1,
+        2,
+        2,
+        1,
+        3
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "certificates memory",
+      "options": {
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "certificates memory",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "certificates memory",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "certificates memory",
+      "options": {
+        "budget": 15
+      },
+      "selected": [
+        "chunk_20"
+      ],
+      "accesses": [
+        1
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "certificates memory",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 15
+      },
+      "selected": [
+        "chunk_20"
+      ],
+      "accesses": [
+        2
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "certificates memory",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 15
+      },
+      "selected": [
+        "chunk_20"
+      ],
+      "accesses": [
+        2
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "certificates memory",
+      "options": {
+        "budget": 50
+      },
+      "selected": [
+        "chunk_20",
+        "chunk_25",
+        "chunk_50",
+        "chunk_55"
+      ],
+      "accesses": [
+        2,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "certificates memory",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 50
+      },
+      "selected": [
+        "chunk_20",
+        "chunk_56",
+        "chunk_32",
+        "chunk_25"
+      ],
+      "accesses": [
+        3,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "certificates memory",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 50
+      },
+      "selected": [
+        "chunk_20",
+        "chunk_25",
+        "chunk_50",
+        "chunk_55"
+      ],
+      "accesses": [
+        3,
+        2,
+        1,
+        1
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "certificates memory",
+      "options": {
+        "budget": 250
+      },
+      "selected": [
+        "chunk_20",
+        "chunk_25",
+        "chunk_50",
+        "chunk_55",
+        "chunk_1",
+        "chunk_26",
+        "chunk_31",
+        "chunk_56",
+        "chunk_2",
+        "chunk_7",
+        "chunk_32",
+        "chunk_37",
+        "chunk_8",
+        "chunk_13",
+        "chunk_38"
+      ],
+      "accesses": [
+        3,
+        2,
+        1,
+        1,
+        2,
+        1,
+        2,
+        2,
+        1,
+        2,
+        2,
+        2,
+        1,
+        2,
+        1
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "certificates memory",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 250
+      },
+      "selected": [
+        "chunk_20",
+        "chunk_56",
+        "chunk_25",
+        "chunk_32",
+        "chunk_1",
+        "chunk_8",
+        "chunk_37",
+        "chunk_50",
+        "chunk_44",
+        "chunk_13",
+        "chunk_31",
+        "chunk_26",
+        "chunk_49",
+        "chunk_7",
+        "chunk_55"
+      ],
+      "accesses": [
+        4,
+        3,
+        3,
+        3,
+        3,
+        2,
+        3,
+        2,
+        2,
+        3,
+        3,
+        2,
+        3,
+        3,
+        2
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "certificates memory",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 250
+      },
+      "selected": [
+        "chunk_20",
+        "chunk_25",
+        "chunk_50",
+        "chunk_55",
+        "chunk_1",
+        "chunk_26",
+        "chunk_31",
+        "chunk_56",
+        "chunk_2",
+        "chunk_7",
+        "chunk_32",
+        "chunk_37",
+        "chunk_8",
+        "chunk_13",
+        "chunk_38"
+      ],
+      "accesses": [
+        4,
+        3,
+        2,
+        2,
+        3,
+        2,
+        3,
+        3,
+        1,
+        3,
+        3,
+        3,
+        2,
+        3,
+        1
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "crispr quantum",
+      "options": {
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "crispr quantum",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "crispr quantum",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "crispr quantum",
+      "options": {
+        "budget": 15
+      },
+      "selected": [
+        "chunk_15"
+      ],
+      "accesses": [
+        1
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "crispr quantum",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 15
+      },
+      "selected": [
+        "chunk_45"
+      ],
+      "accesses": [
+        2
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "crispr quantum",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 15
+      },
+      "selected": [
+        "chunk_15"
+      ],
+      "accesses": [
+        1
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "crispr quantum",
+      "options": {
+        "budget": 50
+      },
+      "selected": [
+        "chunk_15",
+        "chunk_45",
+        "chunk_21",
+        "chunk_51"
+      ],
+      "accesses": [
+        1,
+        2,
+        1,
+        1
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "crispr quantum",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 50
+      },
+      "selected": [
+        "chunk_45",
+        "chunk_21",
+        "chunk_57",
+        "chunk_33"
+      ],
+      "accesses": [
+        3,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "crispr quantum",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 50
+      },
+      "selected": [
+        "chunk_15",
+        "chunk_45",
+        "chunk_21",
+        "chunk_51"
+      ],
+      "accesses": [
+        1,
+        3,
+        2,
+        1
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "crispr quantum",
+      "options": {
+        "budget": 250
+      },
+      "selected": [
+        "chunk_15",
+        "chunk_45",
+        "chunk_21",
+        "chunk_51",
+        "chunk_27",
+        "chunk_57",
+        "chunk_3",
+        "chunk_33",
+        "chunk_9",
+        "chunk_39",
+        "chunk_10",
+        "chunk_20",
+        "chunk_16",
+        "chunk_26",
+        "chunk_22"
+      ],
+      "accesses": [
+        1,
+        3,
+        2,
+        1,
+        1,
+        2,
+        1,
+        2,
+        1,
+        1,
+        1,
+        4,
+        1,
+        2,
+        1
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "crispr quantum",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 250
+      },
+      "selected": [
+        "chunk_45",
+        "chunk_21",
+        "chunk_57",
+        "chunk_33",
+        "chunk_15",
+        "chunk_9",
+        "chunk_51",
+        "chunk_27",
+        "chunk_3",
+        "chunk_39",
+        "chunk_40",
+        "chunk_56",
+        "chunk_52",
+        "chunk_50",
+        "chunk_28"
+      ],
+      "accesses": [
+        4,
+        3,
+        3,
+        3,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        4,
+        2,
+        3,
+        2
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "crispr quantum",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 250
+      },
+      "selected": [
+        "chunk_15",
+        "chunk_45",
+        "chunk_21",
+        "chunk_51",
+        "chunk_27",
+        "chunk_57",
+        "chunk_3",
+        "chunk_33",
+        "chunk_9",
+        "chunk_39",
+        "chunk_10",
+        "chunk_40",
+        "chunk_16",
+        "chunk_46",
+        "chunk_22"
+      ],
+      "accesses": [
+        2,
+        4,
+        3,
+        2,
+        2,
+        3,
+        2,
+        3,
+        2,
+        2,
+        1,
+        2,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "",
+      "options": {
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "",
+      "options": {
+        "budget": 15
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 15
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 15
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "",
+      "options": {
+        "budget": 50
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 50
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 50
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "",
+      "options": {
+        "budget": 250
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 250
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 250
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "unknownword",
+      "options": {
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "unknownword",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "unknownword",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "unknownword",
+      "options": {
+        "budget": 15
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "unknownword",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 15
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "unknownword",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 15
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "unknownword",
+      "options": {
+        "budget": 50
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "unknownword",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 50
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "unknownword",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 50
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "unknownword",
+      "options": {
+        "budget": 250
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "unknownword",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 250
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "unknownword",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 250
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "sqlite bridge",
+      "options": {
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "sqlite bridge",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "sqlite bridge",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "sqlite bridge",
+      "options": {
+        "budget": 15
+      },
+      "selected": [
+        "chunk_12"
+      ],
+      "accesses": [
+        4
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "sqlite bridge",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 15
+      },
+      "selected": [
+        "chunk_12"
+      ],
+      "accesses": [
+        5
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "sqlite bridge",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 15
+      },
+      "selected": [
+        "chunk_12"
+      ],
+      "accesses": [
+        5
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "sqlite bridge",
+      "options": {
+        "budget": 50
+      },
+      "selected": [
+        "chunk_12",
+        "chunk_0",
+        "chunk_25",
+        "chunk_1"
+      ],
+      "accesses": [
+        5,
+        3,
+        3,
+        3
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "sqlite bridge",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 50
+      },
+      "selected": [
+        "chunk_12",
+        "chunk_0",
+        "chunk_25",
+        "chunk_1"
+      ],
+      "accesses": [
+        6,
+        4,
+        4,
+        4
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "sqlite bridge",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 50
+      },
+      "selected": [
+        "chunk_12",
+        "chunk_36",
+        "chunk_48",
+        "chunk_0"
+      ],
+      "accesses": [
+        6,
+        3,
+        3,
+        4
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "sqlite bridge",
+      "options": {
+        "budget": 250
+      },
+      "selected": [
+        "chunk_12",
+        "chunk_0",
+        "chunk_25",
+        "chunk_1",
+        "chunk_30",
+        "chunk_37",
+        "chunk_48",
+        "chunk_31",
+        "chunk_55",
+        "chunk_13",
+        "chunk_24",
+        "chunk_7",
+        "chunk_49",
+        "chunk_42",
+        "chunk_18"
+      ],
+      "accesses": [
+        6,
+        4,
+        4,
+        4,
+        2,
+        3,
+        3,
+        3,
+        2,
+        3,
+        2,
+        3,
+        3,
+        2,
+        2
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "sqlite bridge",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 250
+      },
+      "selected": [
+        "chunk_12",
+        "chunk_0",
+        "chunk_25",
+        "chunk_1",
+        "chunk_30",
+        "chunk_37",
+        "chunk_48",
+        "chunk_31",
+        "chunk_55",
+        "chunk_13",
+        "chunk_24",
+        "chunk_7",
+        "chunk_49",
+        "chunk_42",
+        "chunk_18"
+      ],
+      "accesses": [
+        7,
+        5,
+        5,
+        5,
+        3,
+        4,
+        4,
+        4,
+        3,
+        4,
+        3,
+        4,
+        4,
+        3,
+        3
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "sqlite bridge",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 250
+      },
+      "selected": [
+        "chunk_12",
+        "chunk_36",
+        "chunk_48",
+        "chunk_24",
+        "chunk_0",
+        "chunk_13",
+        "chunk_37",
+        "chunk_49",
+        "chunk_42",
+        "chunk_18",
+        "chunk_6",
+        "chunk_1",
+        "chunk_7",
+        "chunk_30",
+        "chunk_31"
+      ],
+      "accesses": [
+        7,
+        3,
+        4,
+        3,
+        5,
+        4,
+        4,
+        4,
+        3,
+        3,
+        2,
+        5,
+        4,
+        3,
+        4
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "budget": 15
+      },
+      "selected": [
+        "chunk_20"
+      ],
+      "accesses": [
+        4
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 15
+      },
+      "selected": [
+        "chunk_20"
+      ],
+      "accesses": [
+        5
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 15
+      },
+      "selected": [
+        "chunk_20"
+      ],
+      "accesses": [
+        5
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "budget": 50
+      },
+      "selected": [
+        "chunk_20",
+        "chunk_56",
+        "chunk_1",
+        "chunk_32"
+      ],
+      "accesses": [
+        5,
+        4,
+        5,
+        3
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 50
+      },
+      "selected": [
+        "chunk_20",
+        "chunk_56",
+        "chunk_1",
+        "chunk_32"
+      ],
+      "accesses": [
+        6,
+        5,
+        6,
+        4
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 50
+      },
+      "selected": [
+        "chunk_20",
+        "chunk_56",
+        "chunk_25",
+        "chunk_1"
+      ],
+      "accesses": [
+        6,
+        5,
+        5,
+        6
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "budget": 250
+      },
+      "selected": [
+        "chunk_20",
+        "chunk_56",
+        "chunk_1",
+        "chunk_32",
+        "chunk_37",
+        "chunk_8",
+        "chunk_55",
+        "chunk_26",
+        "chunk_31",
+        "chunk_13",
+        "chunk_44",
+        "chunk_7",
+        "chunk_49",
+        "chunk_2",
+        "chunk_38"
+      ],
+      "accesses": [
+        6,
+        5,
+        6,
+        4,
+        4,
+        2,
+        3,
+        2,
+        4,
+        4,
+        2,
+        4,
+        4,
+        1,
+        1
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 250
+      },
+      "selected": [
+        "chunk_20",
+        "chunk_56",
+        "chunk_1",
+        "chunk_32",
+        "chunk_37",
+        "chunk_8",
+        "chunk_55",
+        "chunk_26",
+        "chunk_31",
+        "chunk_13",
+        "chunk_44",
+        "chunk_7",
+        "chunk_49",
+        "chunk_2",
+        "chunk_38"
+      ],
+      "accesses": [
+        7,
+        6,
+        7,
+        5,
+        5,
+        3,
+        4,
+        3,
+        5,
+        5,
+        3,
+        5,
+        5,
+        2,
+        2
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 250
+      },
+      "selected": [
+        "chunk_20",
+        "chunk_56",
+        "chunk_25",
+        "chunk_1",
+        "chunk_32",
+        "chunk_50",
+        "chunk_55",
+        "chunk_26",
+        "chunk_37",
+        "chunk_31",
+        "chunk_8",
+        "chunk_13",
+        "chunk_44",
+        "chunk_7",
+        "chunk_2"
+      ],
+      "accesses": [
+        7,
+        6,
+        5,
+        7,
+        5,
+        3,
+        4,
+        3,
+        5,
+        5,
+        3,
+        5,
+        3,
+        5,
+        2
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "crispr quantum",
+      "options": {
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "crispr quantum",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "crispr quantum",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "crispr quantum",
+      "options": {
+        "budget": 15
+      },
+      "selected": [
+        "chunk_45"
+      ],
+      "accesses": [
+        4
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "crispr quantum",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 15
+      },
+      "selected": [
+        "chunk_45"
+      ],
+      "accesses": [
+        5
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "crispr quantum",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 15
+      },
+      "selected": [
+        "chunk_45"
+      ],
+      "accesses": [
+        5
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "crispr quantum",
+      "options": {
+        "budget": 50
+      },
+      "selected": [
+        "chunk_45",
+        "chunk_40",
+        "chunk_16",
+        "chunk_52",
+        "chunk_10"
+      ],
+      "accesses": [
+        5,
+        2,
+        1,
+        2,
+        1
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "crispr quantum",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 50
+      },
+      "selected": [
+        "chunk_45",
+        "chunk_40",
+        "chunk_16",
+        "chunk_52",
+        "chunk_10"
+      ],
+      "accesses": [
+        6,
+        3,
+        2,
+        3,
+        2
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "crispr quantum",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 50
+      },
+      "selected": [
+        "chunk_45",
+        "chunk_21",
+        "chunk_57",
+        "chunk_15"
+      ],
+      "accesses": [
+        6,
+        3,
+        3,
+        2
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "crispr quantum",
+      "options": {
+        "budget": 250
+      },
+      "selected": [
+        "chunk_45",
+        "chunk_40",
+        "chunk_16",
+        "chunk_52",
+        "chunk_10",
+        "chunk_28",
+        "chunk_57",
+        "chunk_26",
+        "chunk_4",
+        "chunk_33",
+        "chunk_51",
+        "chunk_2",
+        "chunk_9",
+        "chunk_27",
+        "chunk_38"
+      ],
+      "accesses": [
+        6,
+        3,
+        2,
+        3,
+        2,
+        2,
+        3,
+        3,
+        1,
+        3,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "crispr quantum",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 250
+      },
+      "selected": [
+        "chunk_45",
+        "chunk_40",
+        "chunk_16",
+        "chunk_52",
+        "chunk_10",
+        "chunk_28",
+        "chunk_57",
+        "chunk_26",
+        "chunk_4",
+        "chunk_33",
+        "chunk_51",
+        "chunk_2",
+        "chunk_9",
+        "chunk_27",
+        "chunk_38"
+      ],
+      "accesses": [
+        7,
+        4,
+        3,
+        4,
+        3,
+        3,
+        4,
+        4,
+        2,
+        4,
+        3,
+        3,
+        3,
+        3,
+        3
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "crispr quantum",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 250
+      },
+      "selected": [
+        "chunk_45",
+        "chunk_21",
+        "chunk_57",
+        "chunk_15",
+        "chunk_51",
+        "chunk_33",
+        "chunk_27",
+        "chunk_9",
+        "chunk_3",
+        "chunk_39",
+        "chunk_40",
+        "chunk_16",
+        "chunk_52",
+        "chunk_10",
+        "chunk_28"
+      ],
+      "accesses": [
+        7,
+        3,
+        4,
+        2,
+        3,
+        4,
+        3,
+        3,
+        2,
+        2,
+        4,
+        3,
+        4,
+        3,
+        3
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "",
+      "options": {
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "",
+      "options": {
+        "budget": 15
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 15
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 15
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "",
+      "options": {
+        "budget": 50
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 50
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 50
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "",
+      "options": {
+        "budget": 250
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 250
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 250
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "unknownword",
+      "options": {
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "unknownword",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "unknownword",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "unknownword",
+      "options": {
+        "budget": 15
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "unknownword",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 15
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "unknownword",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 15
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "unknownword",
+      "options": {
+        "budget": 50
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "unknownword",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 50
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "unknownword",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 50
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "unknownword",
+      "options": {
+        "budget": 250
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "unknownword",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 250
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "unknownword",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 250
+      },
+      "selected": [],
+      "accesses": []
+    }
+  ],
+  "bridges": {
+    "evidence": [
+      "chunk_25",
+      "chunk_30",
+      "chunk_55",
+      "chunk_6",
+      "chunk_31",
+      "chunk_36",
+      "chunk_7",
+      "chunk_12",
+      "chunk_37",
+      "chunk_42",
+      "chunk_13",
+      "chunk_18",
+      "chunk_43",
+      "chunk_48",
+      "chunk_19",
+      "chunk_24",
+      "chunk_49",
+      "chunk_54",
+      "chunk_20",
+      "chunk_50",
+      "chunk_26",
+      "chunk_56",
+      "chunk_32",
+      "chunk_8",
+      "chunk_38",
+      "chunk_14",
+      "chunk_44"
+    ],
+    "psi": [
+      [
+        "expansion",
+        6.214689593696747
+      ],
+      [
+        "rare",
+        6.214689593696747
+      ],
+      [
+        "vocabulary",
+        6.214689593696747
+      ],
+      [
+        "graph",
+        6.214689593696747
+      ],
+      [
+        "temporal",
+        6.214689593696747
+      ]
+    ]
+  },
+  "scores": [
+    {
+      "id": "chunk_0",
+      "score": 27.197506012102846,
+      "temporal": 1
+    },
+    {
+      "id": "chunk_1",
+      "score": 27.00370411482293,
+      "temporal": 0.9838023755213481
+    },
+    {
+      "id": "chunk_2",
+      "score": 4.517912716674875,
+      "temporal": 0.9502870729232699
+    }
+  ]
+}

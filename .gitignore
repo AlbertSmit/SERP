@@ -1,0 +1,11 @@
+node_modules/
+__pycache__/
+.cache/
+.DS_Store
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.dylib
+*.db
+*.db-shm
+*.db-wal
