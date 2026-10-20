@@ -168,3 +168,16 @@ something BM25 structurally cannot: retrieve both supporting facts.
 | What limits CESR-U? | remaining misses are 100% witness alternatives; 24/185 text-unique queries are ambiguous, and real PR text does not determine constraints | do not sell it as universal code search; use it for structured evidence queries |
 | Does structured mode survive automatic constraint parsing? | **yes, for queries that name their entities**: planner covers 194/250 (77.6%), is oracle-identical on every planned query, and beats RRF on all@10 (+0.436/+0.215/+0.134 at 500/1000/2000); `two_hop` is 0/50 because the bridge is not in the text | structured mode is an explicit entity-naming executor, not a general extractor |
 | How robust is the automatic parser? | cue phrases are the generator's own templates, so intent agreement is near-tautological; this validates plumbing, not paraphrase robustness; imported-callee vocabulary costs ~0.01 all@10; two_hop is the main 0.091 gap to oracle | do not claim general natural-language constraint extraction |
+
+## Research freeze
+
+Frozen as of release 1.2.0. No further experiment changes a product decision.
+
+- **Structured mode:** lab-only. The only decisive follow-up is a set of about 50
+  hand-written, user-authored symbol/relation queries. Run it only if a real user
+  will call an explicit constraint tool.
+- **Deep mode:** lab-only. Port EBR to JavaScript only when a real multi-hop
+  workload appears.
+- **Code search and universal no-embedding scorer:** closed as negative results.
+- **Settled:** BM25 default; truncation default; the coverage gate is a precision
+  control with a measured recall cost; P4 stays experimental.

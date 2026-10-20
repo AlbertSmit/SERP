@@ -1,6 +1,6 @@
 {
   "name": "serp",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "SERP (Stretched-Exponential Residual Packing): a local SQLite FTS5 retrieval and context-packing engine with an MCP server.",
   "main": "src/engine/engine.js",
   "scripts": {

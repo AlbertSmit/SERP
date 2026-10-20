@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.0 — 2026-10-20
+
+Release of the frozen research state. MCP `pack_context` defaults to hybrid
+BM25 + 4-gram RRF + truncation; the legacy P4 path is behind `mode: "legacy"`.
+Research docs are reconciled with the result JSON, and the research program is
+frozen.
+
 ## Research findings: repositioning
 
 - Close the search for a universal no-embedding scorer: it was not achieved. P4

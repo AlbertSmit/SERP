@@ -110,6 +110,22 @@ win.
 - **Not code-graph PR search.** On real PRs the code graph and CESR did not beat
   BM25. The synthetic gains came from graph-generated qrels.
 
+## Research status (frozen)
+
+The research program is frozen as of this release. No open experiment changes
+the product decision.
+
+- **Structured mode (CESR-U):** stays in the lab. The only test that would change
+  a product decision is about 50 hand-written queries that name symbols in real
+  users' words, not the generator's templates. Run it only if someone will
+  actually call an explicit "definition of X and every caller of X" tool.
+- **Deep mode (EBR):** stays in Python. Port it to JavaScript only when a real
+  multi-hop workload appears.
+- **Code search and the universal no-embedding scorer:** both are closed as
+  negative results.
+- **Settled:** BM25 remains the default; truncation remains the default packer;
+  the coverage gate is a precision control with a measured recall cost.
+
 ## Benchmarks
 
 All numbers are paired deltas with 95% bootstrap CIs, read from
