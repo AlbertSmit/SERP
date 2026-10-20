@@ -92,7 +92,8 @@ def main():
             'intrinsic_surprisal': full_entropy / max(full_L, 1)
         })
 
-    # Inject 1,500 realistic MCP Noise Chunks
+    # Inject 1,500 realistic MCP Noise Chunks (fixed seed so the benchmark corpus is reproducible)
+    random.seed(1729)
     noise_words_pool = [
         "system", "log", "error", "warning", "debug", "info", "trace", "memory",
         "buffer", "overflow", "timeout", "connection", "request", "response",
