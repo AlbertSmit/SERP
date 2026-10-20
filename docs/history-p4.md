@@ -1,10 +1,14 @@
-# Algorithm notes and reported benchmarks
+# P4 history and legacy scoring rules
 
-## SubConPack 2.0 retrieval rules
+[Back to the README](../README.md) · [Research](research.md) · [API](api.md)
 
-The JavaScript engine uses positive RSJ IDF and includes every substantive query
-token in its information-demand denominator. Unknown tokens receive the fixed
-prior `log1p(M / 2)`. English and Dutch stopwords do not contribute demand.
+## SubConPack 2.0 retrieval rules (legacy path)
+
+These rules apply only to the legacy path: `packContext`, `fullPipeline`, and
+MCP `mode: "legacy"`. That path uses positive RSJ IDF and includes every
+substantive query token in its information-demand denominator. Unknown tokens
+receive the fixed prior `log1p(M / 2)`. English and Dutch stopwords do not
+contribute demand.
 
 Chunk normalization uses the live corpus mean length. Exact header matches receive
 a 1.4 multiplier; prefix, stem, and compound matches receive a 0.85 multiplier.
@@ -17,32 +21,6 @@ and occurs in at most `max(2, floor(0.02M))` documents. Packing stops below 8%
 residual demand, never admits a zero-gain candidate, and uses a first-marginal
 relative dropoff of `0.26`. Both coverage and dropoff are exposed as snake-case
 options for development-only tuning.
-
-### Staged interfaces
-
-The engine also exposes retrieval as separate stages:
-
-- `retrieveRanked` returns `{ word, gram, fused }`.
-- `rankWordBm25` uses the existing word FTS index; `rankGramBm25` uses a separate
-  in-word character-4-gram index with word-boundary markers (`1` and `2`).
-- `fuseRrf` combines ranked lists with reciprocal-rank fusion (`k = 60`). Chunks
-  containing an exact identifier token (a query token with a letter and a digit
-  or underscore that exists as a term) sort before variant-only matches,
-  regardless of fused score. This is a hard rule, not a weight.
-- `packRanked` applies the coverage gate and a budget with one of four packers:
-  `truncate`, `greedy`, `residual`, or `p4`. All four see the same
-  `poolDepth` candidate pool.
-- `packHybrid` composes retrieve, fuse, and pack.
-
-The gram channel filters per token: identifier-like tokens (containing `_` or a
-digit) contribute grams only when they exist in `chunks_exact_terms`. The word
-channel filters them too: unicode61 would split `figure_1` into `figure` + `1`
-and match prose that never contained the identifier. The exact table stores
-`tokenize()` output, so `figure_1` is known only when it was indexed as a token.
-`buildGramIndex` and `buildExactIndex` backfill the gram and exact tables for
-pre-existing databases; constructors do not backfill automatically.
-
-[Back to the README](../README.md).
 
 ---
 
@@ -67,7 +45,7 @@ pre-existing databases; constructors do not backfill automatically.
 > - No universal no-embedding scorer was found. See `LEXICAL_PORTFOLIO.md` and
 >   `SELECTIVE_LEXICAL.md`.
 >
-> The current positioning, numbers and CIs are in the [README](../README.md#benchmarks).
+> The current positioning, numbers and CIs are in [research.md](research.md#benchmarks).
 
 ## 1. Motivation: Why BM25 Fails in MCP Memory & Agentic RAG
 

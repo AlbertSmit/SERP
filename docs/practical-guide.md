@@ -1,6 +1,6 @@
 # Practical guide: choosing a mode
 
-[Back to the README](../README.md).
+[Back to the README](../README.md) · [API](api.md) · [Research](research.md)
 
 ## Default: BM25 / FTS5
 
@@ -73,4 +73,4 @@ the budget.
 
 `python/sqlite_mcp_engine.py`, `python/benchmark_sqlite_e2e.py` and
 `native/fts5_p4_scorer.c` belong to the historical P4 track. Their reported
-numbers are in [algorithm.md](algorithm.md) and are superseded.
+numbers are in [history-p4.md](history-p4.md) and are superseded.

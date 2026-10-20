@@ -6,7 +6,7 @@ import { SQLiteContextEngine, DEFAULT_DB_PATH } from '../engine/engine.js';
 
 export function createMcpServer(engine) {
   const server = new McpServer({
-    name: "serp-context-engine",
+    name: "sqlite-context",
     version: "1.2.0",
   });
 

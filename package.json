@@ -1,7 +1,7 @@
 {
-  "name": "serp",
+  "name": "sqlite-context",
   "version": "1.2.1",
-  "description": "SERP (Stretched-Exponential Residual Packing): a local SQLite FTS5 retrieval and context-packing engine with an MCP server.",
+  "description": "Local memory retrieval for LLM agents: SQLite FTS5, BM25, token-budget packing and an MCP server. No embeddings.",
   "main": "src/engine/engine.js",
   "scripts": {
     "test": "node --test test/*.test.js",

@@ -1,5 +1,19 @@
 # Changelog
 
+## Unreleased
+
+- Rename the project from SERP to `sqlite-context`: the package name, the MCP
+  server name (`sqlite-context`, previously `serp-context-engine`), and the
+  repository.
+- Restructure the docs. The README covers setup and usage. Research findings
+  move to `docs/research.md`, the engine API to `docs/api.md`, and the P4 notes
+  to `docs/history-p4.md` (previously `docs/algorithm.md`).
+- Make `docs/research.md` report the CESR-U parsed-constraint results end to end,
+  with the RRF fallback, not only on the parsed subset.
+- Fix ESLint: ignore the cloned benchmark repositories, `.venv` and the TS 7
+  graph lab, and remove dead code from the legacy benchmark scripts.
+- Document the P4 precision trade-off at nominal budgets.
+
 ## 1.2.1 — 2026-10-20
 
 Documentation-only correction from the paired EBR-vs-cross-encoder test. No
