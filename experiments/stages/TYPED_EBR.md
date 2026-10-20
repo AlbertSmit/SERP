@@ -124,7 +124,7 @@ channel), which isolates typing from the coverage channel:
 | | both@10 | −0.0373 | [−0.0446, −0.0300] |
 | `ebr_typed_anchor` (any relation, rule b) vs same | nDCG@10 | −0.0303 | [−0.0340, −0.0267] |
 | | both@10 | −0.0405 | [−0.0480, −0.0325] |
-| `ebr_typed_plus_coverage` vs `ebr_untyped` | nDCG@10 | −0.0306 | [−0.0338, −0.0272] |
+| `ebr_typed_anchor_plus_coverage` vs `ebr_untyped` | nDCG@10 | −0.0306 | [−0.0338, −0.0272] |
 | | both@10 | −0.0533 | [−0.0604, −0.0463] |
 
 Every rule is negative. Restricting to query-linked bridges (rule b) is less bad
@@ -152,7 +152,8 @@ recall"; it inverts the gain.
 ## Why it failed: the bridge hop is not the question's relation
 
 For 859 gold second-hop documents on the detected test slice, does the bridge
-channel retrieve them at all?
+channel retrieve them at all? These reach figures come from a separate diagnostic
+run; they are not stored in `results/hotpot_typed.json`.
 
 | bridge set | second-hop reach |
 |---|---:|

@@ -35,7 +35,8 @@ server vs transport time, which made profiling the build trivial.
 Friction, in order of how much it cost:
 
 1. **No batch checker.** 2,213 `getSymbolAtLocation` calls became 2,245 IPC
-   requests and ~170–200 ms of round trips. This is 65% of the build. There is no
+   requests and 270.6 ms of round trips (224.2 ms server-side resolve). This is
+   about 65% of the build. There is no
    way to ask for 500 symbols at once.
 2. **Handles, not nodes.** `symbol.declarations` are `NodeHandle`s; each needs
    `.resolve(project)` (another round trip). Imported symbols need
@@ -88,16 +89,16 @@ extractor itself.
 
 | | process, median of 7 | in-process build |
 |---|---:|---:|
-| regex | 83 ms | **19 ms** |
-| TS7, AST only | 178 ms | **84 ms** |
-| TS7, with checker | 359 ms | **248 ms** |
+| regex | 100.6 ms | **22.4 ms** |
+| TS7, AST only | 219.1 ms | **108.0 ms** |
+| TS7, with checker | 414.6 ms | **342.4 ms** |
 
-TS7 breakdown with the checker: spawn + snapshot 50 ms, fetch + parse 6 ms, walk
-26 ms, **checker 167 ms**. The AST-only variant is the same minus the checker:
-spawn + snapshot 51 ms, parse 6 ms, walk 26 ms. 2,245 requests, 12 MB received,
-30,647 AST nodes materialised, 195 ms of round trips of which 149 ms is server
-time. The checker pass is the noisy part of the run: 167–236 ms across runs, i.e.
-75–105 µs per round trip.
+TS7 breakdown with the checker: spawn + snapshot 76.9 ms, fetch + parse 7.0 ms,
+walk + resolve 258.2 ms, of which **resolve is 224.2 ms**. The AST-only variant
+is the same minus the checker: spawn + snapshot 66.4 ms, parse 6.6 ms, walk 34.8
+ms. 2,245 requests, 12 MB received, 30,647 AST nodes materialised, 270.6 ms of
+round trips of which 196.1 ms is server time. That is about 120 µs per checker
+round trip.
 
 So: the AST is free, the type checker is the cost. AST-only is 4× regex; adding
 declaration resolution makes it 13×. Since resolution is what buys
@@ -207,8 +208,8 @@ Paired per-query deltas, TS7 minus regex, same 249 queries:
 | | both@10 | nDCG@10 | R@10 |
 |---|---:|---:|---:|
 | porter | **+0.104** (54W/28L) | +0.035 | +0.065 |
-| graph | +0.012 (42W/42L) | −0.005 | −0.008 |
-| RRF(P,e,g) | **0.000** (42W/42L) | −0.001 | +0.001 |
+| graph | +0.012 (46W/160T/43L) | −0.005 | −0.008 |
+| RRF(P,e,g) | **0.000** (42W/165T/42L) | −0.001 | +0.001 |
 
 Three things follow.
 
@@ -276,12 +277,12 @@ maintenance — a graph you can trust to be complete — not a number.
 
 Concretely:
 
-1. Default build: `TS7_NO_CHECKER=1` — 84 ms, chunks + syntactic CALLS + IMPORTS.
-   This is the right default because the checker's only product is
-   `CALLS.target_chunk`, and nothing else in the graph changes.
-2. Opt-in: checker on, when resolved call targets are needed — 248 ms. Pin
+1. Default build: `TS7_NO_CHECKER=1` — 108 ms in-process, chunks + syntactic
+   CALLS + IMPORTS. This is the right default because the checker's only product
+   is `CALLS.target_chunk`, and nothing else in the graph changes.
+2. Opt-in: checker on, when resolved call targets are needed — 342 ms in-process. Pin
    `typescript` exactly; the API is `unstable/*` and will move.
-3. Do not ship a watch-mode or per-keystroke service on this yet: 75–105 µs per
+3. Do not ship a watch-mode or per-keystroke service on this yet: ~120 µs per
    checker query with no batching is the wrong shape for interactivity.
 4. The regex graph stays useful as an oracle, not as a product: it fails
    differently, and the `new X()` bug in the first TS7 walker was only found by

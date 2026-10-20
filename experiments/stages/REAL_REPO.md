@@ -27,7 +27,7 @@ queries. Details, and the three reasons, below.
    reported separately.
 3. **The corpus is small: 48 files.** A top-10 list is 21% of it, so absolute numbers
    are inflated and the room for improvement is narrow (the random floor is 0.228
-   recall@10; a perfect reranker over the candidate pool is 0.953). This is the single
+   recall@10; a perfect reranker over the candidate pool is 0.9475). This is the single
    biggest reason the test is *hard to win* rather than *rigged against the graph* —
    see §7 and §11.
 4. **No tuning.** Every constant was fixed before the first run, copied from
@@ -263,7 +263,7 @@ graph losing 0.027 recall@10 and 0.130 nDCG@10.
 
 | | value |
 |---|---:|
-| qrel files reachable in the candidate pool (top-100 of each channel) | **0.953** |
+| qrel files reachable in the candidate pool (top-100 of each channel) | **0.9475** |
 | PRs with *all* changed files in the pool | 0.924 |
 | `bm25_file` recall@10 | 0.828 |
 | missed qrel-file instances at k=10 | 37 of 170 (0.218) |
@@ -271,9 +271,9 @@ graph losing 0.027 recall@10 and 0.130 nDCG@10.
 | — of which outside the pool (unreachable) | 11 |
 | — of which test files | 8 |
 
-So there is **0.125 of addressable headroom** and no system in this table takes it:
+So there is **0.120 of addressable headroom** and no system in this table takes it:
 `cesr` captures +0.0145 of it and `graph_rrf` gives back 0.041. A graph that could not
-win with headroom of 0.125 and a near-perfect pool is not being blocked by the pool.
+win with headroom of 0.120 and a near-perfect pool is not being blocked by the pool.
 
 ## 8. What CESR actually did
 
@@ -288,8 +288,6 @@ Constraint extraction, measured against the qrels (for diagnosis only):
 | **precision of a named file being a changed file** | **0.612** |
 | **precision of a symbol's defining file being a changed file** | **0.500** |
 | mean forced (universal) chunks | 1.15 |
-| share of selected chunks outside Porter's top-100 | 0.059 |
-| share of selected chunks from the graph channel | 0.362 |
 
 The extractor is roughly half right, which is what an automatic PR reader should be
 expected to be: a title names a feature and often a file, the body names a behaviour,
@@ -380,7 +378,7 @@ contribution that is negative".
 What would change the verdict — none of it cheap:
 
 - **A corpus where lexical matching is weak.** 48 files is too few for a top-10 file
-  list to be informative (ceiling 0.953, baseline 0.828). A 1,000-file repo with the
+  list to be informative (ceiling 0.9475, baseline 0.828). A 1,000-file repo with the
   same PRs would leave the graph room to matter, and is the one experiment that could
   overturn this.
 - **Qrels that are "the file a developer would open", not "the files the PR touched".**
@@ -402,7 +400,7 @@ improvements widen this gap rather than close it.
   estimate; the CIs are over queries, not over repositories.
 - **The corpus is small.** 46% of queries have exactly one relevant file, so `recall@10`
   is close to `hit@10` and the metric is coarse. The random floor (0.228) and the pool
-  ceiling (0.953) bound it.
+  ceiling (0.9475) bound it.
 - **Temporal leakage is measured, not removed.** Half the PRs are from 2023–2024 with
   mean drift 0.375; those qrels describe code that has since been rewritten. The
   2025–2026 slice is the clean one and it is reported separately, with the same ordering.

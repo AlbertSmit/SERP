@@ -307,9 +307,12 @@ Determinacy split, text-unique, budget 2000:
 | `export_import` | 50 | 50 | 0 | 1.000 | **1.000** | — | 0.980 |
 | `calls_two` | 45 | 32 | 13 | 0.822 | **1.000** | 0.385 | 0.781 |
 
-- **`two_hop` is the clean confirmation.** `ALL_CALLERS(chain[1])` is literally the upper
-  half of the qrels and `CALL_CHAIN` is literally the middle. 0.800 → 1.000, with no
-  ambiguity to hide behind (25/25 determined).
+- **`two_hop` is the oracle-leaky confirmation.** `ALL_CALLERS(chain[1])` is literally
+  the upper half of the qrels and `CALL_CHAIN` is literally the middle. 0.800 → 1.000,
+  with no ambiguity to hide behind (25/25 determined). But `chain[1]` is the hidden
+  bridge name that also defines the qrels; the natural-language query does not contain
+  it. Treat this as an upper bound on what a correct bridge extractor could do, not as a
+  deployable signal.
 - **`export_import` closes.** The file is pinned by `(imports module, defines symbol)`;
   `ALL_EXPORTS` then selects the answer set. 0.980 → 1.000.
 - **`same_file` closes its one ambiguous query** (0.980 → 1.000); the 49 determined
@@ -428,8 +431,9 @@ entirely, and nothing in the constraint language can remove the second.
   much. It is the upper bound of a deployable CESR-U.
 - **Graph-derived qrels.** The relations that define the constraints generated the labels,
   and the graph channel traverses them. The circularity is strongest on `export_import`
-  (near-tautological: the file is pinned by the same two facts the qrels use) and weakest on
-  `two_hop`, whose answer chunk contains neither query symbol.
+  (near-tautological: the file is pinned by the same two facts the qrels use). `two_hop`
+  is different but also oracle-leaky: its constraint uses `chain[1]`, the hidden bridge
+  name that defines the qrels, even though the query text does not contain it.
 - **The ambiguity criterion is graph-only, but the decision to gate on it is a judgement.**
   `unique answer` is computed from the constraint set before qrels is read, and the text
   dedupe is mechanical. Still: conditioning the headline on "determined queries" is a choice

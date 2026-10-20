@@ -288,10 +288,14 @@ Restricted to the 185 unique-text queries, budget 2000:
 
 Three readings:
 
-- **`two_hop` is the clean win.** The answer chunk contains neither query symbol; only a
-  caller-of-a-caller can produce it. 0.800 vs 0.600 on unambiguous queries, 0.600 vs
-  0.300 overall. This is the one row that lexical matching cannot explain, and it
-  reproduces `CODE_GRAPH.md`'s finding that the graph channel is a bridge specialist.
+- **`two_hop` looks like the clean win, but it is the leakiest row.** The answer chunk
+  contains neither query symbol; only a caller-of-a-caller can produce it. 0.800 vs
+  0.600 on unambiguous queries, 0.600 vs 0.300 overall. However, the oracle constraint
+  metadata contains `chain[1]`, the hidden bridge name that also defines the qrels; the
+  natural-language query does not contain it. Treat this row as an oracle upper bound,
+  not a deployable signal. It reproduces `CODE_GRAPH.md`'s finding that the graph
+  channel is a bridge specialist, but the constraint used here is stronger than the
+  query text.
 - **`import_call` is a loss** (0.200 vs 0.360 overall, 0.600 vs 0.800 on the 15
   unambiguous queries). This is the row that keeps the result honest. With 17 chunks
   satisfying the constraint set, coverage has no tie-breaker; RRF's lexical surface
@@ -369,14 +373,15 @@ same budget on at least one budget, or match it with ≥20% fewer tokens.*
 
 | budget | Δ all@10 vs RRF | 95% CI | token ratio | beats | matches with fewer tokens |
 |---:|---:|---|---:|---|---|
-| 500 | +0.2200 | [+0.1520, +0.2840] | 0.45 | yes | yes |
-| 1000 | +0.1360 | [+0.0720, +0.2000] | 0.25 | yes | yes |
-| 2000 | +0.0760 | [+0.0160, +0.1360] | 0.12 | yes | yes |
+| 500 | +0.2200 | [+0.1520, +0.2840] | 0.45 | yes | n/a (beat) |
+| 1000 | +0.1360 | [+0.0720, +0.2000] | 0.25 | yes | n/a (beat) |
+| 2000 | +0.0760 | [+0.0160, +0.1360] | 0.12 | yes | n/a (beat) |
 
-**Gate PASSED**, on all three budgets by the beat branch (CI lower bounds above zero),
-and the fewer-tokens branch would hold independently at 12–45% of RRF's tokens. The 2000
-budget is the thin one: +0.076 with a CI lower bound of +0.016. The 500 and 1000 results
-are nowhere near the boundary, so the pass does not depend on that margin.
+**Gate PASSED** on all three budgets by the beat branch (CI lower bounds above zero).
+The fewer-tokens branch was not triggered: `budgets_matching_with_fewer_tokens` is `[]`
+in the JSON. The token ratios are 0.45 / 0.25 / 0.12. The 2000 budget is the thin one:
++0.076 with a CI lower bound of +0.016. The 500 and 1000 results are nowhere near the
+boundary, so the pass does not depend on that margin.
 
 Mechanically applying the rule answers the pre-registered question. It does not answer
 the question the rule was a proxy for, which is whether coverage *implies* completeness.
@@ -419,7 +424,9 @@ not a retrieval algorithm.**
   perfect extraction does not make the answer set unique.
 - **Graph-derived qrels.** The relations that define the constraints also generated the
   labels, and the graph channel traverses them. The circularity is strongest on
-  `export_import` (which is near-tautological) and weakest on `two_hop`.
+  `export_import` (which is near-tautological). `two_hop` is also oracle-leaky: its
+  constraint uses `chain[1]`, the hidden bridge name that defines the qrels, even though
+  the natural-language query does not contain it.
 - **Benchmark ambiguity.** 65/250 queries share their exact text with a query that has
   different gold. This caps every system and is disclosed as a post-hoc slice, not
   corrected — correcting it would be changing the benchmark after seeing results.

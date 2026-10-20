@@ -74,10 +74,12 @@ Against unstemmed BM25 the combined system is **+0.1274 both@10** and
 
 The ablations matter:
 
-- **Bridge alone**: both@10 +0.041, but nDCG **−0.013**. It finds second facts and
-  adds noise.
-- **Entity alone**: nDCG **−0.023**, both@10 **−0.023**. It is a comparison-channel
-  specialist, not a ranker.
+- **RRF(Porter, bridge)**: both@10 +0.041, but nDCG **−0.013**. It finds second
+  facts and adds noise. (The raw bridge channel alone is much worse: both@10
+  −0.079, nDCG −0.070.)
+- **RRF(Porter, entity)**: nDCG **−0.023**, both@10 **−0.023**. It is a
+  comparison-channel specialist, not a ranker. (The raw entity channel alone is
+  much worse: both@10 −0.271, nDCG −0.181.)
 - **Combined**: nDCG +0.023 and both@10 +0.105. The channels fix different queries;
   RRF keeps what each gets right. This is the same lesson as the char4 work, but
   now the channel is a multi-hop evidence path, not a spelling variant.
@@ -150,14 +152,18 @@ neural reranker when used as its first stage.**
 
 - **Entity extraction is untyped and noisy.** Capitalization is a proxy for
   entities; `figure 1`, sentence-initial words and generic noun phrases leak in.
-  The next step is typed relations (directed by, born in, member of, located in)
-  and bridge validation against the question's relation.
-- **One dataset.** HotpotQA is multi-hop by construction. EBR should be gated by
-  query type, not applied to every query. The next gate is single-hop regression on
-  SciFact/Touche and a router that applies EBR only to bridge/comparison queries.
-- **No neural reference yet.** A cross-encoder reranker and SPLADE on the same
-  candidate pool would show how close this is to a neural RAG component. That
-  comparison is the next experiment, not a claim.
+  Typed relation filters were tested and **hurt** (`TYPED_EBR.md`: both@10 −0.080
+  at a fixed channel set). The gain depends on broad, redundant cross-seed entity
+  agreement, not per-entity precision.
+- **EBR is a multi-hop specialist, not a universal ranker.** It transfers to
+  2WikiMultiHopQA and MuSiQue (`MULTIHOP_TRANSFER.md`) but hurts single-hop
+  SciFact and Touche (`EBR_ROUTER.md`). A text-only router separates corpora, not
+  queries; it is a safety valve, not a benefit predictor.
+- **The neural reference exists, but it is one model on 1,000 queries.** EBR
+  reaches about 92% of a cross-encoder's both@10 gain at about 4.5% of its
+  latency, but only about 27% of its nDCG gain (`NEURAL_REFERENCE.md`). The
+  latency comparison is not like for like: cross-encoder rerank-only on GPU vs
+  EBR end-to-end on CPU.
 - **The 10-paragraph pool is the standard distractor setting**, but the global
   pool is the stronger test. Both are reported.
 - **Prior art**: entity-based multi-hop retrieval, graph-based IR and RRF are

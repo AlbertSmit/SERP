@@ -224,9 +224,11 @@ at least 4 of 7. Primary system `selector`.
 | positive on ≥ 4/7 datasets | **fail** (3/7: NFCorpus, FiQA, SciDocs) |
 | **overall** | **FAIL** |
 
-`selector_safe` fails the same three checks (macro 0.4631, positive 2/7, ArguAna
-−0.0115 with CI upper −0.0048 and Quora −0.0193 with CI upper −0.0170). The
-verdict does not depend on the margin.
+`selector_safe` fails the macro check (0.4631) and the positive-count check (2/7).
+Its only dataset below the margin with a CI excluding it is Quora (−0.0193, CI
+upper −0.0170); ArguAna is −0.0115 with CI upper −0.0048, which is above the
+−0.005 margin. The verdict does not depend on the margin: the safe selector still
+does not beat BM25.
 
 ## Cost
 
