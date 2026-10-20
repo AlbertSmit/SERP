@@ -143,5 +143,9 @@ something BM25 structurally cannot: retrieve both supporting facts.
 | Does residual/P4 packing beat truncation at a budget? | no; residual/P4 underfill and lose recall | demote P4 behind a flag |
 | Is P4 the product differentiator? | no evidence; P4 scoring is tied with truncation at matched tokens | reposition SERP as budgeted evidence selection |
 | Can a no-embedding method beat BM25 on multi-hop? | yes; EBR +0.105 both@10, +0.023 nDCG on HotpotQA test | continue EBR, gate by query type |
+| How close is EBR to a neural reranker? | 92% of both@10 gain at 22x less latency; only 27% of nDCG gain | position EBR as recall/candidate generation, not a ranker replacement |
+| Does EBR improve a neural reranker? | yes; CE(EBR pool) +0.0095 nDCG, +0.0370 both@10 over CE(Porter pool) | keep EBR as a first-stage candidate generator |
+| Does code-graph EBR transfer to SERP's domain? | synthetic: +0.320 both@10 upper bound; +0.20 on the clean two-hop slice; +0.10 at 20% edge loss | keep as a relational channel, not a global ranker |
 | Does EBR hurt single-hop retrieval? | not yet tested | next gate: SciFact/Touche regression + router |
 | Is EBR field-novel? | no; entity-based multi-hop IR is prior art | claim a measured project result, not novelty |
+| Is TS 7's AST graph worth it? | running | compare edge completeness/precision against regex |
