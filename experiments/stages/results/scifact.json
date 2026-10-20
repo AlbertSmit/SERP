@@ -1,0 +1,449 @@
+{
+ "scifact": {
+  "dataset": "scifact",
+  "documents": 5183,
+  "queries": 809,
+  "baseline": "porter",
+  "runs": {
+   "bm25": {
+    "ndcg": 0.6682727581014027,
+    "r100": 0.907457766790276,
+    "mrr": 0.6357319441991877,
+    "delta_ndcg": -0.029342944497594094,
+    "ci95_ndcg": [
+     -0.04120038363079066,
+     -0.018011950369701813
+    ],
+    "wtl_ndcg": [
+     72,
+     615,
+     122
+    ],
+    "delta_r100": -0.025133910177173466,
+    "ci95_r100": [
+     -0.03749484960857025,
+     -0.013391017717346519
+    ],
+    "wtl_r100": [
+     4,
+     778,
+     27
+    ],
+    "delta_mrr": -0.032937488963446934,
+    "ci95_mrr": [
+     -0.046431023995918926,
+     -0.020409774952420193
+    ],
+    "wtl_mrr": [
+     66,
+     626,
+     117
+    ],
+    "stage": {
+     "queries": 809,
+     "base_relevant": 856,
+     "candidate_relevant": 831,
+     "new_relevant": 5,
+     "lost_relevant": 30,
+     "union_relevant": 861,
+     "queries_with_new": 5,
+     "queries_with_loss": 28,
+     "queries_with_net_gain": 4,
+     "queries_with_net_loss": 27
+    }
+   },
+   "porter": {
+    "ndcg": 0.6976157025989969,
+    "r100": 0.9325916769674495,
+    "mrr": 0.6686694331626346
+   },
+   "char4": {
+    "ndcg": 0.6872116335641998,
+    "r100": 0.9256283477544294,
+    "mrr": 0.6522004434241764,
+    "delta_ndcg": -0.010404069034797047,
+    "ci95_ndcg": [
+     -0.023192825426996518,
+     0.0027679317447158623
+    ],
+    "wtl_ndcg": [
+     111,
+     565,
+     133
+    ],
+    "delta_r100": -0.00696332921302019,
+    "ci95_r100": [
+     -0.020601565718994644,
+     0.007457766790276061
+    ],
+    "wtl_r100": [
+     16,
+     771,
+     22
+    ],
+    "delta_mrr": -0.016468989738458218,
+    "ci95_mrr": [
+     -0.030784625345811997,
+     -0.0019738262012674855
+    ],
+    "wtl_mrr": [
+     95,
+     587,
+     127
+    ],
+    "stage": {
+     "queries": 809,
+     "base_relevant": 856,
+     "candidate_relevant": 847,
+     "new_relevant": 19,
+     "lost_relevant": 28,
+     "union_relevant": 875,
+     "queries_with_new": 19,
+     "queries_with_loss": 25,
+     "queries_with_net_gain": 16,
+     "queries_with_net_loss": 22
+    }
+   },
+   "vc": {
+    "ndcg": 0.6903570059360775,
+    "r100": 0.9299546765554182,
+    "mrr": 0.6573272902073891,
+    "delta_ndcg": -0.007258696662919321,
+    "ci95_ndcg": [
+     -0.017445402409427803,
+     0.002699692631816763
+    ],
+    "wtl_ndcg": [
+     72,
+     655,
+     82
+    ],
+    "delta_r100": -0.0026370004120313145,
+    "ci95_r100": [
+     -0.010877626699629172,
+     0.00519159456118665
+    ],
+    "wtl_r100": [
+     5,
+     797,
+     7
+    ],
+    "delta_mrr": -0.01134214295524555,
+    "ci95_mrr": [
+     -0.022902073890949046,
+     -0.0008211195479427863
+    ],
+    "wtl_mrr": [
+     57,
+     673,
+     79
+    ],
+    "stage": {
+     "queries": 809,
+     "base_relevant": 856,
+     "candidate_relevant": 854,
+     "new_relevant": 5,
+     "lost_relevant": 7,
+     "union_relevant": 861,
+     "queries_with_new": 5,
+     "queries_with_loss": 7,
+     "queries_with_net_gain": 5,
+     "queries_with_net_loss": 7
+    }
+   },
+   "vcgrams": {
+    "ndcg": 0.704886330242442,
+    "r100": 0.9410795220436753,
+    "mrr": 0.6724846469284047,
+    "delta_ndcg": 0.007270627643445135,
+    "ci95_ndcg": [
+     -0.0027788046119776445,
+     0.017519883969397753
+    ],
+    "wtl_ndcg": [
+     104,
+     618,
+     87
+    ],
+    "delta_r100": 0.008487845076225794,
+    "ci95_r100": [
+     -0.0018129377832715287,
+     0.01957148743304491
+    ],
+    "wtl_r100": [
+     16,
+     786,
+     7
+    ],
+    "delta_mrr": 0.003815213765770008,
+    "ci95_mrr": [
+     -0.0075862813192850275,
+     0.015130378480193066
+    ],
+    "wtl_mrr": [
+     87,
+     641,
+     81
+    ],
+    "stage": {
+     "queries": 809,
+     "base_relevant": 856,
+     "candidate_relevant": 865,
+     "new_relevant": 16,
+     "lost_relevant": 7,
+     "union_relevant": 872,
+     "queries_with_new": 16,
+     "queries_with_loss": 7,
+     "queries_with_net_gain": 16,
+     "queries_with_net_loss": 7
+    }
+   },
+   "rrf_porter_char4": {
+    "ndcg": 0.6938431179597853,
+    "r100": 0.9421096003296251,
+    "mrr": 0.6600123609394314,
+    "delta_ndcg": -0.003772584639211581,
+    "ci95_ndcg": [
+     -0.011683297159145406,
+     0.004148302193107044
+    ],
+    "wtl_ndcg": [
+     92,
+     637,
+     80
+    ],
+    "delta_r100": 0.009517923362175525,
+    "ci95_r100": [
+     0.0006180469715698393,
+     0.019406674907292955
+    ],
+    "wtl_r100": [
+     15,
+     790,
+     4
+    ],
+    "delta_mrr": -0.00865707222320325,
+    "ci95_mrr": [
+     -0.017337198579472992,
+     -0.00010349834206447327
+    ],
+    "wtl_mrr": [
+     80,
+     652,
+     77
+    ],
+    "stage": {
+     "queries": 809,
+     "base_relevant": 856,
+     "candidate_relevant": 867,
+     "new_relevant": 15,
+     "lost_relevant": 4,
+     "union_relevant": 871,
+     "queries_with_new": 15,
+     "queries_with_loss": 4,
+     "queries_with_net_gain": 15,
+     "queries_with_net_loss": 4
+    }
+   },
+   "rrf_porter_vc": {
+    "ndcg": 0.6956214210146314,
+    "r100": 0.9330449114132674,
+    "mrr": 0.6632090372201621,
+    "delta_ndcg": -0.0019942815843654225,
+    "ci95_ndcg": [
+     -0.009039424224081128,
+     0.004996564210111749
+    ],
+    "wtl_ndcg": [
+     58,
+     696,
+     55
+    ],
+    "delta_r100": 0.0004532344458178821,
+    "ci95_r100": [
+     -0.005933250927070457,
+     0.006592501030078286
+    ],
+    "wtl_r100": [
+     5,
+     800,
+     4
+    ],
+    "delta_mrr": -0.005460395942472581,
+    "ci95_mrr": [
+     -0.013574960268408971,
+     0.0022470422037789164
+    ],
+    "wtl_mrr": [
+     47,
+     709,
+     53
+    ],
+    "stage": {
+     "queries": 809,
+     "base_relevant": 856,
+     "candidate_relevant": 857,
+     "new_relevant": 5,
+     "lost_relevant": 4,
+     "union_relevant": 861,
+     "queries_with_new": 5,
+     "queries_with_loss": 4,
+     "queries_with_net_gain": 5,
+     "queries_with_net_loss": 4
+    }
+   },
+   "rrf_porter_vcgrams": {
+    "ndcg": 0.7004320254004264,
+    "r100": 0.9408735063864854,
+    "mrr": 0.6691638707398905,
+    "delta_ndcg": 0.002816322801429566,
+    "ci95_ndcg": [
+     -0.002873595491854123,
+     0.008613677272585262
+    ],
+    "wtl_ndcg": [
+     77,
+     679,
+     53
+    ],
+    "delta_r100": 0.008281829419035847,
+    "ci95_r100": [
+     0.0012360939431396785,
+     0.016316440049443756
+    ],
+    "wtl_r100": [
+     11,
+     796,
+     2
+    ],
+    "delta_mrr": 0.0004944375772558713,
+    "ci95_mrr": [
+     -0.005550650420860557,
+     0.006391881021052838
+    ],
+    "wtl_mrr": [
+     62,
+     698,
+     49
+    ],
+    "stage": {
+     "queries": 809,
+     "base_relevant": 856,
+     "candidate_relevant": 865,
+     "new_relevant": 11,
+     "lost_relevant": 2,
+     "union_relevant": 867,
+     "queries_with_new": 11,
+     "queries_with_loss": 2,
+     "queries_with_net_gain": 11,
+     "queries_with_net_loss": 2
+    }
+   },
+   "rrf_porter_char4_vc": {
+    "ndcg": 0.6996482505504098,
+    "r100": 0.9404614750721055,
+    "mrr": 0.6670007063393961,
+    "delta_ndcg": 0.0020325479514129137,
+    "ci95_ndcg": [
+     -0.005774195313132882,
+     0.010175308679406051
+    ],
+    "wtl_ndcg": [
+     88,
+     658,
+     63
+    ],
+    "delta_r100": 0.007869798104655953,
+    "ci95_r100": [
+     -0.0007828594973217966,
+     0.017387721466831478
+    ],
+    "wtl_r100": [
+     14,
+     790,
+     5
+    ],
+    "delta_mrr": -0.0016687268232385667,
+    "ci95_mrr": [
+     -0.010263994349284832,
+     0.006787725390939235
+    ],
+    "wtl_mrr": [
+     76,
+     671,
+     62
+    ],
+    "stage": {
+     "queries": 809,
+     "base_relevant": 856,
+     "candidate_relevant": 865,
+     "new_relevant": 14,
+     "lost_relevant": 5,
+     "union_relevant": 870,
+     "queries_with_new": 14,
+     "queries_with_loss": 5,
+     "queries_with_net_gain": 14,
+     "queries_with_net_loss": 5
+    }
+   },
+   "rrf_porter_char4_vcgrams": {
+    "ndcg": 0.7038004678376405,
+    "r100": 0.9408735063864854,
+    "mrr": 0.67104744246277,
+    "delta_ndcg": 0.006184765238643683,
+    "ci95_ndcg": [
+     -0.0024777664690122884,
+     0.01499214096193821
+    ],
+    "wtl_ndcg": [
+     98,
+     638,
+     73
+    ],
+    "delta_r100": 0.008281829419035847,
+    "ci95_r100": [
+     -0.0016069221260815822,
+     0.018788627935723116
+    ],
+    "wtl_r100": [
+     16,
+     787,
+     6
+    ],
+    "delta_mrr": 0.0023780093001353818,
+    "ci95_mrr": [
+     -0.007217415190221123,
+     0.011789981752898936
+    ],
+    "wtl_mrr": [
+     86,
+     653,
+     70
+    ],
+    "stage": {
+     "queries": 809,
+     "base_relevant": 856,
+     "candidate_relevant": 866,
+     "new_relevant": 16,
+     "lost_relevant": 6,
+     "union_relevant": 872,
+     "queries_with_new": 16,
+     "queries_with_loss": 6,
+     "queries_with_net_gain": 16,
+     "queries_with_net_loss": 6
+    }
+   }
+  },
+  "config": {
+   "channels": [
+    "bm25",
+    "porter",
+    "char4",
+    "vc",
+    "vcgrams"
+   ],
+   "rrf_k": 60,
+   "depth": 1000
+  }
+ }
+}

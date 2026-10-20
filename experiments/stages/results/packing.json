@@ -1,0 +1,77 @@
+{
+ "scifact:500": {
+  "dataset": "scifact",
+  "budget": 500,
+  "queries": 809,
+  "runs": {
+   "truncate": {
+    "recall": 0.607725587144623,
+    "retention": 0.6079316028018129,
+    "selected": 2.568603213844252,
+    "selected_relevant": 0.6501854140914709
+   },
+   "greedy": {
+    "recall": 0.504058508446642,
+    "retention": 0.5042645241038318,
+    "selected": 2.1953028430160693,
+    "selected_relevant": 0.5241038318912238
+   },
+   "residual": {
+    "recall": 0.5362999587968685,
+    "retention": 0.5365059744540586,
+    "selected": 2.5599505562422746,
+    "selected_relevant": 0.5611866501854141
+   }
+  }
+ },
+ "scifact:1000": {
+  "dataset": "scifact",
+  "budget": 1000,
+  "queries": 809,
+  "runs": {
+   "truncate": {
+    "recall": 0.7205191594561187,
+    "retention": 0.7207251751133087,
+    "selected": 4.739184177997528,
+    "selected_relevant": 0.7861557478368356
+   },
+   "greedy": {
+    "recall": 0.5477338277709106,
+    "retention": 0.5479398434281005,
+    "selected": 2.9171817058096416,
+    "selected_relevant": 0.5686032138442522
+   },
+   "residual": {
+    "recall": 0.615203955500618,
+    "retention": 0.615409971157808,
+    "selected": 5.016069221260816,
+    "selected_relevant": 0.6551297898640297
+   }
+  }
+ },
+ "scifact:2000": {
+  "dataset": "scifact",
+  "budget": 2000,
+  "queries": 809,
+  "runs": {
+   "truncate": {
+    "recall": 0.8018335393489905,
+    "retention": 0.8020395550061805,
+    "selected": 9.022249690976514,
+    "selected_relevant": 0.8875154511742892
+   },
+   "greedy": {
+    "recall": 0.5477338277709106,
+    "retention": 0.5479398434281005,
+    "selected": 3.0111248454882573,
+    "selected_relevant": 0.5686032138442522
+   },
+   "residual": {
+    "recall": 0.6995673671199012,
+    "retention": 0.6997733827770911,
+    "selected": 9.752781211372064,
+    "selected_relevant": 0.7626699629171817
+   }
+  }
+ }
+}

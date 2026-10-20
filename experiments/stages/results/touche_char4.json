@@ -1,0 +1,117 @@
+{
+ "touche": {
+  "dataset": "touche",
+  "documents": 382545,
+  "queries": 49,
+  "baseline": "porter",
+  "runs": {
+   "porter": {
+    "ndcg": 0.3262447470772381,
+    "r100": 0.5647341005965234,
+    "mrr": 0.577891156462585
+   },
+   "char4": {
+    "ndcg": 0.37031356858972375,
+    "r100": 0.5586128712976913,
+    "mrr": 0.6312925170068027,
+    "delta_ndcg": 0.044068821512485604,
+    "ci95_ndcg": [
+     0.016658114818420427,
+     0.07303572213402675
+    ],
+    "wtl_ndcg": [
+     33,
+     3,
+     13
+    ],
+    "delta_r100": -0.006121229298832102,
+    "ci95_r100": [
+     -0.032301699716240695,
+     0.018566789762060124
+    ],
+    "wtl_r100": [
+     17,
+     17,
+     15
+    ],
+    "delta_mrr": 0.05340136054421769,
+    "ci95_mrr": [
+     -0.0108843537414966,
+     0.11870748299319728
+    ],
+    "wtl_mrr": [
+     15,
+     27,
+     7
+    ],
+    "stage": {
+     "queries": 49,
+     "base_relevant": 466,
+     "candidate_relevant": 470,
+     "new_relevant": 40,
+     "lost_relevant": 36,
+     "union_relevant": 506,
+     "queries_with_new": 23,
+     "queries_with_loss": 25,
+     "queries_with_net_gain": 17,
+     "queries_with_net_loss": 15
+    }
+   },
+   "rrf_porter_char4": {
+    "ndcg": 0.35538655503266614,
+    "r100": 0.5789429208845313,
+    "mrr": 0.6113945578231292,
+    "delta_ndcg": 0.029141807955428034,
+    "ci95_ndcg": [
+     0.01259970731865655,
+     0.04588865853790758
+    ],
+    "wtl_ndcg": [
+     30,
+     5,
+     14
+    ],
+    "delta_r100": 0.014208820288007858,
+    "ci95_r100": [
+     0.0007722481860412893,
+     0.028203563645154073
+    ],
+    "wtl_r100": [
+     13,
+     30,
+     6
+    ],
+    "delta_mrr": 0.033503401360544215,
+    "ci95_mrr": [
+     -0.006802721088435374,
+     0.0836734693877551
+    ],
+    "wtl_mrr": [
+     11,
+     32,
+     6
+    ],
+    "stage": {
+     "queries": 49,
+     "base_relevant": 466,
+     "candidate_relevant": 477,
+     "new_relevant": 22,
+     "lost_relevant": 11,
+     "union_relevant": 488,
+     "queries_with_new": 17,
+     "queries_with_loss": 10,
+     "queries_with_net_gain": 13,
+     "queries_with_net_loss": 6
+    }
+   }
+  },
+  "config": {
+   "channels": [
+    "porter",
+    "char4"
+   ],
+   "rrf_k": 60,
+   "depth": 1000
+  }
+ }
+}

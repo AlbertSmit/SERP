@@ -1,0 +1,27 @@
+{
+ "touche:1000": {
+  "dataset": "touche",
+  "budget": 1000,
+  "queries": 49,
+  "runs": {
+   "truncate": {
+    "recall": 0.11769601856962238,
+    "retention": 0.17536909702275846,
+    "selected": 8.020408163265307,
+    "selected_relevant": 1.7142857142857142
+   },
+   "greedy": {
+    "recall": 0.012786084836529729,
+    "retention": 0.023462252033680603,
+    "selected": 1.7755102040816326,
+    "selected_relevant": 0.20408163265306123
+   },
+   "residual": {
+    "recall": 0.12119712415797017,
+    "retention": 0.19763373714454144,
+    "selected": 13.10204081632653,
+    "selected_relevant": 1.836734693877551
+   }
+  }
+ }
+}

@@ -1,0 +1,1736 @@
+{
+ "meta": {
+  "experiment": "ARGON A3 \u2014 mode boundary and safety matrix",
+  "protocol": "one frozen configuration per mode; no tuning on test queries",
+  "seeds": 20,
+  "bridges": 20,
+  "max_df_frac": 0.05,
+  "rrf_k": 60,
+  "resamples": 1000,
+  "ci_seed": 1729,
+  "margin": -0.005,
+  "router": "lab/router.py, frozen rules (EBR_ROUTER.md)",
+  "modes": [
+   "default",
+   "deep",
+   "routed",
+   "graph"
+  ],
+  "workloads": {
+   "hotpot/test": {
+    "kind": "multi_hop",
+    "corpus": "hotpot",
+    "split": "test",
+    "declared_profile": "multi_hop_qa",
+    "role": "held-out multi-hop evidence"
+   },
+   "scifact/test": {
+    "kind": "single_hop",
+    "corpus": "scifact",
+    "split": "test",
+    "declared_profile": null,
+    "role": "held-out single-hop evidence"
+   },
+   "touche/test": {
+    "kind": "single_hop",
+    "corpus": "touche",
+    "split": "test",
+    "declared_profile": null,
+    "role": "held-out argument retrieval"
+   },
+   "nfcorpus/dev": {
+    "kind": "single_hop",
+    "corpus": "nfcorpus",
+    "split": "dev",
+    "declared_profile": null,
+    "role": "diagnostic only (+0.017 R@100 trade)"
+   },
+   "serp_code/250": {
+    "kind": "code",
+    "corpus": "code",
+    "split": "synthetic",
+    "declared_profile": "code_graph",
+    "role": "synthetic capability test (graph-closure qrels)"
+   }
+  },
+  "identifier_gate": "digit/underscore identifiers force the lexical default; bare numbers are not identifiers"
+ },
+ "workloads": {
+  "scifact/test": {
+   "workload": "scifact/test",
+   "kind": "single_hop",
+   "role": "held-out single-hop evidence",
+   "diagnostic_only": false,
+   "queries": 300,
+   "router_fire_rate": 0.07,
+   "identifier_gate_rate": 0.25666666666666665,
+   "automatic_modes": [
+    "default",
+    "routed"
+   ],
+   "summary": {
+    "default": {
+     "ndcg": 0.6837761829479072,
+     "r100": 0.9279999999999999,
+     "mrr": 0.6477513227513227
+    },
+    "deep": {
+     "ndcg": 0.6398123345227766,
+     "r100": 0.9236666666666667,
+     "mrr": 0.6090224867724868
+    },
+    "routed": {
+     "ndcg": 0.6788384259452638,
+     "r100": 0.9279999999999999,
+     "mrr": 0.6430291005291005
+    },
+    "deep_gated": {
+     "ndcg": 0.6397143369731075,
+     "r100": 0.9303333333333335,
+     "mrr": 0.6084391534391534
+    },
+    "routed_gated": {
+     "ndcg": 0.6788384259452638,
+     "r100": 0.9279999999999999,
+     "mrr": 0.6430291005291005
+    }
+   },
+   "paired_vs_porter": {
+    "deep": {
+     "ndcg": {
+      "delta": -0.04396384842513054,
+      "ci95": [
+       -0.06517927743161998,
+       -0.02537668824046388
+      ],
+      "wtl": [
+       27,
+       207,
+       66
+      ],
+      "margin": -0.005,
+      "verdict": "fail",
+      "significant_negative": true,
+      "significant_positive": false
+     },
+     "r100": {
+      "delta": -0.004333333333333333,
+      "ci95": [
+       -0.023333333333333334,
+       0.014
+      ],
+      "wtl": [
+       4,
+       291,
+       5
+      ]
+     },
+     "mrr": {
+      "delta": -0.03872883597883598,
+      "ci95": [
+       -0.06296590608465608,
+       -0.016182010582010582
+      ],
+      "wtl": [
+       26,
+       212,
+       62
+      ]
+     }
+    },
+    "routed": {
+     "ndcg": {
+      "delta": -0.004937757002643461,
+      "ci95": [
+       -0.010964711668293043,
+       -0.0007365199631717563
+      ],
+      "wtl": [
+       1,
+       294,
+       5
+      ],
+      "margin": -0.005,
+      "verdict": "inconclusive",
+      "significant_negative": true,
+      "significant_positive": false
+     },
+     "r100": {
+      "delta": 0.0,
+      "ci95": [
+       0.0,
+       0.0
+      ],
+      "wtl": [
+       0,
+       300,
+       0
+      ]
+     },
+     "mrr": {
+      "delta": -0.004722222222222222,
+      "ci95": [
+       -0.010006944444444445,
+       -0.0011041666666666732
+      ],
+      "wtl": [
+       0,
+       295,
+       5
+      ]
+     }
+    },
+    "deep_gated": {
+     "ndcg": {
+      "delta": -0.04406184597479965,
+      "ci95": [
+       -0.06493589210929304,
+       -0.026077495052336294
+      ],
+      "wtl": [
+       18,
+       225,
+       57
+      ],
+      "margin": -0.005,
+      "verdict": "fail",
+      "significant_negative": true,
+      "significant_positive": false
+     },
+     "r100": {
+      "delta": 0.002333333333333333,
+      "ci95": [
+       -0.013333333333333334,
+       0.018000000000000002
+      ],
+      "wtl": [
+       4,
+       293,
+       3
+      ]
+     },
+     "mrr": {
+      "delta": -0.039312169312169305,
+      "ci95": [
+       -0.06206494708994709,
+       -0.018150462962962962
+      ],
+      "wtl": [
+       18,
+       227,
+       55
+      ]
+     }
+    },
+    "routed_gated": {
+     "ndcg": {
+      "delta": -0.004937757002643461,
+      "ci95": [
+       -0.010964711668293043,
+       -0.0007365199631717563
+      ],
+      "wtl": [
+       1,
+       294,
+       5
+      ],
+      "margin": -0.005,
+      "verdict": "inconclusive",
+      "significant_negative": true,
+      "significant_positive": false
+     },
+     "r100": {
+      "delta": 0.0,
+      "ci95": [
+       0.0,
+       0.0
+      ],
+      "wtl": [
+       0,
+       300,
+       0
+      ]
+     },
+     "mrr": {
+      "delta": -0.004722222222222222,
+      "ci95": [
+       -0.010006944444444445,
+       -0.0011041666666666732
+      ],
+      "wtl": [
+       0,
+       295,
+       5
+      ]
+     }
+    }
+   },
+   "latency_ms": {
+    "default": {
+     "p50": 0.1220419944729656,
+     "p95": 0.19979232747573408,
+     "mean": 0.12927819625474513,
+     "queries": 300
+    },
+    "deep": {
+     "p50": 1.9907505193259567,
+     "p95": 2.2915607027243823,
+     "mean": 1.934589861969774,
+     "queries": 300
+    },
+    "routed": {
+     "p50": 0.14652102254331112,
+     "p95": 2.089349742163904,
+     "mean": 0.28990317213659483,
+     "queries": 300
+    }
+   },
+   "cost": {
+    "docs": 5183,
+    "entities": 33650,
+    "entity_postings": 64855,
+    "build_seconds": 0.5872537500108592,
+    "peak_rss_mb": 343.328125,
+    "note": "build_seconds covers index load + entity-postings build; peak RSS is process-wide."
+   },
+   "qids_sha256": "26cc483d5ed08c9559e5f99948281accbb9aac17b8c2ea6e1e857286d9ebd684"
+  },
+  "touche/test": {
+   "workload": "touche/test",
+   "kind": "single_hop",
+   "role": "held-out argument retrieval",
+   "diagnostic_only": false,
+   "queries": 49,
+   "router_fire_rate": 0.0,
+   "identifier_gate_rate": 0.0,
+   "automatic_modes": [
+    "default",
+    "routed"
+   ],
+   "summary": {
+    "default": {
+     "ndcg": 0.3262447470772381,
+     "r100": 0.5647341005965234,
+     "mrr": 0.577891156462585
+    },
+    "deep": {
+     "ndcg": 0.3479070079001086,
+     "r100": 0.5279496568537572,
+     "mrr": 0.641156462585034
+    },
+    "routed": {
+     "ndcg": 0.3262447470772381,
+     "r100": 0.5647341005965234,
+     "mrr": 0.577891156462585
+    },
+    "deep_gated": {
+     "ndcg": 0.3479070079001086,
+     "r100": 0.5279496568537572,
+     "mrr": 0.641156462585034
+    },
+    "routed_gated": {
+     "ndcg": 0.3262447470772381,
+     "r100": 0.5647341005965234,
+     "mrr": 0.577891156462585
+    }
+   },
+   "paired_vs_porter": {
+    "deep": {
+     "ndcg": {
+      "delta": 0.021662260822870486,
+      "ci95": [
+       -0.012468916436496589,
+       0.054384272868253675
+      ],
+      "wtl": [
+       24,
+       4,
+       21
+      ],
+      "margin": -0.005,
+      "verdict": "inconclusive",
+      "significant_negative": false,
+      "significant_positive": false
+     },
+     "r100": {
+      "delta": -0.036784443742766286,
+      "ci95": [
+       -0.06155406911317335,
+       -0.010449531688535333
+      ],
+      "wtl": [
+       11,
+       18,
+       20
+      ]
+     },
+     "mrr": {
+      "delta": 0.06326530612244897,
+      "ci95": [
+       -0.021096938775510214,
+       0.1510459183673469
+      ],
+      "wtl": [
+       14,
+       27,
+       8
+      ]
+     }
+    },
+    "routed": {
+     "ndcg": {
+      "delta": 0.0,
+      "ci95": [
+       0.0,
+       0.0
+      ],
+      "wtl": [
+       0,
+       49,
+       0
+      ],
+      "margin": -0.005,
+      "verdict": "pass",
+      "significant_negative": false,
+      "significant_positive": false
+     },
+     "r100": {
+      "delta": 0.0,
+      "ci95": [
+       0.0,
+       0.0
+      ],
+      "wtl": [
+       0,
+       49,
+       0
+      ]
+     },
+     "mrr": {
+      "delta": 0.0,
+      "ci95": [
+       0.0,
+       0.0
+      ],
+      "wtl": [
+       0,
+       49,
+       0
+      ]
+     }
+    },
+    "deep_gated": {
+     "ndcg": {
+      "delta": 0.021662260822870486,
+      "ci95": [
+       -0.012468916436496589,
+       0.054384272868253675
+      ],
+      "wtl": [
+       24,
+       4,
+       21
+      ],
+      "margin": -0.005,
+      "verdict": "inconclusive",
+      "significant_negative": false,
+      "significant_positive": false
+     },
+     "r100": {
+      "delta": -0.036784443742766286,
+      "ci95": [
+       -0.06155406911317335,
+       -0.010449531688535333
+      ],
+      "wtl": [
+       11,
+       18,
+       20
+      ]
+     },
+     "mrr": {
+      "delta": 0.06326530612244897,
+      "ci95": [
+       -0.021096938775510214,
+       0.1510459183673469
+      ],
+      "wtl": [
+       14,
+       27,
+       8
+      ]
+     }
+    },
+    "routed_gated": {
+     "ndcg": {
+      "delta": 0.0,
+      "ci95": [
+       0.0,
+       0.0
+      ],
+      "wtl": [
+       0,
+       49,
+       0
+      ],
+      "margin": -0.005,
+      "verdict": "pass",
+      "significant_negative": false,
+      "significant_positive": false
+     },
+     "r100": {
+      "delta": 0.0,
+      "ci95": [
+       0.0,
+       0.0
+      ],
+      "wtl": [
+       0,
+       49,
+       0
+      ]
+     },
+     "mrr": {
+      "delta": 0.0,
+      "ci95": [
+       0.0,
+       0.0
+      ],
+      "wtl": [
+       0,
+       49,
+       0
+      ]
+     }
+    }
+   },
+   "latency_ms": {
+    "default": {
+     "p50": 1.0223340359516442,
+     "p95": 3.0957498122006593,
+     "mean": 1.328246631155893,
+     "queries": 49
+    },
+    "deep": {
+     "p50": 140.23666706634685,
+     "p95": 161.9071837863885,
+     "mean": 134.24842348987502,
+     "queries": 49
+    },
+    "routed": {
+     "p50": 1.064875046722591,
+     "p95": 3.134508593939238,
+     "mean": 1.3694430758454361,
+     "queries": 49
+    }
+   },
+   "cost": {
+    "docs": 382545,
+    "entities": 1007325,
+    "entity_postings": 5535415,
+    "build_seconds": 121.05571550002787,
+    "peak_rss_mb": 11677.03125,
+    "note": "build_seconds covers index load + entity-postings build; peak RSS is process-wide."
+   },
+   "qids_sha256": "ca0d486bfb8e2d95c123eec8e5a705488856621c3a1384ede7a7432515dace34"
+  },
+  "nfcorpus/dev": {
+   "workload": "nfcorpus/dev",
+   "kind": "single_hop",
+   "role": "diagnostic only (+0.017 R@100 trade)",
+   "diagnostic_only": true,
+   "queries": 324,
+   "router_fire_rate": 0.0,
+   "identifier_gate_rate": 0.0030864197530864196,
+   "automatic_modes": [
+    "default",
+    "routed"
+   ],
+   "summary": {
+    "default": {
+     "ndcg": 0.29182602421003445,
+     "r100": 0.22620611001419647,
+     "mrr": 0.49312414266117965
+    },
+    "deep": {
+     "ndcg": 0.2823468010523954,
+     "r100": 0.2426948038899758,
+     "mrr": 0.49065868116794037
+    },
+    "routed": {
+     "ndcg": 0.29182602421003445,
+     "r100": 0.22620611001419647,
+     "mrr": 0.49312414266117965
+    },
+    "deep_gated": {
+     "ndcg": 0.2823468010523954,
+     "r100": 0.2425713470998523,
+     "mrr": 0.49065868116794037
+    },
+    "routed_gated": {
+     "ndcg": 0.29182602421003445,
+     "r100": 0.22620611001419647,
+     "mrr": 0.49312414266117965
+    }
+   },
+   "paired_vs_porter": {
+    "deep": {
+     "ndcg": {
+      "delta": -0.009479223157639056,
+      "ci95": [
+       -0.02146586408457071,
+       0.002802595268506544
+      ],
+      "wtl": [
+       74,
+       150,
+       100
+      ],
+      "margin": -0.005,
+      "verdict": "inconclusive",
+      "significant_negative": false,
+      "significant_positive": false
+     },
+     "r100": {
+      "delta": 0.01648869387577929,
+      "ci95": [
+       0.004150219236838726,
+       0.02901552813023685
+      ],
+      "wtl": [
+       85,
+       171,
+       68
+      ]
+     },
+     "mrr": {
+      "delta": -0.002465461493239271,
+      "ci95": [
+       -0.015245107044875564,
+       0.01075868361747991
+      ],
+      "wtl": [
+       17,
+       270,
+       37
+      ]
+     }
+    },
+    "routed": {
+     "ndcg": {
+      "delta": 0.0,
+      "ci95": [
+       0.0,
+       0.0
+      ],
+      "wtl": [
+       0,
+       324,
+       0
+      ],
+      "margin": -0.005,
+      "verdict": "pass",
+      "significant_negative": false,
+      "significant_positive": false
+     },
+     "r100": {
+      "delta": 0.0,
+      "ci95": [
+       0.0,
+       0.0
+      ],
+      "wtl": [
+       0,
+       324,
+       0
+      ]
+     },
+     "mrr": {
+      "delta": 0.0,
+      "ci95": [
+       0.0,
+       0.0
+      ],
+      "wtl": [
+       0,
+       324,
+       0
+      ]
+     }
+    },
+    "deep_gated": {
+     "ndcg": {
+      "delta": -0.009479223157639056,
+      "ci95": [
+       -0.02146586408457071,
+       0.002802595268506544
+      ],
+      "wtl": [
+       74,
+       150,
+       100
+      ],
+      "margin": -0.005,
+      "verdict": "inconclusive",
+      "significant_negative": false,
+      "significant_positive": false
+     },
+     "r100": {
+      "delta": 0.016365237085655834,
+      "ci95": [
+       0.004128795793404368,
+       0.02895538837476295
+      ],
+      "wtl": [
+       84,
+       172,
+       68
+      ]
+     },
+     "mrr": {
+      "delta": -0.002465461493239271,
+      "ci95": [
+       -0.015245107044875564,
+       0.01075868361747991
+      ],
+      "wtl": [
+       17,
+       270,
+       37
+      ]
+     }
+    },
+    "routed_gated": {
+     "ndcg": {
+      "delta": 0.0,
+      "ci95": [
+       0.0,
+       0.0
+      ],
+      "wtl": [
+       0,
+       324,
+       0
+      ],
+      "margin": -0.005,
+      "verdict": "pass",
+      "significant_negative": false,
+      "significant_positive": false
+     },
+     "r100": {
+      "delta": 0.0,
+      "ci95": [
+       0.0,
+       0.0
+      ],
+      "wtl": [
+       0,
+       324,
+       0
+      ]
+     },
+     "mrr": {
+      "delta": 0.0,
+      "ci95": [
+       0.0,
+       0.0
+      ],
+      "wtl": [
+       0,
+       324,
+       0
+      ]
+     }
+    }
+   },
+   "latency_ms": {
+    "default": {
+     "p50": 0.08758346666581929,
+     "p95": 0.1520526420790702,
+     "mean": 0.09513334504092963,
+     "queries": 324
+    },
+    "deep": {
+     "p50": 0.5594580143224448,
+     "p95": 1.7586616333574032,
+     "mean": 0.7783669852982218,
+     "queries": 324
+    },
+    "routed": {
+     "p50": 0.09706252603791654,
+     "p95": 0.1718248793622478,
+     "mean": 0.10520199286452506,
+     "queries": 324
+    }
+   },
+   "cost": {
+    "docs": 3633,
+    "entities": 18755,
+    "entity_postings": 46527,
+    "build_seconds": 0.6788597910199314,
+    "peak_rss_mb": 11677.03125,
+    "note": "build_seconds covers index load + entity-postings build; peak RSS is process-wide."
+   },
+   "qids_sha256": "102783ad8dbcc2db8c89bcf418eb24bf26a0f15feddcc65d05908213fd909369"
+  },
+  "hotpot/test": {
+   "workload": "hotpot/test",
+   "kind": "multi_hop",
+   "role": "held-out multi-hop evidence",
+   "declared_profile": "multi_hop_qa",
+   "queries": 6005,
+   "router_fire_rate": 0.6524562864279767,
+   "identifier_gate_rate": 0.030974188176519566,
+   "automatic_modes": [
+    "default",
+    "routed",
+    "deep"
+   ],
+   "summary": {
+    "default": {
+     "ndcg@10": 0.733133620964633,
+     "both@10": 0.611323896752706,
+     "both@5": 0.46328059950041633,
+     "recall@10": 0.796669442131557
+    },
+    "deep": {
+     "ndcg@10": 0.7556171340712023,
+     "both@10": 0.7165695253955038,
+     "both@5": 0.5305578684429642,
+     "recall@10": 0.8492922564529559
+    },
+    "routed": {
+     "ndcg@10": 0.7478856706844729,
+     "both@10": 0.6815986677768526,
+     "both@5": 0.5057452123230641,
+     "recall@10": 0.8320566194837635
+    },
+    "deep_gated": {
+     "ndcg@10": 0.7555406616357162,
+     "both@10": 0.7147377185678602,
+     "both@5": 0.5297252289758535,
+     "recall@10": 0.8486261448792672
+    },
+    "routed_gated": {
+     "ndcg@10": 0.7478185094601336,
+     "both@10": 0.6802664446294754,
+     "both@5": 0.5055786844296419,
+     "recall@10": 0.831557035803497
+    }
+   },
+   "paired_vs_porter": {
+    "deep": {
+     "ndcg@10": {
+      "delta": 0.022483513106569535,
+      "ci95": [
+       0.01842629136068013,
+       0.026563054953788513
+      ],
+      "wtl": [
+       2146,
+       2415,
+       1444
+      ],
+      "margin": -0.005,
+      "verdict": "pass",
+      "significant_negative": false,
+      "significant_positive": true
+     },
+     "both@10": {
+      "delta": 0.10524562864279767,
+      "ci95": [
+       0.09390924229808494,
+       0.11524562864279767
+      ],
+      "wtl": [
+       901,
+       4835,
+       269
+      ]
+     },
+     "both@5": {
+      "delta": 0.06727726894254787,
+      "ci95": [
+       0.05628642797668609,
+       0.07926727726894255
+      ],
+      "wtl": [
+       777,
+       4855,
+       373
+      ]
+     },
+     "recall@10": {
+      "delta": 0.052622814321398835,
+      "ci95": [
+       0.04679433805162365,
+       0.058284762697751874
+      ],
+      "wtl": [
+       953,
+       4735,
+       317
+      ]
+     }
+    },
+    "routed": {
+     "ndcg@10": {
+      "delta": 0.014752049719839969,
+      "ci95": [
+       0.0113096064049582,
+       0.018080980939587165
+      ],
+      "wtl": [
+       1392,
+       3652,
+       961
+      ],
+      "margin": -0.005,
+      "verdict": "pass",
+      "significant_negative": false,
+      "significant_positive": true
+     },
+     "both@10": {
+      "delta": 0.07027477102414655,
+      "ci95": [
+       0.06111157368859284,
+       0.0792714404662781
+      ],
+      "wtl": [
+       616,
+       5195,
+       194
+      ]
+     },
+     "both@5": {
+      "delta": 0.042464612822647796,
+      "ci95": [
+       0.03330557868442964,
+       0.05129059117402165
+      ],
+      "wtl": [
+       516,
+       5228,
+       261
+      ]
+     },
+     "recall@10": {
+      "delta": 0.03538717735220649,
+      "ci95": [
+       0.030888842631140716,
+       0.04013322231473772
+      ],
+      "wtl": [
+       645,
+       5144,
+       216
+      ]
+     }
+    },
+    "deep_gated": {
+     "ndcg@10": {
+      "delta": 0.022407040671083248,
+      "ci95": [
+       0.01843317714086995,
+       0.026509237215602607
+      ],
+      "wtl": [
+       2088,
+       2529,
+       1388
+      ],
+      "margin": -0.005,
+      "verdict": "pass",
+      "significant_negative": false,
+      "significant_positive": true
+     },
+     "both@10": {
+      "delta": 0.10341382181515404,
+      "ci95": [
+       0.09242298084929226,
+       0.11390507910074937
+      ],
+      "wtl": [
+       874,
+       4878,
+       253
+      ]
+     },
+     "both@5": {
+      "delta": 0.06644462947543714,
+      "ci95": [
+       0.055778517901748544,
+       0.07760199833472106
+      ],
+      "wtl": [
+       760,
+       4884,
+       361
+      ]
+     },
+     "recall@10": {
+      "delta": 0.05195670274771024,
+      "ci95": [
+       0.04604496253122398,
+       0.057620732722731056
+      ],
+      "wtl": [
+       925,
+       4783,
+       297
+      ]
+     }
+    },
+    "routed_gated": {
+     "ndcg@10": {
+      "delta": 0.01468488849550069,
+      "ci95": [
+       0.011440710544892102,
+       0.017972130979496317
+      ],
+      "wtl": [
+       1354,
+       3724,
+       927
+      ],
+      "margin": -0.005,
+      "verdict": "pass",
+      "significant_negative": false,
+      "significant_positive": true
+     },
+     "both@10": {
+      "delta": 0.06894254787676936,
+      "ci95": [
+       0.05977935054121566,
+       0.07793505412156536
+      ],
+      "wtl": [
+       595,
+       5229,
+       181
+      ]
+     },
+     "both@5": {
+      "delta": 0.04229808492922565,
+      "ci95": [
+       0.03330557868442964,
+       0.0511240632805995
+      ],
+      "wtl": [
+       507,
+       5245,
+       253
+      ]
+     },
+     "recall@10": {
+      "delta": 0.03488759367194005,
+      "ci95": [
+       0.030391340549542047,
+       0.039554537885095754
+      ],
+      "wtl": [
+       623,
+       5182,
+       200
+      ]
+     }
+    }
+   },
+   "latency_ms": {
+    "default": {
+     "p50": 0.43349998304620385,
+     "p95": 0.6504418211989106,
+     "mean": 0.45378386360173617,
+     "queries": 6005
+    },
+    "deep": {
+     "p50": 13.747291988693178,
+     "p95": 17.555541160982102,
+     "mean": 14.020868072919797,
+     "queries": 6005
+    },
+    "routed": {
+     "p50": 13.249625044409186,
+     "p95": 17.144534189719707,
+     "mean": 9.56982272779096,
+     "queries": 6005
+    }
+   },
+   "cost": {
+    "docs": 66581,
+    "entities": 427177,
+    "entity_postings": 811014,
+    "build_seconds": 8.850644958030898,
+    "peak_rss_mb": 11677.03125,
+    "note": "build_seconds covers parquet parse + index + entity postings; peak RSS is process-wide."
+   },
+   "qids_sha256": "9f12c1295eb805be198a021fff43fa440fca493915f24f6b1a94d7a66e2f72a0"
+  },
+  "serp_code/250": {
+   "workload": "serp_code/250",
+   "kind": "code",
+   "role": "synthetic capability test (graph-closure qrels)",
+   "claim_boundary": "synthetic capability test; qrels are graph-closure from the same graph the channel traverses, not human relevance",
+   "declared_profile": "code_graph",
+   "queries": 250,
+   "identifier_gate_rate": 0.036,
+   "automatic_modes": [
+    "default",
+    "graph"
+   ],
+   "summary": {
+    "default": {
+     "both@10": 0.288,
+     "both@5": 0.152,
+     "ndcg@10": 0.41911755118510163,
+     "recall@10": 0.5606666666666666,
+     "mrr@10": 0.4690650793650794
+    },
+    "graph": {
+     "both@10": 0.556,
+     "both@5": 0.336,
+     "ndcg@10": 0.5551895567964253,
+     "recall@10": 0.7186666666666667,
+     "mrr@10": 0.5949349206349207
+    },
+    "graph_gated": {
+     "both@10": 0.54,
+     "both@5": 0.332,
+     "ndcg@10": 0.5466333284473652,
+     "recall@10": 0.7093333333333334,
+     "mrr@10": 0.584973015873016
+    }
+   },
+   "paired_vs_porter": {
+    "graph": {
+     "both@10": {
+      "delta": 0.268,
+      "ci95": [
+       0.208,
+       0.324
+      ],
+      "wtl": [
+       72,
+       173,
+       5
+      ]
+     },
+     "both@5": {
+      "delta": 0.184,
+      "ci95": [
+       0.13590000000000002,
+       0.236
+      ],
+      "wtl": [
+       50,
+       196,
+       4
+      ]
+     },
+     "ndcg@10": {
+      "delta": 0.1360720056113237,
+      "ci95": [
+       0.11289829083838812,
+       0.1574898024355963
+      ],
+      "wtl": [
+       159,
+       58,
+       33
+      ],
+      "margin": -0.005,
+      "verdict": "pass",
+      "significant_negative": false,
+      "significant_positive": true
+     },
+     "recall@10": {
+      "delta": 0.158,
+      "ci95": [
+       0.12466666666666666,
+       0.18934166666666666
+      ],
+      "wtl": [
+       88,
+       153,
+       9
+      ]
+     },
+     "mrr@10": {
+      "delta": 0.1258698412698413,
+      "ci95": [
+       0.09290511904761906,
+       0.15886257936507936
+      ],
+      "wtl": [
+       101,
+       130,
+       19
+      ]
+     }
+    },
+    "graph_gated": {
+     "both@10": {
+      "delta": 0.252,
+      "ci95": [
+       0.192,
+       0.308
+      ],
+      "wtl": [
+       68,
+       177,
+       5
+      ]
+     },
+     "both@5": {
+      "delta": 0.18,
+      "ci95": [
+       0.13190000000000002,
+       0.232
+      ],
+      "wtl": [
+       49,
+       197,
+       4
+      ]
+     },
+     "ndcg@10": {
+      "delta": 0.1275157772622635,
+      "ci95": [
+       0.10507622940734088,
+       0.15028164063684374
+      ],
+      "wtl": [
+       152,
+       65,
+       33
+      ],
+      "margin": -0.005,
+      "verdict": "pass",
+      "significant_negative": false,
+      "significant_positive": true
+     },
+     "recall@10": {
+      "delta": 0.1486666666666667,
+      "ci95": [
+       0.115975,
+       0.17935
+      ],
+      "wtl": [
+       83,
+       158,
+       9
+      ]
+     },
+     "mrr@10": {
+      "delta": 0.11590793650793652,
+      "ci95": [
+       0.08338404761904762,
+       0.14820325396825398
+      ],
+      "wtl": [
+       94,
+       137,
+       19
+      ]
+     }
+    }
+   },
+   "by_type": {
+    "same_file": {
+     "queries": 50,
+     "both@10": {
+      "default": 0.58,
+      "graph": 0.8,
+      "graph_gated": 0.78
+     }
+    },
+    "import_call": {
+     "queries": 50,
+     "both@10": {
+      "default": 0.24,
+      "graph": 0.3,
+      "graph_gated": 0.3
+     }
+    },
+    "two_hop": {
+     "queries": 50,
+     "both@10": {
+      "default": 0.12,
+      "graph": 0.34,
+      "graph_gated": 0.34
+     }
+    },
+    "export_import": {
+     "queries": 50,
+     "both@10": {
+      "default": 0.0,
+      "graph": 0.82,
+      "graph_gated": 0.76
+     }
+    },
+    "calls_two": {
+     "queries": 50,
+     "both@10": {
+      "default": 0.5,
+      "graph": 0.52,
+      "graph_gated": 0.52
+     }
+    }
+   },
+   "diagnostic_not_a_mode": {
+    "label": "rrf_porter_entity_graph",
+    "summary": {
+     "both@10": 0.608,
+     "both@5": 0.364,
+     "ndcg@10": 0.5812049043833347,
+     "recall@10": 0.745,
+     "mrr@10": 0.6190634920634921
+    }
+   },
+   "latency_ms": {
+    "default": {
+     "p50": 0.07114550680853426,
+     "p95": 0.08438750228378922,
+     "mean": 0.07294170768000185,
+     "queries": 250
+    },
+    "graph": {
+     "p50": 1.0440830083098263,
+     "p95": 1.2258711940376088,
+     "mean": 1.0191625759471208,
+     "queries": 250
+    }
+   },
+   "cost": {
+    "docs_chunks": 289,
+    "graph": {
+     "files": 14,
+     "chunks": 289,
+     "symbols": 132,
+     "call_edges": 397,
+     "import_edges": 60,
+     "import_edges_resolved": 19,
+     "export_edges": 11,
+     "contains_edges": 289,
+     "defined_in_edges": 289,
+     "cross_file_call_edges": 236,
+     "multi_definition_symbols": 5,
+     "avg_call_out_degree": 1.3737024221453287,
+     "avg_out_degree_with_imports": 5.536332179930795,
+     "chunks_with_calls": 163,
+     "files_with_imports": 13
+    },
+    "build_seconds": 0.3878676659660414,
+    "peak_rss_mb": 11677.03125,
+    "note": "build_seconds covers repo parse + graph + index + query generation."
+   },
+   "qids_sha256": "1055465302bd6c7c8f6622a1d63e43276055b4bcd2f70bfaaa1d9494c4376710"
+  }
+ },
+ "exact_ids": {
+  "scifact_python_fixture": {
+   "suite": {
+    "positives": 60,
+    "negatives": 40
+   },
+   "systems": {
+    "default": {
+     "positives": 60,
+     "negatives": 40,
+     "exact_hit@1": 1.0,
+     "exact_hit@10": 1.0,
+     "exact_mrr": 1.0,
+     "near_miss_before_exact": 0.0,
+     "near_miss_top10": 0.0,
+     "negative_activation": 0.0,
+     "positive_expansion": 0.0,
+     "unknown_identifier_expansion": 0.0
+    },
+    "deep": {
+     "positives": 60,
+     "negatives": 40,
+     "exact_hit@1": 1.0,
+     "exact_hit@10": 1.0,
+     "exact_mrr": 1.0,
+     "near_miss_before_exact": 0.0,
+     "near_miss_top10": 0.06666666666666667,
+     "negative_activation": 0.0,
+     "positive_expansion": 1.0,
+     "unknown_identifier_expansion": 0.0
+    },
+    "deep_gated": {
+     "positives": 60,
+     "negatives": 40,
+     "exact_hit@1": 1.0,
+     "exact_hit@10": 1.0,
+     "exact_mrr": 1.0,
+     "near_miss_before_exact": 0.0,
+     "near_miss_top10": 0.0,
+     "negative_activation": 0.0,
+     "positive_expansion": 0.0,
+     "unknown_identifier_expansion": 0.0
+    }
+   },
+   "router_fires_on_identifiers": 0
+  },
+  "code_symbols": {
+   "suite": {
+    "positives": 41,
+    "negatives": 40
+   },
+   "systems": {
+    "default": {
+     "positives": 41,
+     "negatives": 40,
+     "exact_hit@1": 1.0,
+     "exact_hit@10": 1.0,
+     "exact_mrr": 1.0,
+     "near_miss_before_exact": 0.0,
+     "near_miss_top10": 0.0,
+     "negative_activation": 0.0,
+     "positive_expansion": 0.0,
+     "unknown_identifier_expansion": 0.0
+    },
+    "graph": {
+     "positives": 41,
+     "negatives": 40,
+     "exact_hit@1": 1.0,
+     "exact_hit@10": 1.0,
+     "exact_mrr": 1.0,
+     "near_miss_before_exact": 0.0,
+     "near_miss_top10": 0.14634146341463414,
+     "negative_activation": 0.0,
+     "positive_expansion": 1.0,
+     "unknown_identifier_expansion": 0.0
+    },
+    "graph_gated": {
+     "positives": 41,
+     "negatives": 40,
+     "exact_hit@1": 1.0,
+     "exact_hit@10": 1.0,
+     "exact_mrr": 1.0,
+     "near_miss_before_exact": 0.0,
+     "near_miss_top10": 0.14634146341463414,
+     "negative_activation": 0.0,
+     "positive_expansion": 1.0,
+     "unknown_identifier_expansion": 0.0
+    }
+   }
+  },
+  "js_engine": {
+   "available": true,
+   "source": "results/stage-benchmark.json (JS engine, read-only)",
+   "positives": 100,
+   "exact_hit@1": 1,
+   "exact_hit@10": 1,
+   "exact_found": 1,
+   "mean_exact_rank": 1,
+   "near_miss_before_exact": 0,
+   "near_miss_positives": 56,
+   "negative_activation": {
+    "single": 0,
+    "underscore": 0,
+    "mixed": 0,
+    "prose": 0
+   },
+   "note": "MRR is not emitted by the JS suite; mean exact rank is. Activation is the JS engine's own non-empty-result counter."
+  }
+ },
+ "gates": {
+  "default_reproduces_porter": {
+   "tolerance": 0.0001,
+   "sources": [
+    "results/ebr_beir.json",
+    "results/code_graph.json"
+   ],
+   "sets": {
+    "scifact/test": {
+     "ndcg": {
+      "observed": 0.6837761829479072,
+      "reference": 0.6837761829479072,
+      "abs_diff": 0.0
+     },
+     "r100": {
+      "observed": 0.9279999999999999,
+      "reference": 0.9279999999999999,
+      "abs_diff": 0.0
+     },
+     "mrr": {
+      "observed": 0.6477513227513227,
+      "reference": 0.6477513227513227,
+      "abs_diff": 0.0
+     }
+    },
+    "touche/test": {
+     "ndcg": {
+      "observed": 0.3262447470772381,
+      "reference": 0.3262447470772381,
+      "abs_diff": 0.0
+     },
+     "r100": {
+      "observed": 0.5647341005965234,
+      "reference": 0.5647341005965234,
+      "abs_diff": 0.0
+     },
+     "mrr": {
+      "observed": 0.577891156462585,
+      "reference": 0.577891156462585,
+      "abs_diff": 0.0
+     }
+    },
+    "nfcorpus/dev": {
+     "ndcg": {
+      "observed": 0.29182602421003445,
+      "reference": 0.29182602421003445,
+      "abs_diff": 0.0
+     },
+     "r100": {
+      "observed": 0.22620611001419647,
+      "reference": 0.22620611001419647,
+      "abs_diff": 0.0
+     },
+     "mrr": {
+      "observed": 0.49312414266117965,
+      "reference": 0.49312414266117965,
+      "abs_diff": 0.0
+     }
+    },
+    "hotpot/test": {
+     "ndcg@10": {
+      "observed": 0.733133620964633,
+      "reference": 0.733133620964633,
+      "abs_diff": 0.0
+     },
+     "both@10": {
+      "observed": 0.611323896752706,
+      "reference": 0.611323896752706,
+      "abs_diff": 0.0
+     }
+    },
+    "serp_code/250": {
+     "both@10": {
+      "observed": 0.288,
+      "reference": 0.288,
+      "abs_diff": 0.0
+     },
+     "ndcg@10": {
+      "observed": 0.41911755118510163,
+      "reference": 0.41911755118510163,
+      "abs_diff": 0.0
+     }
+    }
+   },
+   "passed": true,
+   "max_abs_diff": 0.0
+  },
+  "deep_selection_boundary": {
+   "passed": true,
+   "declared_profiles": {
+    "multi_hop_qa": "hotpot/test",
+    "code_graph": "serp_code/250"
+   },
+   "automatic_deep_workloads": [
+    "hotpot/test"
+   ],
+   "per_query_router_is_shipped": false,
+   "note": "deep is automatic only for the declared multi_hop_qa workload; routed is measured as a baseline row and never shipped."
+  },
+  "single_hop_non_inferiority": {
+   "margin": -0.005,
+   "policies": {
+    "scifact/test::routed": {
+     "delta": -0.004937757002643461,
+     "ci95": [
+      -0.010964711668293043,
+      -0.0007365199631717563
+     ],
+     "verdict": "inconclusive",
+     "significant_negative": true
+    },
+    "scifact/test::routed_gated": {
+     "delta": -0.004937757002643461,
+     "ci95": [
+      -0.010964711668293043,
+      -0.0007365199631717563
+     ],
+     "verdict": "inconclusive",
+     "significant_negative": true
+    },
+    "touche/test::routed": {
+     "delta": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "verdict": "pass",
+     "significant_negative": false
+    },
+    "touche/test::routed_gated": {
+     "delta": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "verdict": "pass",
+     "significant_negative": false
+    },
+    "nfcorpus/dev::routed": {
+     "delta": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "verdict": "pass",
+     "significant_negative": false
+    },
+    "nfcorpus/dev::routed_gated": {
+     "delta": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "verdict": "pass",
+     "significant_negative": false
+    }
+   },
+   "explicit_deep_informational": {
+    "scifact/test": {
+     "delta": -0.04396384842513054,
+     "ci95": [
+      -0.06517927743161998,
+      -0.02537668824046388
+     ],
+     "verdict": "fail",
+     "note": "deep is explicit here, never automatic on a single-hop workload"
+    },
+    "touche/test": {
+     "delta": 0.021662260822870486,
+     "ci95": [
+      -0.012468916436496589,
+      0.054384272868253675
+     ],
+     "verdict": "inconclusive",
+     "note": "deep is explicit here, never automatic on a single-hop workload"
+    },
+    "nfcorpus/dev": {
+     "delta": -0.009479223157639056,
+     "ci95": [
+      -0.02146586408457071,
+      0.002802595268506544
+     ],
+     "verdict": "inconclusive",
+     "note": "deep is explicit here, never automatic on a single-hop workload"
+    }
+   },
+   "literal_passed": true,
+   "passed": false,
+   "failing": [
+    "scifact/test::routed",
+    "scifact/test::routed_gated"
+   ],
+   "router_loses_on_scifact": true
+  },
+  "exact_identifiers": {
+   "passed": true,
+   "js_engine_available": true,
+   "scifact_fixture": {
+    "default": {
+     "positives": 60,
+     "negatives": 40,
+     "exact_hit@1": 1.0,
+     "exact_hit@10": 1.0,
+     "exact_mrr": 1.0,
+     "near_miss_before_exact": 0.0,
+     "near_miss_top10": 0.0,
+     "negative_activation": 0.0,
+     "positive_expansion": 0.0,
+     "unknown_identifier_expansion": 0.0
+    },
+    "deep": {
+     "positives": 60,
+     "negatives": 40,
+     "exact_hit@1": 1.0,
+     "exact_hit@10": 1.0,
+     "exact_mrr": 1.0,
+     "near_miss_before_exact": 0.0,
+     "near_miss_top10": 0.06666666666666667,
+     "negative_activation": 0.0,
+     "positive_expansion": 1.0,
+     "unknown_identifier_expansion": 0.0
+    },
+    "deep_gated": {
+     "positives": 60,
+     "negatives": 40,
+     "exact_hit@1": 1.0,
+     "exact_hit@10": 1.0,
+     "exact_mrr": 1.0,
+     "near_miss_before_exact": 0.0,
+     "near_miss_top10": 0.0,
+     "negative_activation": 0.0,
+     "positive_expansion": 0.0,
+     "unknown_identifier_expansion": 0.0
+    }
+   },
+   "code_symbols": {
+    "default": {
+     "positives": 41,
+     "negatives": 40,
+     "exact_hit@1": 1.0,
+     "exact_hit@10": 1.0,
+     "exact_mrr": 1.0,
+     "near_miss_before_exact": 0.0,
+     "near_miss_top10": 0.0,
+     "negative_activation": 0.0,
+     "positive_expansion": 0.0,
+     "unknown_identifier_expansion": 0.0
+    },
+    "graph": {
+     "positives": 41,
+     "negatives": 40,
+     "exact_hit@1": 1.0,
+     "exact_hit@10": 1.0,
+     "exact_mrr": 1.0,
+     "near_miss_before_exact": 0.0,
+     "near_miss_top10": 0.14634146341463414,
+     "negative_activation": 0.0,
+     "positive_expansion": 1.0,
+     "unknown_identifier_expansion": 0.0
+    },
+    "graph_gated": {
+     "positives": 41,
+     "negatives": 40,
+     "exact_hit@1": 1.0,
+     "exact_hit@10": 1.0,
+     "exact_mrr": 1.0,
+     "near_miss_before_exact": 0.0,
+     "near_miss_top10": 0.14634146341463414,
+     "negative_activation": 0.0,
+     "positive_expansion": 1.0,
+     "unknown_identifier_expansion": 0.0
+    }
+   }
+  }
+ },
+ "verdict": {
+  "bm25_only_default": true,
+  "deep_shipped_automatically": false,
+  "deep_shipped_behind_explicit_flag": true,
+  "graph_shipped_behind_corpus_flag": true,
+  "router_shipped": false,
+  "failing_gates": [
+   "single_hop_non_inferiority"
+  ],
+  "single_hop_key_result": {
+   "router_loses_on_scifact": true,
+   "literal_gate_passed": true,
+   "non_inferiority_passed": false,
+   "failing": [
+    "scifact/test::routed",
+    "scifact/test::routed_gated"
+   ]
+  },
+  "recommended_policy": "Porter BM25 default with the exact-identifier gate; deep (EBR) only as an explicit mode or declared multi-hop profile; graph only behind a code-corpus profile; the per-query router is not shipped.",
+  "reason": "At least one safety invariant failed. Default search stays lexical; specialists are opt-in flags, not automatic policy."
+ },
+ "runtime_seconds": 352.5955541249714
+}
