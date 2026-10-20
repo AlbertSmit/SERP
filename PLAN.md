@@ -153,3 +153,5 @@ something BM25 structurally cannot: retrieve both supporting facts.
 | Can a text-only router fix that? | partially: 65% fire on HotpotQA, 7% on SciFact, 0% on Touche/NFCorpus; routed still -0.005 on SciFact and gives back 0.035 both@10 on HotpotQA | router is a safety valve, not a benefit predictor |
 | Is EBR field-novel? | no; entity-based multi-hop IR is prior art | claim a measured project result, not novelty |
 | Is TS 7's AST graph worth it? | yes for correctness, not retrieval: TS7 20/20 call precision vs regex 18/20; fused both@10 0.606 vs 0.608 | use TS7 AST behind `unstable/*` with a version pin; checker opt-in |
+| Does a heterogeneous lexical portfolio beat BM25 everywhere? | **no**: macro nDCG 0.4615 vs 0.4675; Quora -0.0176, TREC-COVID -0.0120; 0/7 positive | do not ship uniform portfolio; only a selective/fallback selector could work |
+| Is there oracle headroom for a selector? | yes: per-query oracle all systems +0.064 macro; BM25+RM3+DPH oracle +0.034; non-BM25 best on 24-90% of queries | test a QPP/feature selector with BM25 fallback, not another weighted fusion |
