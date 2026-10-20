@@ -8,9 +8,9 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, 'test/fixtures/outputs');
-const RELEASE = '7441049083262a6477221c6b83280fd62ae0a2b0';
+const RELEASE = '6894b68a9fdf3f811d160276dd3b3e963438cc0e';
 const FIXTURES = {
-  'git-log-p.txt': ['git', ['log', '-p', '-1', '--no-color', '--no-ext-diff', '3faffe31d170bc1e9997a4ee58f1ab649ae2f023']],
+  'git-log-p.txt': ['git', ['log', '-p', '-1', '--no-color', '--no-ext-diff', '5e39dffd32357f3367e5c9ab398291b0837ee920']],
   'engine-source.txt': ['git', ['show', `${RELEASE}:src/engine/engine.js`]],
   'package-lock.txt': ['git', ['show', `${RELEASE}:package-lock.json`]],
   'node-test-tap.txt': [process.execPath, [
