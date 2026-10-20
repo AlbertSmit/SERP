@@ -119,21 +119,26 @@ Paired vs Porter: EBR nDCG `+0.0272` [+0.0171,+0.0368], both@10 `+0.1080`
 - EBR captures only **27%** of the cross-encoder's nDCG@10 gain. If the goal is
   general relevance ordering, the neural reranker clearly wins.
 - EBR captures **92%** of the cross-encoder's both@10 gain (`+0.108` vs `+0.118`).
-  On the multi-hop capability HotpotQA is designed to test, the no-embedding
-  method is effectively at parity: `0.707` vs `0.717`.
+  On the multi-hop capability HotpotQA is designed to test, the two are
+  **statistically indistinguishable** against a reranker limited to BM25's pool:
+  `0.707` vs `0.717`, paired `−0.0100` `[−0.0370, +0.0170]`. That is not parity:
+  rerank EBR's own candidates and the cross-encoder is significantly ahead
+  (`−0.0470` `[−0.0740, −0.0210]`).
 - They are complementary. Feeding EBR's pool to the same cross-encoder improves
   it by `+0.0095` nDCG and `+0.0370` both@10, CIs above zero. Bridge expansion
   supplies second-hop candidates that BM25's top-100 never contains.
 - On bridge questions EBR's both@10 (`0.667`) is above the cross-encoder over
-  BM25's pool (`0.658`). On comparison questions the cross-encoder dominates
-  (`0.954` vs `0.804` nDCG), because comparison is mostly relevance matching.
-- Cost: EBR `24.3 ms/query` on CPU vs cross-encoder `535.8 ms/query` on GPU, a
-  `22×` difference, with no model weights.
+  BM25's pool (`0.658`), and below it over EBR's own pool (`0.703`). On comparison
+  questions the cross-encoder dominates (`0.954` vs `0.804` nDCG), because
+  comparison is mostly relevance matching.
+- Cost, like for like on CPU: EBR `12.7 ms/query` end to end vs cross-encoder
+  `874 ms/query` including the BM25 top-100 it needs, a `69×` difference at p50,
+  with no model weights.
 
 The product position is therefore not "replace RAG". It is: **EBR is a
-no-embedding multi-hop recall and candidate-generation layer that reaches the
-neural reranker's both-facts recall at ~4% of the latency, and improves the
-neural reranker when used as its first stage.**
+no-embedding multi-hop recall and candidate-generation layer that matches a
+BM25-pool reranker's both-facts recall within a CI that includes zero, and improves
+the neural reranker when used as its first stage.**
 
 ## What this establishes
 
@@ -145,8 +150,8 @@ neural reranker when used as its first stage.**
   project, and it targets a capability BM25 structurally lacks.
 - It is not a replacement for a neural ranker. On plain nDCG it captures only
   ~27% of a cross-encoder's gain. Its value is both-facts recall and candidate
-  generation: 92% of the cross-encoder's both@10 gain at ~4% of the latency, and
-  a better pool for the cross-encoder when the two are combined.
+  generation: both@10 indistinguishable from a BM25-pool reranker, a better pool
+  for the cross-encoder when the two are combined, and 1/69 of its CPU cost.
 
 ## Limits and next experiments
 
@@ -159,11 +164,12 @@ neural reranker when used as its first stage.**
   2WikiMultiHopQA and MuSiQue (`MULTIHOP_TRANSFER.md`) but hurts single-hop
   SciFact and Touche (`EBR_ROUTER.md`). A text-only router separates corpora, not
   queries; it is a safety valve, not a benefit predictor.
-- **The neural reference exists, but it is one model on 1,000 queries.** EBR
-  reaches about 92% of a cross-encoder's both@10 gain at about 4.5% of its
-  latency, but only about 27% of its nDCG gain (`NEURAL_REFERENCE.md`). The
-  latency comparison is not like for like: cross-encoder rerank-only on GPU vs
-  EBR end-to-end on CPU.
+- **The neural reference exists, but it is one model on 1,000 queries.** EBR is
+  statistically indistinguishable from it on both@10 when the reranker is limited
+  to BM25's pool, and significantly behind it on both@10 over EBR's own pool and on
+  nDCG either way. EBR captures about 27% of its nDCG gain
+  (`NEURAL_REFERENCE.md`). On a like-for-like CPU sample the cross-encoder costs
+  69× EBR's per-query time, not the 22× the mixed-device figure suggested.
 - **The 10-paragraph pool is the standard distractor setting**, but the global
   pool is the stronger test. Both are reported.
 - **Prior art**: entity-based multi-hop retrieval, graph-based IR and RRF are

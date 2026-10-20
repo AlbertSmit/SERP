@@ -145,7 +145,7 @@ something BM25 structurally cannot: retrieve both supporting facts.
 | Can a no-embedding method beat BM25 on multi-hop? | yes; EBR +0.105 both@10, +0.023 nDCG on HotpotQA test | continue EBR, gate by query type |
 | Does EBR transfer beyond HotpotQA? | **yes**: 2Wiki dev all@10 +0.124, R@100 +0.133, nDCG +0.057; MuSiQue paragraph-level all@10 +0.065, R@100 +0.083, nDCG +0.033; all CIs above zero | keep the multi-hop direction; EBR is not Hotpot-specific |
 | Is the MuSiQue gain a title-leakage artifact? | no; rebuilt at paragraph identity, leak cases 0; evidence gain holds, nDCG/MRR shrink | corrected numbers are the record |
-| How close is EBR to a neural reranker? | 92% of both@10 gain at 22x less latency; only 27% of nDCG gain | position EBR as recall/candidate generation, not a ranker replacement |
+| How close is EBR to a neural reranker? | both@10 statistically indistinguishable from CE over BM25's pool (−0.010 [−0.037, +0.017]), but significantly behind it over EBR's own pool (−0.047 [−0.074, −0.021]) and on nDCG (27% of its gain); CE costs 69x EBR's CPU time | position EBR as recall/candidate generation, not a ranker replacement |
 | Does EBR improve a neural reranker? | yes; CE(EBR pool) +0.0095 nDCG, +0.0370 both@10 over CE(Porter pool) | keep EBR as a first-stage candidate generator |
 | Does code-graph EBR transfer to SERP's domain? | synthetic: +0.320 both@10 upper bound; +0.20 on the clean two-hop slice; +0.10 at 20% edge loss | keep as a relational channel, not a global ranker |
 | Do typed relations improve the bridge channel? | **no, they hurt everywhere**: both@10 -0.080 vs untyped at fixed channel set; typed second-hop reach 0.162 vs untyped 0.686 | drop bridge typing; keep broad cross-seed consensus |

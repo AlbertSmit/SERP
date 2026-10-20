@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.2.1 — 2026-10-20
+
+Documentation-only correction from the paired EBR-vs-cross-encoder test. No
+runtime code changed.
+
+- EBR is statistically indistinguishable from a cross-encoder over BM25's top-100
+  on both@10 (−0.010 [−0.037, +0.017]), but significantly behind it over EBR's
+  own pool (−0.047 [−0.074, −0.021]) and on nDCG (−0.072 [−0.085, −0.058]).
+- The like-for-like CPU cost is 69× (874 ms vs 12.7 ms per query), not the 22×
+  mixed GPU/CPU figure. The 22× comparison remains as a GPU reference only.
+- Update README, HOTPOT.md, NEURAL_REFERENCE.md and PLAN.md; add the paired-test
+  runner and result JSON.
+
 ## 1.2.0 — 2026-10-20
 
 Release of the frozen research state. MCP `pack_context` defaults to hybrid

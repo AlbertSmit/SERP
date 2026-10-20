@@ -56,10 +56,17 @@ often than BM25 on three multi-hop datasets. It is **not** a general ranker:
 - Use it only when the caller knows the query is multi-hop. No query-level
   router was found (see below).
 - Against a neural reranker, EBR reaches about **92% of the cross-encoder's
-  both-facts gain at about 4.5% of its latency (22× faster), but only about 27%
-  of its nDCG gain**. The latency comparison is not like for like: the
-  cross-encoder figure is rerank-only on a GPU, EBR is end-to-end on a CPU.
-  EBR does not replace a reranker. It improves a reranker's candidate pool.
+  both-facts gain, but only about 27% of its nDCG gain**. The both@10 difference
+  is statistically indistinguishable from zero (EBR − CE(Porter) −0.010
+  [−0.037, +0.017]); the nDCG difference is not (−0.072 [−0.085, −0.058]). EBR
+  does not replace a reranker. It improves a reranker's candidate pool: rerank
+  EBR's own candidates and the cross-encoder is significantly ahead on both@10
+  too (−0.047 [−0.074, −0.021]), so EBR's both-facts reach is a candidate-set
+  result rather than an ordering result.
+- On a like-for-like CPU sample (n = 100), the cross-encoder costs 874 ms/query
+  including the BM25 top-100 it needs, against 12.7 ms for EBR end to end (69×).
+  The earlier 22× figure mixed a GPU rerank with a CPU pipeline and understated
+  the cross-encoder's cost.
 
 ### Structured: CESR-U evidence-set selection
 
@@ -106,7 +113,9 @@ win.
   gate. A uniform lexical portfolio and a learned per-query selector each failed
   the non-inferiority gate.
 - **Not a RAG replacement.** EBR improves complete-evidence recall, but closes
-  only about 27% of a cross-encoder's nDCG gain.
+  only about 27% of a cross-encoder's nDCG gain. It is statistically
+  indistinguishable from a reranker over BM25's pool on both@10, and behind one
+  over its own pool.
 - **Not code-graph PR search.** On real PRs the code graph and CESR did not beat
   BM25. The synthetic gains came from graph-generated qrels.
 
@@ -138,7 +147,7 @@ All numbers are paired deltas with 95% bootstrap CIs, read from
 | EBR vs Porter BM25 | HotpotQA distractor paragraphs, held-out 80% of dev, n = 6,005 | both@10 0.611 → 0.717, **+0.105 [+0.094, +0.115]**; nDCG@10 +0.023 [+0.018, +0.027] | `hotpot.json` |
 | EBR transfer | 2WikiMultiHopQA dev, n = 12,576 | all@10 0.364 → 0.488, **+0.124 [+0.118, +0.130]**; nDCG@10 +0.057 [+0.055, +0.059]; R@100 +0.133 | `multihop_transfer.json` |
 | EBR transfer | MuSiQue dev, paragraph identity, n = 2,417 | all@10 0.145 → 0.210, **+0.065 [+0.052, +0.080]**; nDCG@10 +0.033 [+0.027, +0.040]; R@100 +0.083 | `multihop_transfer.json` |
-| EBR vs cross-encoder | HotpotQA test subset, n = 1,000 | both@10: EBR 0.707, CE(Porter) 0.717, Porter 0.599. nDCG@10: EBR 0.746, CE 0.818. Mean latency 24 ms vs 536 ms | `hotpot_neural_reference.json` |
+| EBR vs cross-encoder | HotpotQA test subset, n = 1,000 | both@10: EBR 0.707, CE(Porter) 0.717, Porter 0.599. Paired EBR − CE: both@10 −0.010 [−0.037, +0.017] (ns); nDCG@10 −0.072 [−0.085, −0.058]. CPU p50: EBR 12.7 ms vs CE end to end 874 ms | `hotpot_neural_reference_paired.json` |
 | EBR as reranker pool | same subset | CE(EBR pool) vs CE(Porter pool): nDCG +0.010 [+0.006, +0.013], both@10 +0.037 [+0.025, +0.050] | `hotpot_neural_reference.json` |
 | EBR on single-hop | SciFact test (n = 300); Touche (n = 49) | **harmful**: SciFact nDCG −0.044 [−0.065, −0.025]; Touche R@100 −0.037 [−0.063, −0.011] | `ebr_beir.json` |
 | Typed bridges | HotpotQA test | **negative**: both@10 −0.080 [−0.089, −0.072] vs untyped bridges; second-hop reach 0.162 vs 0.686 | `hotpot_typed.json` |
@@ -185,7 +194,9 @@ P4 does not beat truncation. Do not cite them as evidence that P4 beats BM25.
   45% of those files are tests, and temporal leakage is measured, not removed.
 - SciFact was used in earlier research and is a sanity check only. Touche has
   49 queries.
-- The neural reference is one model (MiniLM-L-6) on 1,000 queries.
+- The neural reference is one model (MiniLM-L-6) on 1,000 queries. Its latency
+  ratios come from a 100-query CPU sample on one machine; the original 22×
+  compared a GPU rerank with a CPU pipeline.
 - Packing CIs are paired over 300 SciFact queries. The nominal-budget gap to
   P4/residual is mostly budget underfill: at matched token spend, document-recall
   differences against P4 are not significant.
@@ -203,6 +214,7 @@ python3 -m venv --system-site-packages .venv
 PYTHONHASHSEED=0 .venv/bin/python experiments/stages/run_hotpot.py
 PYTHONHASHSEED=0 .venv/bin/python experiments/stages/run_multihop_transfer.py
 .venv/bin/python experiments/stages/run_hotpot_neural.py      # needs a cross-encoder
+.venv/bin/python experiments/stages/run_hotpot_neural_paired.py  # paired test + CPU latency
 PYTHONHASHSEED=0 .venv/bin/python experiments/stages/run_hotpot_typed.py
 PYTHONHASHSEED=0 .venv/bin/python experiments/stages/run_ebr_beir.py
 PYTHONHASHSEED=0 .venv/bin/python experiments/stages/run_mode_matrix.py
