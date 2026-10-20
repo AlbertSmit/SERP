@@ -143,6 +143,8 @@ something BM25 structurally cannot: retrieve both supporting facts.
 | Does residual/P4 packing beat truncation at a budget? | no; residual/P4 underfill and lose recall | demote P4 behind a flag |
 | Is P4 the product differentiator? | no evidence; P4 scoring is tied with truncation at matched tokens | reposition SERP as budgeted evidence selection |
 | Can a no-embedding method beat BM25 on multi-hop? | yes; EBR +0.105 both@10, +0.023 nDCG on HotpotQA test | continue EBR, gate by query type |
+| Does EBR transfer beyond HotpotQA? | **yes**: 2Wiki dev all@10 +0.124, R@100 +0.133, nDCG +0.057; MuSiQue paragraph-level all@10 +0.065, R@100 +0.083, nDCG +0.033; all CIs above zero | keep the multi-hop direction; EBR is not Hotpot-specific |
+| Is the MuSiQue gain a title-leakage artifact? | no; rebuilt at paragraph identity, leak cases 0; evidence gain holds, nDCG/MRR shrink | corrected numbers are the record |
 | How close is EBR to a neural reranker? | 92% of both@10 gain at 22x less latency; only 27% of nDCG gain | position EBR as recall/candidate generation, not a ranker replacement |
 | Does EBR improve a neural reranker? | yes; CE(EBR pool) +0.0095 nDCG, +0.0370 both@10 over CE(Porter pool) | keep EBR as a first-stage candidate generator |
 | Does code-graph EBR transfer to SERP's domain? | synthetic: +0.320 both@10 upper bound; +0.20 on the clean two-hop slice; +0.10 at 20% edge loss | keep as a relational channel, not a global ranker |
