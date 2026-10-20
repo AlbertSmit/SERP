@@ -1,0 +1,27 @@
+{
+ "scifact:500": {
+  "dataset": "scifact",
+  "budget": 500,
+  "queries": 809,
+  "runs": {
+   "truncate": {
+    "recall": 0.607725587144623,
+    "retention": 0.6079316028018129,
+    "selected": 2.568603213844252,
+    "selected_relevant": 0.6501854140914709
+   },
+   "greedy": {
+    "recall": 0.504058508446642,
+    "retention": 0.5042645241038318,
+    "selected": 2.1953028430160693,
+    "selected_relevant": 0.5241038318912238
+   },
+   "residual": {
+    "recall": 0.5362999587968685,
+    "retention": 0.5365059744540586,
+    "selected": 2.5599505562422746,
+    "selected_relevant": 0.5611866501854141
+   }
+  }
+ }
+}

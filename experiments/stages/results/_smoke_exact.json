@@ -1,0 +1,72 @@
+{
+ "scifact": {
+  "dataset": "scifact",
+  "suite": {
+   "positives": 60,
+   "negatives": 40
+  },
+  "bm25": {
+   "positives": 60,
+   "negatives": 40,
+   "exact_hit_rate": 1.0,
+   "exact_mrr": 1.0,
+   "near_miss_before_exact": 0.0,
+   "near_miss_top10": 0.0,
+   "negative_activation": 0.0
+  },
+  "porter": {
+   "positives": 60,
+   "negatives": 40,
+   "exact_hit_rate": 1.0,
+   "exact_mrr": 1.0,
+   "near_miss_before_exact": 0.0,
+   "near_miss_top10": 0.0,
+   "negative_activation": 0.0
+  },
+  "char4": {
+   "positives": 60,
+   "negatives": 40,
+   "exact_hit_rate": 1.0,
+   "exact_mrr": 0.961111111111111,
+   "near_miss_before_exact": 0.05,
+   "near_miss_top10": 0.9333333333333333,
+   "negative_activation": 0.975
+  },
+  "vcgrams": {
+   "positives": 60,
+   "negatives": 40,
+   "exact_hit_rate": 1.0,
+   "exact_mrr": 0.9916666666666667,
+   "near_miss_before_exact": 0.016666666666666666,
+   "near_miss_top10": 0.9333333333333333,
+   "negative_activation": 0.975
+  },
+  "rrf_porter_char4": {
+   "positives": 60,
+   "negatives": 40,
+   "exact_hit_rate": 1.0,
+   "exact_mrr": 1.0,
+   "near_miss_before_exact": 0.0,
+   "near_miss_top10": 0.9333333333333333,
+   "negative_activation": 0.975
+  },
+  "rrf_porter_vcgrams": {
+   "positives": 60,
+   "negatives": 40,
+   "exact_hit_rate": 1.0,
+   "exact_mrr": 1.0,
+   "near_miss_before_exact": 0.0,
+   "near_miss_top10": 0.9333333333333333,
+   "negative_activation": 0.975
+  },
+  "rrf_porter_char4_vcgrams": {
+   "positives": 60,
+   "negatives": 40,
+   "exact_hit_rate": 1.0,
+   "exact_mrr": 1.0,
+   "near_miss_before_exact": 0.0,
+   "near_miss_top10": 0.9333333333333333,
+   "negative_activation": 0.975
+  }
+ }
+}
