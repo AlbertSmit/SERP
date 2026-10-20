@@ -1,4 +1,5 @@
 node_modules/
+datasets
 __pycache__/
 .cache/
 .DS_Store
@@ -10,4 +11,13 @@ __pycache__/
 *.db-shm
 *.db-wal
 experiments/stages/data/*.parquet
+experiments/stages/data/*.jsonl
+!experiments/stages/data/mode_queries.jsonl
+experiments/stages/data/.cache_*.pkl
+experiments/stages/data/webis-touche2020/
+experiments/stages/results/lexical_portfolio.json
+experiments/stages/results/selective_lexical.json
 experiments/stages/ts7-probe/
+
+# cloned benchmark repositories (real_repo.py); never committed
+experiments/stages/repos/
