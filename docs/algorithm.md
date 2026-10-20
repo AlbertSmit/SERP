@@ -18,12 +18,56 @@ residual demand, never admits a zero-gain candidate, and uses a first-marginal
 relative dropoff of `0.26`. Both coverage and dropoff are exposed as snake-case
 options for development-only tuning.
 
-These notes and measurements were recorded before the repository reorganization.
-The benchmark tables have not been rerun or independently verified during the
-cleanup. They describe the reported SciFact experiment, not a performance
-guarantee for the current JavaScript engine or another corpus.
+### Staged interfaces
+
+The engine also exposes retrieval as separate stages:
+
+- `retrieveRanked` returns `{ word, gram, fused }`.
+- `rankWordBm25` uses the existing word FTS index; `rankGramBm25` uses a separate
+  in-word character-4-gram index with word-boundary markers (`1` and `2`).
+- `fuseRrf` combines ranked lists with reciprocal-rank fusion (`k = 60`). Chunks
+  containing an exact identifier token (a query token with a letter and a digit
+  or underscore that exists as a term) sort before variant-only matches,
+  regardless of fused score. This is a hard rule, not a weight.
+- `packRanked` applies the coverage gate and a budget with one of four packers:
+  `truncate`, `greedy`, `residual`, or `p4`. All four see the same
+  `poolDepth` candidate pool.
+- `packHybrid` composes retrieve, fuse, and pack.
+
+The gram channel filters per token: identifier-like tokens (containing `_` or a
+digit) contribute grams only when they exist in `chunks_exact_terms`. The word
+channel filters them too: unicode61 would split `figure_1` into `figure` + `1`
+and match prose that never contained the identifier. The exact table stores
+`tokenize()` output, so `figure_1` is known only when it was indexed as a token.
+`buildGramIndex` and `buildExactIndex` backfill the gram and exact tables for
+pre-existing databases; constructors do not backfill automatically.
 
 [Back to the README](../README.md).
+
+---
+
+## Historical: the P4 track (superseded)
+
+> **Status.** Everything below this line records the original P4 research and is
+> kept for history. It is not current evidence. The staged protocol
+> (`experiments/stages/`) superseded it:
+>
+> - On the matched chunk benchmark (`experiments/stages/results/stage-benchmark.json`,
+>   SciFact test, 300 queries, budget 250), current P4 packing reaches doc recall
+>   0.491 using about 47 tokens, against 0.601 for RRF truncation using 166. At
+>   matched tokens, truncation still wins. P4 is an experimental packer, not the
+>   default, and there is no evidence that P4 beats BM25.
+> - The tables in section 4 use a combined two-query "budget recall" metric on
+>   SciFact, which was also used for development. They were never rerun under the
+>   stage protocol, and they have no CIs.
+> - "What we invented" overstates it. The stretched-exponential saturation,
+>   burstiness weighting and residual decay were not shown to beat BM25 on
+>   independent labelled data. Bridge expansion is a variant of known entity-based
+>   multi-hop retrieval. The measured multi-hop result is EBR (see the README).
+> - No universal no-embedding scorer was found. See `LEXICAL_PORTFOLIO.md` and
+>   `SELECTIVE_LEXICAL.md`.
+>
+> The current positioning, numbers and CIs are in the [README](../README.md#benchmarks).
 
 ## 1. Motivation: Why BM25 Fails in MCP Memory & Agentic RAG
 
@@ -48,7 +92,7 @@ To discover a genuine successor, we used an **Evolutionary Verifier Loop (FunSea
 
 ---
 
-## 3. What We Invented & Discovered
+## 3. P4 design components (historical claims)
 
 ### Discovery 1: Unit-Anchored Stretched-Exponential Potential (`P4`)
 
@@ -98,7 +142,7 @@ The top-5 high-surprise, low-clumpiness bridge entities are injected into the St
 
 ---
 
-## 4. Empirical Benchmark Results (BEIR SciFact + MCP Noise)
+## 4. Reported P4 benchmark (historical, not rerun)
 
 Evaluated across **300 queries** (**120 Dev / 180 Unseen Holdout**) over **32,297 chunks** (27,114 atomic sentence chunks, 5,183 full documents, and 1,500 synthetic log-spam chunks):
 
