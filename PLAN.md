@@ -111,14 +111,37 @@ SERP as budgeted evidence selection, not a superior scorer.
 - **The current SERP benchmark is circular.** Its ground truth is "chunks with the
   rarest query tokens", which rewards P4 by construction. Do not use it as evidence.
 
-## Decision record
+## New track: Entity-Bridge Retrieval (EBR)
 
-Fill this in as results arrive:
+The fusion-only framing was too conservative. The revised research direction is
+multi-hop evidence retrieval without embeddings. See `experiments/stages/HOTPOT.md`.
+
+Method: Porter BM25 first hop -> high-surprisal bridge entities from the seeds ->
+second-hop entity postings -> per-entity coverage channel -> fixed RRF.
+
+HotpotQA held-out test (6,005 questions, 66,581 paragraphs):
+
+| system | nDCG@10 | both@10 | both@5 | R@10 |
+|---|---:|---:|---:|---:|
+| Porter BM25 | 0.733 | 0.611 | 0.463 | 0.797 |
+| RRF(Porter, bridge, entity) | **0.756** | **0.717** | **0.531** | **0.849** |
+
+Paired vs Porter: nDCG `+0.0225` [+0.0184,+0.0266], both@10 `+0.1052`
+[+0.0939,+0.1152], R@10 `+0.0526` [+0.0468,+0.0583]. The standard 10-paragraph
+pool also improves (`both@5 +0.1152`).
+
+This is the strongest evidence so far for a no-embedding method that does
+something BM25 structurally cannot: retrieve both supporting facts.
+
+## Decision record
 
 | Question | Result | Decision |
 |---|---|---|
-| Does char4/VC find relevant docs BM25 misses on Touche? | pending | pending |
-| Does fixed RRF stay non-inferior on nDCG? | pending | pending |
-| Does the gram channel activate on unknown identifiers? | smoke: yes | gate before fusion |
-| Does residual/P4 packing beat truncation at a budget? | smoke: no (doc level) | pending chunk level |
-| Is P4 the product differentiator? | pending | pending |
+| Does char4/VC find relevant docs BM25 misses on Touche? | yes; three-way RRF +0.0459 nDCG, +0.0215 R@100, 25/6 new/lost | keep as a lexical recall layer |
+| Does fixed RRF stay non-inferior on nDCG? | yes on Touche; SciFact within margin | keep RRF |
+| Does the gram channel activate on unknown identifiers? | yes ungated; fixed with exact-term gate | gate mandatory |
+| Does residual/P4 packing beat truncation at a budget? | no; residual/P4 underfill and lose recall | demote P4 behind a flag |
+| Is P4 the product differentiator? | no evidence; P4 scoring is tied with truncation at matched tokens | reposition SERP as budgeted evidence selection |
+| Can a no-embedding method beat BM25 on multi-hop? | yes; EBR +0.105 both@10, +0.023 nDCG on HotpotQA test | continue EBR, gate by query type |
+| Does EBR hurt single-hop retrieval? | not yet tested | next gate: SciFact/Touche regression + router |
+| Is EBR field-novel? | no; entity-based multi-hop IR is prior art | claim a measured project result, not novelty |
