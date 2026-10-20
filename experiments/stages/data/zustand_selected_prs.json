@@ -1,0 +1,1105 @@
+{
+ "head": "d7a5583cffd80af515f7dfb69583c95cbdc9e2ce",
+ "drops": {
+  "docs_or_ci_only": 384,
+  "dependency_bump": 10,
+  "bot": 2,
+  "query_too_short": 5,
+  "outside_corpus_dirs": 24,
+  "file_gone_at_head": 7,
+  "file_count_out_of_range": 12,
+  "before_window": 395
+ },
+ "prs": [
+  {
+   "number": 1435,
+   "title": "feat(middleware/devtools): Better redux devtools. One connection for all zustand stores",
+   "mergedAt": "2023-01-01T00:43:54Z",
+   "author": "pavlobu",
+   "query": "feat(middleware/devtools): Better redux devtools. One connection for all zustand stores. Fixes - A new feature for better redux devtools integration. One redux devtools connection can be used for all zustand stores. Summary one redux devtools connection for all zustand stores add store devtools option to name different stores in devtoolsOptions backward compatibility with old api usage add devOnlyDevtools export that helps to exclude devtools from prod builds without changing code add demo project in documentations temporary npmjs package with this PR features: Check List - [v] yarn run prettier for formatting code and docs Thank you for this awesome tool - zustand. I really enjoyed to use it and I hope my update helps!",
+   "qrels_files": [
+    "src/middleware/devtools.ts",
+    "tests/devtools.test.tsx"
+   ],
+   "drift": 0.2949173395257675
+  },
+  {
+   "number": 1463,
+   "title": "feat(middleware/persist): new storage option",
+   "mergedAt": "2023-01-01T00:57:20Z",
+   "author": "dai-shi",
+   "query": "feat(middleware/persist): new storage option. Summary When we designed the persist middleware, we have (de)serialize options to customize. Later, we realized it's tricky implementation-wise, and less flexible capability-wise. We use createJSONStorage in [jotai]( and this PR is a backport of it. Check List",
+   "qrels_files": [
+    "src/middleware/persist.ts",
+    "tests/middlewareTypes.test.tsx",
+    "tests/types.test.tsx"
+   ],
+   "drift": 0.40190936893047624
+  },
+  {
+   "number": 1518,
+   "title": "fix(middleware/persist): hydrate in sync (new impl with storage option)",
+   "mergedAt": "2023-01-10T09:32:07Z",
+   "author": "dai-shi",
+   "query": "fix(middleware/persist): hydrate in sync (new impl with storage option). Summary In 1463, I hoped to avoid toThenable() whose implementation is complicated, and used Promise.resolve() instead. I wasn't aware this is a regression because it didn't migrate the tests. This PR fixes the tests, and use toThenable . Check List",
+   "qrels_files": [
+    "src/middleware/persist.ts",
+    "tests/persistAsync.test.tsx",
+    "tests/persistSync.test.tsx"
+   ],
+   "drift": 0.4495292948413359
+  },
+  {
+   "number": 1523,
+   "title": "chore: show deprecated message only in DEV",
+   "mergedAt": "2023-01-10T11:12:29Z",
+   "author": "dai-shi",
+   "query": "chore: show deprecated message only in DEV. While writing 4.3.0 release note, I noticed deprecation messages will be shown in production. Let's make them dev only.",
+   "qrels_files": [
+    "src/middleware/persist.ts",
+    "src/react.ts",
+    "src/shallow.ts",
+    "src/vanilla.ts"
+   ],
+   "drift": 0.6091000147418861
+  },
+  {
+   "number": 1540,
+   "title": "fix(middleware/persist): Fix the storage type",
+   "mergedAt": "2023-01-13T23:41:35Z",
+   "author": "MOZGIII",
+   "query": "fix(middleware/persist): Fix the storage type. Summary The storage must be operating with the persisted state type, which by default matches the state type. Otherwise it's not possible to introduce serialization/deserialization logic. An example of how this would be useful: export function createSerdeStorage ( serialize: (state: State) = RawState, deserialize: (rawState: RawState) = State, getStorage: () = PersistStorage ): PersistStorage { const storage = getStorage(); Check List",
+   "qrels_files": [
+    "src/middleware/persist.ts"
+   ],
+   "drift": 0.473015873015873
+  },
+  {
+   "number": 1589,
+   "title": "fix(react, types): relax react types",
+   "mergedAt": "2023-03-06T04:59:47Z",
+   "author": "lukesmurray",
+   "query": "fix(react, types): relax react types. Summary UseBoundStore strictly enforces the shape of the setState function but does not rely on the shape of the setState function internally. Why we should be relaxed about setState I want to define a middleware that makes the action in devtools required (to improve debugging store mutations in a large app). But if I make the third argument to setState required, the modified setState function is no longer compatible with the default setState function. We get the following error message (edited for readability). Types of property 'setState' are incompatible. ' ( partial: T | Partial | ((state: T) = T | Partial ), replace: boolean | undefined, action: A ) = void' Internally the react extension only seems to rely on getState and subscribe , so I made that explicit in the types. Check List",
+   "qrels_files": [
+    "src/react.ts",
+    "tests/types.test.tsx"
+   ],
+   "drift": 0.3011622150451449
+  },
+  {
+   "number": 1667,
+   "title": "fix: typo in shallow.ts",
+   "mergedAt": "2023-03-06T05:01:45Z",
+   "author": "ysulyma",
+   "query": "fix: typo in shallow.ts. Summary Fix typo in zustand/shallow deprecation warning. Check List",
+   "qrels_files": [
+    "src/shallow.ts"
+   ],
+   "drift": 1.0
+  },
+  {
+   "number": 1647,
+   "title": "feat(middleware/persist): add skip hydration option #405",
+   "mergedAt": "2023-03-31T11:20:17Z",
+   "author": "gmanninglive",
+   "query": "feat(middleware/persist): add skip hydration option #405. Summary Add skipHydration boolean to persist options. This allows the developer to control when the persist middleware will hydate manually. Check List",
+   "qrels_files": [
+    "src/middleware/persist.ts",
+    "tests/persistAsync.test.tsx",
+    "tests/persistSync.test.tsx"
+   ],
+   "drift": 0.42416824604043435
+  },
+  {
+   "number": 1689,
+   "title": "fix(middleware/persist): ensure `persist` does not drop updates in `onRehydrateStorage` when using a synchronous storage API",
+   "mergedAt": "2023-03-31T13:06:39Z",
+   "author": "coffeebeats",
+   "query": "fix(middleware/persist): ensure `persist` does not drop updates in `onRehydrateStorage` when using a synchronous storage API. Summary See 1688 for a detailed description of the problem. This PR resolves the issue by ensuring stateFromStorage gets updated to the most recent value. I also added tests verifying this update pattern works for both synchronous and asynchronous storage APIs. One note for reviewers: I added a comment describing how, in the asynchronous case, it's possible that the state passed to postRehydrationCallback is not the most up-to-date state. This would occur if there was a state update between callbacks in the hydration promise chain. Please let me know if I should leave the comment as-is, make the change, or simply remove the comment. Check List",
+   "qrels_files": [
+    "src/middleware/persist.ts",
+    "tests/persistAsync.test.tsx",
+    "tests/persistSync.test.tsx"
+   ],
+   "drift": 0.40834421593139747
+  },
+  {
+   "number": 1692,
+   "title": "fix(middleware/persist): ensure argument for `onRehydrateStorage` and `onHydrate` is defined on first hydration",
+   "mergedAt": "2023-03-31T13:11:17Z",
+   "author": "coffeebeats",
+   "query": "fix(middleware/persist): ensure argument for `onRehydrateStorage` and `onHydrate` is defined on first hydration. Summary This PR ensures that the argument passed to onRehydrateStorage and onHydrate is defined during the first hydration of a store. Instead of passing the result of get() , which will always be undefined before the first hydration, get() ?? configResult is passed. I also added tests validating that onRehydrateStorage is always passed a defined value for state . One caveat is that it's actually not possible to add an onHydrate listener which will be invoked prior to first hydration. As such, I can't test this case, but I've documented it in the test I added. Alternative Solution An alternative solution would be to update the argument type signature of onRehydrateStorage and onHydrate and to state?: S instead of state: S , which reflects the potential for state to be undefined . This is probably not the right solution, however, as it both changes a public API and makes the persist API less useful. Check List",
+   "qrels_files": [
+    "src/middleware/persist.ts",
+    "tests/persistAsync.test.tsx",
+    "tests/persistSync.test.tsx"
+   ],
+   "drift": 0.3821756757688954
+  },
+  {
+   "number": 1763,
+   "title": "feat(middleware/persist): improve createJSONStorage for Maps",
+   "mergedAt": "2023-05-04T03:55:59Z",
+   "author": "lauhon",
+   "query": "feat(middleware/persist): improve createJSONStorage for Maps. Summary The related Issue is closed because a workaround exists. But I would love to see that possible without a workaround needed. Thats why I did this fix. Check List",
+   "qrels_files": [
+    "src/middleware/persist.ts",
+    "tests/persistAsync.test.tsx",
+    "tests/persistSync.test.tsx",
+    "tests/test-utils.ts"
+   ],
+   "drift": 0.28374980959391805
+  },
+  {
+   "number": 1972,
+   "title": "fix(types): accept undefined equalityFn for the deprecated useStore",
+   "mergedAt": "2023-08-06T23:24:29Z",
+   "author": "dai-shi",
+   "query": "fix(types): accept undefined equalityFn for the deprecated useStore. Summary It's an overlook in 1945, which breaks types with existing (deprecated) usage. Check List",
+   "qrels_files": [
+    "src/react.ts"
+   ],
+   "drift": 0.5425531914893618
+  },
+  {
+   "number": 1976,
+   "title": "fix: improve warning for deprecated equalityFn",
+   "mergedAt": "2023-08-06T23:26:51Z",
+   "author": "dai-shi",
+   "query": "fix: improve warning for deprecated equalityFn. Summary Improve the warning message based on the feedback. Check List",
+   "qrels_files": [
+    "src/react.ts"
+   ],
+   "drift": 0.558974358974359
+  },
+  {
+   "number": 1991,
+   "title": "fix(types)(middleware/devtools): avoid copying types",
+   "mergedAt": "2023-10-02T12:58:10Z",
+   "author": "dai-shi",
+   "query": "fix(types)(middleware/devtools): avoid copying types. Summary We found a better solution in Check List",
+   "qrels_files": [
+    "src/middleware/devtools.ts"
+   ],
+   "drift": 0.2542787286063569
+  },
+  {
+   "number": 2060,
+   "title": "fix(traditional): make defaultEqualityFn optional in TS Types",
+   "mergedAt": "2023-10-02T12:59:18Z",
+   "author": "charkour",
+   "query": "fix(traditional): make defaultEqualityFn optional in TS Types. Summary With the updates in v4.4.0 and the addition of the createWithEqualityFn , the types currently require defaultEqualityFn when the implementation itself [is optional]( Thank you Check List",
+   "qrels_files": [
+    "src/traditional.ts"
+   ],
+   "drift": 0.31182795698924726
+  },
+  {
+   "number": 2088,
+   "title": "test(ssr): Validate state synchronization between server and client in React 18 using Zustand (#903)",
+   "mergedAt": "2023-10-02T13:08:18Z",
+   "author": "NaamuKim",
+   "query": "test(ssr): Validate state synchronization between server and client in React 18 using Zustand (#903). Summary This change tests state synchronization between server and client using React 18 and Zustand. It verifies that the server-rendered markup reflects the initial state correctly, and this state is accurately updated on the client side. This test is executed only when the version of React is 18. Please suggest me if you have any other tests that might be helpful! Check List",
+   "qrels_files": [
+    "tests/ssr.test.tsx"
+   ],
+   "drift": 0.5737704918032787
+  },
+  {
+   "number": 2090,
+   "title": "feat: add useShallow",
+   "mergedAt": "2023-10-02T13:13:13Z",
+   "author": "FaberVitale",
+   "query": "feat: add useShallow. Summary Adds a useShallow hook to prevent unnecessary re-renders when a selector outputs the same value according to shallow equal. Basic usage import { create } from 'zustand' import { useShallow } from 'zustand/shallow' const useMyStore = create(() = ({ a: 1, b: 2, c: 3 })) export const TestShallow = () = { const output = useMyStore(useShallow(Object.keys)) See tests in shallow.test.tsx for more details. --- Check List",
+   "qrels_files": [
+    "src/shallow.ts",
+    "tests/shallow.test.tsx"
+   ],
+   "drift": 0.6820083682008369
+  },
+  {
+   "number": 2099,
+   "title": "fix(types): mitigate devtools typing",
+   "mergedAt": "2023-10-05T14:13:27Z",
+   "author": "dai-shi",
+   "query": "fix(types): mitigate devtools typing. Follow up 1991. It infers to any instead of unknown if the type package isn't found.",
+   "qrels_files": [
+    "src/middleware/devtools.ts"
+   ],
+   "drift": 0.2542787286063569
+  },
+  {
+   "number": 2213,
+   "title": "fix(vanilla): unexpected null state update behavior",
+   "mergedAt": "2023-11-27T09:35:14Z",
+   "author": "wulimao49",
+   "query": "fix(vanilla): unexpected null state update behavior. unexpected behavior when update state with [ null ] [current logic here]( the code above will cause something like const useStore = create (() = 'default'); useStore.setState(null); // will actually run: Object.assign({}, 'default', null) useStore.getState(); // get { \"0\": \"d\", \"1\": \"e\", \"2\": \"f\", \"3\": \"a\", \"4\": \"u\", \"5\": \"l\", \"6\": \"t\" }",
+   "qrels_files": [
+    "src/vanilla.ts",
+    "tests/vanilla/basic.test.ts"
+   ],
+   "drift": 0.24591811399723346
+  },
+  {
+   "number": 2244,
+   "title": "chore(test): stop testing deprecated features and test subscribe in vanilla",
+   "mergedAt": "2023-12-12T15:46:51Z",
+   "author": "charkour",
+   "query": "chore(test): stop testing deprecated features and test subscribe in vanilla. Summary Instead of testing the deprecated features, we should test the stable ones. Also, to have more detailed testing, we should test the subscription methods in zustand/vanilla. Thank you Check List",
+   "qrels_files": [
+    "tests/shallow.test.tsx",
+    "tests/subscribe.test.tsx",
+    "tests/vanilla/subscribe.test.tsx"
+   ],
+   "drift": 0.3584379572303898
+  },
+  {
+   "number": 2236,
+   "title": "[v5] breaking: make React 18 as minimal requirement",
+   "mergedAt": "2023-12-17T13:04:53Z",
+   "author": "charkour",
+   "query": "[v5] breaking: make React 18 as minimal requirement. Check List",
+   "qrels_files": [
+    "tests/devtools.test.tsx"
+   ],
+   "drift": 0.06894542629636824
+  },
+  {
+   "number": 2257,
+   "title": "[v5] breaking: require TypeScript 4.5 and update tests",
+   "mergedAt": "2023-12-18T13:13:04Z",
+   "author": "dai-shi",
+   "query": "[v5] breaking: require TypeScript 4.5 and update tests. Summary for [v5 2138]( Check List",
+   "qrels_files": [
+    "tests/types.test.tsx"
+   ],
+   "drift": 0.05976095617529875
+  },
+  {
+   "number": 2266,
+   "title": "fix: Add deprecation notice for getServerState() in WithReact type",
+   "mergedAt": "2024-01-20T00:37:20Z",
+   "author": "charkour",
+   "query": "fix: Add deprecation notice for getServerState() in WithReact type. Summary api.getServerState is unused and undocumented. Let's deprecate it for removal in v5 unless we want to provide this as an escape hatch for when server and client state need to differ, if that's the case, then I'll close this and add documentation. @dai-shi, @dbritto-dev, @sewera, thoughts on documentation or deprecation? Check List",
+   "qrels_files": [
+    "src/react.ts",
+    "src/traditional.ts"
+   ],
+   "drift": 0.36536069651741293
+  },
+  {
+   "number": 2300,
+   "title": "[v5]: Drop `getServerState`",
+   "mergedAt": "2024-01-20T05:17:28Z",
+   "author": "charkour",
+   "query": "[v5]: Drop `getServerState`. Summary After some discussion, we will drop getServerState in v5 because it is inaccessible from the userland, and getInitialState solves the problem. Please let me know if any updates should be made. Thank you Check List",
+   "qrels_files": [
+    "src/react.ts",
+    "src/traditional.ts"
+   ],
+   "drift": 0.36536069651741293
+  },
+  {
+   "number": 2301,
+   "title": "[v5]: do not depend on use-sync-external-store",
+   "mergedAt": "2024-01-20T06:46:22Z",
+   "author": "dai-shi",
+   "query": "[v5]: do not depend on use-sync-external-store. for 2138 Just forgot it in",
+   "qrels_files": [
+    "src/react.ts"
+   ],
+   "drift": 0.5223880597014925
+  },
+  {
+   "number": 2302,
+   "title": "[v5]: refactor useMemoSelector",
+   "mergedAt": "2024-01-21T05:41:20Z",
+   "author": "dai-shi",
+   "query": "[v5]: refactor useMemoSelector. for 2138 the previous version has an issue with a corner case.",
+   "qrels_files": [
+    "src/react.ts",
+    "src/react/shallow.ts",
+    "tests/basic.test.tsx"
+   ],
+   "drift": 0.3550968713104354
+  },
+  {
+   "number": 2298,
+   "title": "Update docs related to  SSR/Hydration and SSR Apps",
+   "mergedAt": "2024-02-08T09:13:36Z",
+   "author": "dbritto-dev",
+   "query": "Update docs related to SSR/Hydration and SSR Apps. Check List",
+   "qrels_files": [
+    "src/react.ts",
+    "src/traditional.ts"
+   ],
+   "drift": 0.36536069651741293
+  },
+  {
+   "number": 2332,
+   "title": "Relax types for `persist` middleware",
+   "mergedAt": "2024-02-17T01:39:06Z",
+   "author": "rafaeelaudibert",
+   "query": "Relax types for `persist` middleware. Right now, we're requiring new StateStorage implementations to forcefully return void from inside setItem and removeItem . When using a library that returns the set value for setItem or removeItem , therefore returning a string , it causes Typescript to fail, requiring some weird workarounds. For example, when using localforage ( one needs to do what we describe below. Notice the void keyword. const storage: StateStorage = { ...localForage, setItem: void localForage.setItem.bind(localForage) } Another, longer, alternative is const storage: StateStorage = { ...localForage, // Curly braces are required because we need to \"return void \" setItem: (name, value) = { localStorage.setItem(name, value) } } By changing the type implementation to ignore types - using unknown - we can simply use localforage - and similar libraries - as if we were using window.localStorage Check List",
+   "qrels_files": [
+    "src/middleware/persist.ts"
+   ],
+   "drift": 0.38119312436804853
+  },
+  {
+   "number": 2365,
+   "title": "refactor: Switch to Object.hasOwn",
+   "mergedAt": "2024-02-29T01:06:41Z",
+   "author": "onlined",
+   "query": "refactor: Switch to Object.hasOwn. Summary We have Object.hasOwn and it looks more readable and intuitive than Object.prototype.hasOwnProperty.call . Check List",
+   "qrels_files": [
+    "src/vanilla/shallow.ts"
+   ],
+   "drift": 0.8861788617886179
+  },
+  {
+   "number": 2374,
+   "title": "refactor(shallow): Use for..of instead of C-style for",
+   "mergedAt": "2024-02-29T14:18:47Z",
+   "author": "onlined",
+   "query": "refactor(shallow): Use for..of instead of C-style for. Summary Check List",
+   "qrels_files": [
+    "src/vanilla/shallow.ts"
+   ],
+   "drift": 0.8861788617886179
+  },
+  {
+   "number": 2360,
+   "title": "fix: return type of persist migrate function changed to PersistedState",
+   "mergedAt": "2024-03-02T02:16:01Z",
+   "author": "bobdepreziz",
+   "query": "fix: return type of persist migrate function changed to PersistedState. Summary Check List",
+   "qrels_files": [
+    "src/middleware/persist.ts"
+   ],
+   "drift": 0.375
+  },
+  {
+   "number": 2395,
+   "title": "[v5]: follow React \"standard\" way with breaking behavioral change",
+   "mergedAt": "2024-03-09T00:16:35Z",
+   "author": "dai-shi",
+   "query": "[v5]: follow React \"standard\" way with breaking behavioral change. For 2138 I think useMemoSelector is a hack that should be avoided. We should generally follow how React works. If we need previous behavior, we should use zustand/traditional which is based on a library provided by React, instead of adding our own hack.",
+   "qrels_files": [
+    "src/react.ts",
+    "tests/basic.test.tsx",
+    "tests/ssr.test.tsx"
+   ],
+   "drift": 0.42708911829922114
+  },
+  {
+   "number": 2427,
+   "title": "[v5] Rewrite shallow to support iterables",
+   "mergedAt": "2024-03-23T04:01:10Z",
+   "author": "dai-shi",
+   "query": "[v5] Rewrite shallow to support iterables. for 2138 done",
+   "qrels_files": [
+    "src/vanilla/shallow.ts",
+    "tests/vanilla/shallow.test.tsx"
+   ],
+   "drift": 0.7026202226831653
+  },
+  {
+   "number": 2466,
+   "title": "[v5] Remove Devtools warning",
+   "mergedAt": "2024-04-16T01:58:59Z",
+   "author": "charkour",
+   "query": "[v5] Remove Devtools warning. For 2138 Summary Using the devtools middleware will warn in all non-browser environments during development. This was added many years ago and likely can be removed. The docs are updated to link to the Redux DevTools Chrome extension. Check List",
+   "qrels_files": [
+    "src/middleware/devtools.ts",
+    "tests/devtools.test.tsx"
+   ],
+   "drift": 0.1194149087394098
+  },
+  {
+   "number": 2585,
+   "title": "update: example/demo",
+   "mergedAt": "2024-06-06T13:44:17Z",
+   "author": "sunil-sharma-999",
+   "query": "update: example/demo. Summary - fix eslint config and lint issues - fix react key issue - remove children passed as props - remove unused variables and imports - \"encodings fragment\" is deprecated, replaced it with \"colorspace fragment\" Check List",
+   "qrels_files": [
+    "examples/demo/src/components/CodePreview.jsx",
+    "examples/demo/src/components/Details.jsx",
+    "examples/demo/src/components/Fireflies.jsx",
+    "examples/demo/src/components/Scene.jsx",
+    "examples/demo/src/materials/layerMaterial.js"
+   ],
+   "drift": 0.26127088579243984
+  },
+  {
+   "number": 2586,
+   "title": "useStore uses ReadonlyStoreApi",
+   "mergedAt": "2024-06-26T03:24:08Z",
+   "author": "frolic",
+   "query": "useStore uses ReadonlyStoreApi. Summary UseBoundStore types were relaxed in because the internals of this method did not use any of the setters, only getters. We can also do this for useStore types because its API only uses getters. Context: I am building a library that returns a store API with only getter methods exposed and I would like folks to be able to pass this directly into Zustand's useStore React helper. Check List",
+   "qrels_files": [
+    "src/react.ts",
+    "src/traditional.ts"
+   ],
+   "drift": 0.34509803921568627
+  },
+  {
+   "number": 2580,
+   "title": "fix(types)!: require complete state if `setState`'s `replace` flag is set",
+   "mergedAt": "2024-06-29T00:28:00Z",
+   "author": "Yonom",
+   "query": "fix(types)!: require complete state if `setState`'s `replace` flag is set. Summary Update the setState type to conditionally require a non-partial T if the replace argument of the function is set to true. This change also updates the types for set inside create((set) = ({ ... })) callbacks. Previously, store.setState({}, true) was considered valid, even though it would result in an invalid state. This fixes that issue. My suggestion is to consider this a breaking change to be on the safe side. Check List",
+   "qrels_files": [
+    "src/middleware/devtools.ts",
+    "src/middleware/immer.ts",
+    "src/middleware/persist.ts",
+    "src/vanilla.ts"
+   ],
+   "drift": 0.2835190826664874
+  },
+  {
+   "number": 2678,
+   "title": "fix(storage): avoid calling setItem with the state just retrieved",
+   "mergedAt": "2024-08-15T01:50:06Z",
+   "author": "double-thinker",
+   "query": "fix(storage): avoid calling setItem with the state just retrieved. Related Bug Reports or Discussions Fixes Summary This PR avoids a setItem call with the state just reteived from the storage. Check List",
+   "qrels_files": [
+    "src/middleware/persist.ts",
+    "tests/persistSync.test.tsx"
+   ],
+   "drift": 0.19061017682160164
+  },
+  {
+   "number": 2696,
+   "title": "Fix Immer type inference for `setState`",
+   "mergedAt": "2024-08-27T01:10:47Z",
+   "author": "chrisvander",
+   "query": "Fix Immer type inference for `setState`. Bases the type of setState off of setState instead of getState . Related Bug Reports or Discussions Fixes 1621 Summary This PR fixes the Immer middleware so that the type of setState is inferred off of the store's setState as opposed to getState . When using a middleware like [zustand-computed]( this would previously have the result of a differing getState generic would move over to setState unintentionally. Check List",
+   "qrels_files": [
+    "src/middleware/immer.ts",
+    "tests/middlewareTypes.test.tsx"
+   ],
+   "drift": 0.24841489957997565
+  },
+  {
+   "number": 2701,
+   "title": "refactor useShallow",
+   "mergedAt": "2024-08-27T01:13:01Z",
+   "author": "dai-shi",
+   "query": "refactor useShallow. I'm not sure if this is really required, or it's just bypassing something.",
+   "qrels_files": [
+    "src/react/shallow.ts"
+   ],
+   "drift": 0.5882352941176471
+  },
+  {
+   "number": 2703,
+   "title": "revert useShallow refactor in #2701",
+   "mergedAt": "2024-09-15T02:19:06Z",
+   "author": "dai-shi",
+   "query": "revert useShallow refactor in #2701. I was rushing too much. 2701 was to avoid react compiler warning, but it seems like the warning was caused because of destructuring ReactExports . The eslint rules aren't capable of it. Instead, let's use traditional React.useRef . This reverts 2701.",
+   "qrels_files": [
+    "src/react.ts",
+    "src/react/shallow.ts",
+    "src/traditional.ts"
+   ],
+   "drift": 0.053356269779055276
+  },
+  {
+   "number": 2795,
+   "title": "fix(shallow): fallback map-like iterator comparison",
+   "mergedAt": "2024-10-27T07:38:59Z",
+   "author": "dai-shi",
+   "query": "fix(shallow): fallback map-like iterator comparison. Related Bug Reports or Discussions Fixes 2794 Summary There is a logic to guess map-like iterator but it's not perfect. This adds fallback. Check List",
+   "qrels_files": [
+    "src/vanilla/shallow.ts",
+    "tests/vanilla/shallow.test.tsx"
+   ],
+   "drift": 0.5966671751067725
+  },
+  {
+   "number": 2821,
+   "title": "fix(shallow): iterable-like insensitive keys order comparison (alternate implementation)",
+   "mergedAt": "2024-10-30T11:52:43Z",
+   "author": "dai-shi",
+   "query": "fix(shallow): iterable-like insensitive keys order comparison (alternate implementation). Using the same tests in 2816.",
+   "qrels_files": [
+    "src/vanilla/shallow.ts",
+    "tests/vanilla/shallow.test.tsx"
+   ],
+   "drift": 0.12627287960814643
+  },
+  {
+   "number": 2832,
+   "title": "test: use screen exposed by React Testing Library",
+   "mergedAt": "2024-11-04T04:17:52Z",
+   "author": "kretajak",
+   "query": "test: use screen exposed by React Testing Library. Summary Tests using React Testing Library should use screen instead of queries methods returned by render . Check List - [ x] pnpm run prettier for formatting code and docs",
+   "qrels_files": [
+    "tests/basic.test.tsx",
+    "tests/persistAsync.test.tsx"
+   ],
+   "drift": 0.230482677773442
+  },
+  {
+   "number": 2844,
+   "title": "test: incorporate eslint-plugin-testing-library and fix reported issues",
+   "mergedAt": "2024-11-09T00:46:15Z",
+   "author": "kretajak",
+   "query": "test: incorporate eslint-plugin-testing-library and fix reported issues. Summary Testing Library provides [Eslint plugin ]( which encourages to use best practices. Check List",
+   "qrels_files": [
+    "tests/basic.test.tsx",
+    "tests/persistAsync.test.tsx",
+    "tests/shallow.test.tsx",
+    "tests/ssr.test.tsx"
+   ],
+   "drift": 0.2684069906217855
+  },
+  {
+   "number": 2845,
+   "title": "test: use @vitest/eslint-plugin",
+   "mergedAt": "2024-11-10T01:27:01Z",
+   "author": "kretajak",
+   "query": "test: use @vitest/eslint-plugin. Summary Project was already using plugin from but it seems unmaintained and moved to @vitest scope: It's actively developed. Check List",
+   "qrels_files": [
+    "tests/devtools.test.tsx"
+   ],
+   "drift": 0.05041853221724746
+  },
+  {
+   "number": 2875,
+   "title": "fix(middleware): devtools type error #2700",
+   "mergedAt": "2024-12-04T13:00:02Z",
+   "author": "AndyRightNow",
+   "query": "fix(middleware): devtools type error #2700. Related Bug Reports or Discussions Fixes 2700 Summary - Added inferred generic type variables U with some of them extending from the generic T , to support inferred return type - Added corresponding tests using the cases in 2700 Check List Notes Seems like no documentation update would be needed for this PR. Please feel free to let me know if I should update the docs.",
+   "qrels_files": [
+    "src/middleware/devtools.ts",
+    "tests/middlewareTypes.test.tsx"
+   ],
+   "drift": 0.25545239365121875
+  },
+  {
+   "number": 2877,
+   "title": "fix(persist): fix async migrate on persist middleware",
+   "mergedAt": "2024-12-04T13:06:36Z",
+   "author": "dbritto-dev",
+   "query": "fix(persist): fix async migrate on persist middleware. Related Bug Reports or Discussions Fixes 2827 Check List",
+   "qrels_files": [
+    "src/middleware/persist.ts",
+    "tests/persistAsync.test.tsx",
+    "tests/persistSync.test.tsx"
+   ],
+   "drift": 0.1660281385383983
+  },
+  {
+   "number": 2913,
+   "title": "feat: starter example",
+   "mergedAt": "2024-12-28T23:18:09Z",
+   "author": "leweyse",
+   "query": "feat: starter example. Related Bug Reports or Discussions Summary New starter example Check List",
+   "qrels_files": [
+    "examples/starter/src/index.tsx",
+    "examples/starter/src/vite-env.d.ts",
+    "examples/starter/vite.config.ts"
+   ],
+   "drift": 0.0
+  },
+  {
+   "number": 2935,
+   "title": "feat(types): Make ExtractState public",
+   "mergedAt": "2025-01-07T13:57:23Z",
+   "author": "vorant94",
+   "query": "feat(types): Make ExtractState public. Related Bug Reports or Discussions Fixes Summary after asking about how to infer state type outside of state declaration it happens that there is a dedicated but internal only type helper for it called ExtractState this PR makes this helper public, moves it to vanilla.ts since its not react-specific and adds a short docs paragraph with its usage example Check List",
+   "qrels_files": [
+    "src/react.ts",
+    "src/vanilla.ts"
+   ],
+   "drift": 0.015625
+  },
+  {
+   "number": 3030,
+   "title": "refactor(middleware/combine.ts): change exported function to 'function declaration'",
+   "mergedAt": "2025-02-27T11:43:35Z",
+   "author": "sukvvon",
+   "query": "refactor(middleware/combine.ts): change exported function to 'function declaration'. Summary Relates with Check List",
+   "qrels_files": [
+    "src/middleware/combine.ts"
+   ],
+   "drift": 0.06666666666666665
+  },
+  {
+   "number": 3032,
+   "title": "refactor(middleware): rename argument names like 'a', 'f'",
+   "mergedAt": "2025-02-28T08:53:30Z",
+   "author": "sukvvon",
+   "query": "refactor(middleware): rename argument names like 'a', 'f'. Summary The argument names arg , a , f and fn are used, and they will be clarified and standardized. Check List",
+   "qrels_files": [
+    "src/middleware/combine.ts",
+    "src/middleware/devtools.ts",
+    "src/middleware/immer.ts",
+    "src/middleware/redux.ts"
+   ],
+   "drift": 0.04156715688328377
+  },
+  {
+   "number": 3082,
+   "title": "fix: handle hardware acceleration disabled scenario in demo site",
+   "mergedAt": "2025-04-15T23:36:12Z",
+   "author": "B1u3B01t",
+   "query": "fix: handle hardware acceleration disabled scenario in demo site. This PR improves the demo site's error handling when hardware acceleration is disabled in the browser. The changes include: as discussed in 3071 - Added a fallback UI The fallback scene now shows: - A static image of the Zustand ogimage This fixes the issue where the demo site would break without any feedback when hardware acceleration is disabled. Testing: - fallback works when hardware acceleration is disabled Related Bug Reports or Discussions Fixes Summary Check List",
+   "qrels_files": [
+    "examples/demo/src/components/Scene.jsx"
+   ],
+   "drift": 0.004098360655737654
+  },
+  {
+   "number": 2982,
+   "title": "refactor(traditional): remove duplicated ExtractState type declaration",
+   "mergedAt": "2025-05-01T23:15:12Z",
+   "author": "shinhyogeun",
+   "query": "refactor(traditional): remove duplicated ExtractState type declaration. Related Bug Reports or Discussions Fixes Summary Regarding the work in the following [PR]( I agree with the location of ExtractState type, but this PR removes unnecessary redundant type declarations. Check List",
+   "qrels_files": [
+    "src/traditional.ts"
+   ],
+   "drift": 0.005649717514124242
+  },
+  {
+   "number": 3116,
+   "title": "chore(eslint): enforce file extension usage for internal modules, ignore external packages",
+   "mergedAt": "2025-05-10T13:45:59Z",
+   "author": "sukvvon",
+   "query": "chore(eslint): enforce file extension usage for internal modules, ignore external packages. Related Bug Reports or Discussions Fixes Summary Check List",
+   "qrels_files": [
+    "src/traditional.ts"
+   ],
+   "drift": 0.0
+  },
+  {
+   "number": 3122,
+   "title": "chore(eslint): update to 'eslint-plugin-react-hooks@6.0.0-rc.1', remove 'eslint-plugin-react-compiler'",
+   "mergedAt": "2025-05-17T05:13:12Z",
+   "author": "sukvvon",
+   "query": "chore(eslint): update to 'eslint-plugin-react-hooks@6.0.0-rc.1', remove 'eslint-plugin-react-compiler'. Related Bug Reports or Discussions Fixes Summary eslint-plugin-react-compiler has been incorporated into eslint-plugin-react-hooks , so i remove the eslint-plugin-react-compiler and update the version of eslint-plugin-react-hooks . Check List",
+   "qrels_files": [
+    "tests/middlewareTypes.test.tsx"
+   ],
+   "drift": 0.3663118346900438
+  },
+  {
+   "number": 3108,
+   "title": "feat(vanilla): update shallow compare function and tests",
+   "mergedAt": "2025-05-21T00:46:37Z",
+   "author": "dbritto-dev",
+   "query": "feat(vanilla): update shallow compare function and tests. Related Bug Reports or Discussions Fixes 3107 Summary Check List",
+   "qrels_files": [
+    "src/vanilla/shallow.ts",
+    "tests/vanilla/shallow.test.tsx"
+   ],
+   "drift": 0.033423423423423415
+  },
+  {
+   "number": 3111,
+   "title": "feat: add devtools.cleanup() method",
+   "mergedAt": "2025-05-21T00:49:59Z",
+   "author": "maxam2017",
+   "query": "feat: add devtools.cleanup() method. Summary When a store is wrapped in a context provider, remounting can cause duplicate instances in Redux DevTools; this patch adds a devtools.cleanup() method, allowing users to manually unsubscribe and clean up tracked connections. Check List Note related to 2254",
+   "qrels_files": [
+    "src/middleware/devtools.ts",
+    "tests/devtools.test.tsx"
+   ],
+   "drift": 0.06321041510462816
+  },
+  {
+   "number": 3113,
+   "title": "refactor: remove unnecessary type assertion in createJSONStorage",
+   "mergedAt": "2025-05-21T00:52:37Z",
+   "author": "2yunseong",
+   "query": "refactor: remove unnecessary type assertion in createJSONStorage. Related Bug Reports or Discussions Fixes Summary For readability, remove unnecessary type assertion in createJSONStorage() . call getStorage() in 37 line ensure that storage type(StateStorage). Thank you :) Check List",
+   "qrels_files": [
+    "src/middleware/persist.ts"
+   ],
+   "drift": 0.13589743589743586
+  },
+  {
+   "number": 3129,
+   "title": "test(vanilla/shallow): add test for pure iterable with different values returns false",
+   "mergedAt": "2025-05-21T02:41:09Z",
+   "author": "sukvvon",
+   "query": "test(vanilla/shallow): add test for pure iterable with different values returns false. Related Bug Reports or Discussions Fixes Summary AS-IS TO-BE Check List",
+   "qrels_files": [
+    "tests/vanilla/shallow.test.tsx"
+   ],
+   "drift": 0.012820512820512775
+  },
+  {
+   "number": 2987,
+   "title": "feat(devtool): inferred action type",
+   "mergedAt": "2025-05-21T11:12:14Z",
+   "author": "alimertcakar",
+   "query": "feat(devtool): inferred action type. Summary With devtools() middleware, we can use Redux devtools extension to debug fired actions. But actions are shown as either \"anonymous\" or by the custom name we provided in set() function like: set(foo, undefined, \"state/setCount\") . It is really tedious to provide a action name for every set call. Wouldn't it be nice to have the option to have it default to a more meaningful name? Now we can do that by passing inferActionName: true, to devtools options. It finds the the function name which called set() by reading the current stack. This works for firefox,chrome and edge. (There isn't a redux devtools extension on Safari anyways) In node.js it's displayed as Object.functionName instead of functionName , I don't think it matters as it's tests only. Check List",
+   "qrels_files": [
+    "src/middleware/devtools.ts",
+    "tests/devtools.test.tsx"
+   ],
+   "drift": 0.054986739475124946
+  },
+  {
+   "number": 3130,
+   "title": "test(vanilla/basic): add test for 'getInitialState'",
+   "mergedAt": "2025-05-21T11:22:10Z",
+   "author": "sukvvon",
+   "query": "test(vanilla/basic): add test for 'getInitialState'. Related Bug Reports or Discussions Fixes Summary AS-IS TO-BE Check List",
+   "qrels_files": [
+    "tests/vanilla/basic.test.ts"
+   ],
+   "drift": 0.0
+  },
+  {
+   "number": 3131,
+   "title": "test(vanilla/subscribe): add test for covering fireImmediately option in 'subscribeWithSelector'",
+   "mergedAt": "2025-05-22T03:58:34Z",
+   "author": "sukvvon",
+   "query": "test(vanilla/subscribe): add test for covering fireImmediately option in 'subscribeWithSelector'. Related Bug Reports or Discussions Fixes Summary AS-IS TO-BE Check List",
+   "qrels_files": [
+    "tests/vanilla/subscribe.test.tsx"
+   ],
+   "drift": 0.0
+  },
+  {
+   "number": 3139,
+   "title": "chore: fix some typos in comment",
+   "mergedAt": "2025-06-03T01:05:54Z",
+   "author": "clonemycode",
+   "query": "chore: fix some typos in comment. Related Bug Reports or Discussions fix some typos in comment Summary Check List",
+   "qrels_files": [
+    "tests/persistAsync.test.tsx",
+    "tests/persistSync.test.tsx"
+   ],
+   "drift": 0.174466779241576
+  },
+  {
+   "number": 3148,
+   "title": "fix(docs): links to the demo and the docs",
+   "mergedAt": "2025-06-08T23:41:52Z",
+   "author": "dai-shi",
+   "query": "fix(docs): links to the demo and the docs. Related Bug Reports or Discussions Fixes 3145 Summary Fix demo link and doc links. Check List",
+   "qrels_files": [
+    "examples/demo/src/components/Details.jsx"
+   ],
+   "drift": 0.3877551020408163
+  },
+  {
+   "number": 3157,
+   "title": "test(shallow): update 'shallow' and 'useShallow' imports to use 'zustand/shallow'",
+   "mergedAt": "2025-06-19T09:44:01Z",
+   "author": "sukvvon",
+   "query": "test(shallow): update 'shallow' and 'useShallow' imports to use 'zustand/shallow'. Related Bug Reports or Discussions Fixes Summary before after Check List",
+   "qrels_files": [
+    "tests/shallow.test.tsx",
+    "tests/vanilla/shallow.test.tsx"
+   ],
+   "drift": 0.025550100018185085
+  },
+  {
+   "number": 3147,
+   "title": "fix(devtools): Avoid inferring action type when explicit action name is provided",
+   "mergedAt": "2025-06-23T03:17:41Z",
+   "author": "vchirikov",
+   "query": "fix(devtools): Avoid inferring action type when explicit action name is provided. Summary Added call findCallerName() which tries to infer action name from error's callstack even when user explicitly provided action name ( nameOrAction or anonymousActionType ). I think it's much better to call findCallerName ONLY if user didn't provide anything we can use. Check List",
+   "qrels_files": [
+    "src/middleware/devtools.ts"
+   ],
+   "drift": 0.06451612903225812
+  },
+  {
+   "number": 3151,
+   "title": "refactor(middleware): replace export * with explicit named and type exports",
+   "mergedAt": "2025-06-23T03:41:54Z",
+   "author": "sukvvon",
+   "query": "refactor(middleware): replace export * with explicit named and type exports. Related Bug Reports or Discussions Fixes Summary Aligned export format with [ middleware.ts ]( Even if we use export syntax, we still only export useShallow in [ react/shallow.ts ]( and shallow in [ vanilla/shallow.ts ]( Check List",
+   "qrels_files": [
+    "src/middleware.ts"
+   ],
+   "drift": 0.030303030303030276
+  },
+  {
+   "number": 3161,
+   "title": "refactor: remove unused import in example & fix typo in tests",
+   "mergedAt": "2025-06-28T13:44:50Z",
+   "author": "noritaka1166",
+   "query": "refactor: remove unused import in example & fix typo in tests. Related Bug Reports or Discussions Summary remove unused import in example & fix typo in tests Check List",
+   "qrels_files": [
+    "examples/demo/src/components/Scene.jsx",
+    "tests/types.test.tsx"
+   ],
+   "drift": 0.018000000000000016
+  },
+  {
+   "number": 3162,
+   "title": "test(*): add 'expect' with 'toBeInTheDocument'",
+   "mergedAt": "2025-06-29T02:49:16Z",
+   "author": "sukvvon",
+   "query": "test(*): add 'expect' with 'toBeInTheDocument'. Related Bug Reports or Discussions Fixes Summary Check List",
+   "qrels_files": [
+    "tests/basic.test.tsx",
+    "tests/persistAsync.test.tsx"
+   ],
+   "drift": 0.2318332121093583
+  },
+  {
+   "number": 3192,
+   "title": "fix(react): useCallback for getSnapshot",
+   "mergedAt": "2025-07-31T00:06:30Z",
+   "author": "dai-shi",
+   "query": "fix(react): useCallback for getSnapshot. Related Bug Reports or Discussions Fixes Summary Micro optimization for stable selectors.",
+   "qrels_files": [
+    "src/react.ts"
+   ],
+   "drift": 0.0
+  },
+  {
+   "number": 3206,
+   "title": "feat(middleare/persist): return storage promise from setState",
+   "mergedAt": "2025-08-19T23:08:35Z",
+   "author": "dai-shi",
+   "query": "feat(middleare/persist): return storage promise from setState. fix 3196 persist middleware to mutate setState so that it returns what storage.setItem returns. This is a suboptimal solution as we can't infer types. It's always unknown . Nevertheless, it should be usable if we assert types in a certain case.",
+   "qrels_files": [
+    "src/middleware/persist.ts",
+    "tests/persistAsync.test.tsx"
+   ],
+   "drift": 0.18575487321290207
+  },
+  {
+   "number": 3252,
+   "title": "docs and tests: filter out specific actions from being sent to Redux DevTools",
+   "mergedAt": "2025-10-31T04:19:11Z",
+   "author": "totorototo",
+   "query": "docs and tests: filter out specific actions from being sent to Redux DevTools. Add actionsDenylist Documentation and Tests Summary This PR adds comprehensive documentation and test coverage for the actionsDenylist option in the Zustand DevTools middleware. This option allows developers to filter out specific actions from Redux DevTools using regex patterns, and is passed directly to Redux DevTools Extension. Documentation Added Updated docs/middlewares/devtools.md Added a comprehensive new section titled \"Filtering actions with actionsDenylist\" that provides: API Reference Section - Parameter Definition : Documented actionsDenylist as an optional parameter accepting string | string[] - Type Details : Explained it accepts regex pattern strings for flexible filtering - Behavior Description : Clarified that filtering is handled by Redux DevTools Extension, not by Zustand - Integration Notes : Documented how it works seamlessly with other DevTools options like name , store , etc. Usage Examples Provided three distinct examples demonstrating different filtering scenarios: 1. Array Pattern Filtering : Shows how to filter multiple action categories using an array of regex patterns - Example: Filtering both internal/. and secret/. actions simultaneously - Demonstrates how to hide internal implementation details from DevTools 2. Single Pattern Filtering : Illustrates using a single regex string for simpler",
+   "qrels_files": [
+    "tests/devtools.test.tsx"
+   ],
+   "drift": 0.03155479059093513
+  },
+  {
+   "number": 3308,
+   "title": "experimental: unstable ssrSafe middleware",
+   "mergedAt": "2025-11-29T22:59:06Z",
+   "author": "dai-shi",
+   "query": "experimental: unstable ssrSafe middleware. Related Bug Reports or Discussions Summary Add unstable ssrSafe middleware Check List",
+   "qrels_files": [
+    "src/middleware.ts",
+    "src/middleware/ssrSafe.ts"
+   ],
+   "drift": 0.0
+  },
+  {
+   "number": 3209,
+   "title": "feat: add zustand playground",
+   "mergedAt": "2025-11-29T23:35:40Z",
+   "author": "Triumph-light",
+   "query": "feat: add zustand playground. PR Description: Hi @dai-shi \ud83d\udc4b As a heavy Zustand user and React developer, I built a Playground for testing and prototyping state management in my projects. Since Zustand is my go-to state library, I thought this could be valuable for the community. It serves two main purposes: Real-time debugging: Quickly test the library's latest features Lower barrier to entry: Help new users understand the library visually Key features: Self-contained in /playground (no impact on core project) Zero dependencies I'll maintain it alongside library updates Happy to adjust the structure or location as needed. Thanks for your great work!\ud83d\ude06",
+   "qrels_files": [
+    "examples/demo/src/components/Details.jsx"
+   ],
+   "drift": 0.0
+  },
+  {
+   "number": 3321,
+   "title": "chore(eslint): enable 'testing-library', 'jest-dom', 'vitest' plugins and fix violations",
+   "mergedAt": "2025-12-11T11:45:18Z",
+   "author": "sukvvon",
+   "query": "chore(eslint): enable 'testing-library', 'jest-dom', 'vitest' plugins and fix violations. Related Bug Reports or Discussions relates Summary - Enable testing-library , jest-dom , vitest ESLint plugins for test files - Add missing assertions to 19 type-only tests to fix vitest/expect-expect rule - Rename children to childItems to fix testing-library/no-node-access false positive - Add eslint-disable-next-line for this.props.children (React standard pattern) Check List",
+   "qrels_files": [
+    "tests/basic.test.tsx",
+    "tests/middlewareTypes.test.tsx",
+    "tests/types.test.tsx"
+   ],
+   "drift": 0.16474324252081987
+  },
+  {
+   "number": 3324,
+   "title": "test: replace 'findByText' with 'getByText' and simplify timer usage",
+   "mergedAt": "2025-12-21T00:24:43Z",
+   "author": "sukvvon",
+   "query": "test: replace 'findByText' with 'getByText' and simplify timer usage. Related Bug Reports or Discussions N/A Summary - Replace findByText with getByText in basic.test.tsx , persistAsync.test.tsx , and ssr.test.tsx - Replace waitFor with fake timers in persistAsync.test.tsx - Remove unnecessary process.nextTick from persistSync.test.tsx - Add sleep helper function to test-utils.ts Check List",
+   "qrels_files": [
+    "tests/basic.test.tsx",
+    "tests/persistAsync.test.tsx",
+    "tests/persistSync.test.tsx",
+    "tests/ssr.test.tsx",
+    "tests/test-utils.ts"
+   ],
+   "drift": 0.14194320293583448
+  },
+  {
+   "number": 3349,
+   "title": "test: remove eslint-disable for no-unused-expressions",
+   "mergedAt": "2026-01-11T13:35:32Z",
+   "author": "kamja44",
+   "query": "test: remove eslint-disable for no-unused-expressions. This PR removes the / eslint @typescript-eslint/no-unused-expressions: off / directive from tests/middlewareTypes.test.tsx . To satisfy the linter, unused expressions in the tests have been wrapped with the void operator. Changes - Remove global eslint disable comment in tests/middlewareTypes.test.tsx - Add void operator to unused expressions to prevent linting errors Contribution Checklist",
+   "qrels_files": [
+    "tests/middlewareTypes.test.tsx"
+   ],
+   "drift": 0.37306021104903786
+  },
+  {
+   "number": 3336,
+   "title": "fix(persist): prevent race condition during concurrent rehydrate calls",
+   "mergedAt": "2026-01-12T05:52:32Z",
+   "author": "Niyaz-Mazhitov",
+   "query": "fix(persist): prevent race condition during concurrent rehydrate calls. Summary Fixes race condition in persist middleware when multiple rehydrate() calls happen concurrently. Problem When using async storage, if rehydrate() is called multiple times before the first hydration completes, all hydrations run in parallel and results are applied in unpredictable order. This causes: - Stale state being applied over newer state - onFinishHydration callbacks firing multiple times - Inconsistent state after hydration Solution Added a hydrationVersion counter that: - Increments at the start of each hydrate() call - Is checked after each async step (getItem, migrate, before applying state) - Aborts the hydration if a newer one has started This ensures only the most recent rehydrate() call applies its state. Test plan",
+   "qrels_files": [
+    "src/middleware/persist.ts",
+    "tests/persistAsync.test.tsx"
+   ],
+   "drift": 0.05907037858257369
+  },
+  {
+   "number": 3352,
+   "title": "test(middlewareTypes): replace 'void' with 'expectTypeOf' for type assertions",
+   "mergedAt": "2026-01-12T11:18:33Z",
+   "author": "sukvvon",
+   "query": "test(middlewareTypes): replace 'void' with 'expectTypeOf' for type assertions. Related Bug Reports or Discussions N/A Summary Replace void operator patterns with explicit type assertions using expectTypeOf in middlewareTypes.test.tsx for better type verification. - Replace void (expression) with expectTypeOf(expression).toEqualTypeOf () - Replace deprecated toMatchTypeOf with toExtend for explicit type checking - Replace loose matchers ( toBeNumber , toBeVoid , toBeBoolean ) with stricter toEqualTypeOf () - Wrap setState , subscribe , persist.hasHydrated with expectTypeOf for type verification - Remove redundant expect(useBoundStore).toBeDefined() assertions Check List",
+   "qrels_files": [
+    "tests/middlewareTypes.test.tsx"
+   ],
+   "drift": 0.04374240583232081
+  },
+  {
+   "number": 3356,
+   "title": "test(ssr): remove 'skipIf' since all CI React versions are 18+",
+   "mergedAt": "2026-01-13T23:25:15Z",
+   "author": "sukvvon",
+   "query": "test(ssr): remove 'skipIf' since all CI React versions are 18+. Related Bug Reports or Discussions N/A Summary Remove describe.skipIf since all CI React versions are 18+. - Change describe.skipIf(!React.version.startsWith('18')) to describe - Update description from 'react 18' to 'react 18+' - SSR tests now run on all CI React versions (18.0.0 ~ 19.x) Check List",
+   "qrels_files": [
+    "tests/ssr.test.tsx"
+   ],
+   "drift": 0.0
+  },
+  {
+   "number": 3362,
+   "title": "chore: improve typing in devtools middleware",
+   "mergedAt": "2026-01-20T01:33:09Z",
+   "author": "grigoriy-reshetniak",
+   "query": "chore: improve typing in devtools middleware. Summary While going after another FIXME comment I've noticed repetitive api as any in devtools middleware. Also fixed some as any on the way. Check List",
+   "qrels_files": [
+    "src/middleware/devtools.ts"
+   ],
+   "drift": 0.029748283752860427
+  },
+  {
+   "number": 3367,
+   "title": "fix(persist): avoid relying on global localStorage",
+   "mergedAt": "2026-02-01T01:47:11Z",
+   "author": "honuuk",
+   "query": "fix(persist): avoid relying on global localStorage. Related Bug Reports or Discussions Fixes 3266 Summary Use window.localStorage explicitly as the default storage reference in persist to avoid relying on a global localStorage that may resolve to unexpected values in some environments. Check List",
+   "qrels_files": [
+    "src/middleware/persist.ts"
+   ],
+   "drift": 0.00987654320987652
+  },
+  {
+   "number": 3371,
+   "title": "fix(immer): Proper typing for immer middleware in combination with slices ",
+   "mergedAt": "2026-02-01T01:55:08Z",
+   "author": "wheerd",
+   "query": "fix(immer): Proper typing for immer middleware in combination with slices . Summary For the example from the docs for slices, but with immer: const createBearSlice: StateCreator< BearSlice & FishSlice, [['zustand/immer', never]], [], BearSlice = (set) = ({ bears: 0, Currently, this will create a type error. Check List",
+   "qrels_files": [
+    "src/middleware/immer.ts",
+    "tests/middlewareTypes.test.tsx"
+   ],
+   "drift": 0.015057277628032328
+  },
+  {
+   "number": 3391,
+   "title": "fix(persist): use latest state in post-rehydration callback",
+   "mergedAt": "2026-03-16T02:31:13Z",
+   "author": "Shohjahon-n",
+   "query": "fix(persist): use latest state in post-rehydration callback. Related Bug Reports or Discussions Fixes Summary - Use current store state ( get() ) for the post-rehydration callback in async hydration flow. - Prevent stale callback payload when state changes again during hydration. - Add an async regression test that mutates state during hydration and verifies callback receives the latest merged state. Check List",
+   "qrels_files": [
+    "src/middleware/persist.ts",
+    "tests/persistAsync.test.tsx"
+   ],
+   "drift": 0.03938248657023963
+  },
+  {
+   "number": 3414,
+   "title": "fix(devtools): correct redux devtools config type extension",
+   "mergedAt": "2026-03-16T02:33:54Z",
+   "author": "grigoriy-reshetniak",
+   "query": "fix(devtools): correct redux devtools config type extension. Related Bug Reports or Discussions Fixes Summary Regression was introduced because type was changed from any to object and (quite self-descriptive) Object literal may only specify known properties which became a Type error when trying to pass serialize option to devtools middleware. Check List",
+   "qrels_files": [
+    "src/middleware/devtools.ts"
+   ],
+   "drift": 0.027459954233409634
+  },
+  {
+   "number": 3443,
+   "title": "refactor(devtools): remove duplicate module augmentation",
+   "mergedAt": "2026-03-30T18:36:23Z",
+   "author": "mahmoodhamdi",
+   "query": "refactor(devtools): remove duplicate module augmentation. Summary The StoreMutators module augmentation for 'zustand/devtools' is declared twice in src/middleware/devtools.ts \u2014 once at line 15 and an identical copy at line 101. Both declare the exact same interface member. Removed the duplicate. Changes - Removed the second declare module '../vanilla' block (was identical to the first) - No behavioral change \u2014 TypeScript merges duplicate declare module blocks, so this is purely a cleanup Verification - All 196 tests pass - TypeScript check clean - ESLint clean",
+   "qrels_files": [
+    "src/middleware/devtools.ts"
+   ],
+   "drift": 0.019607843137254943
+  },
+  {
+   "number": 3442,
+   "title": "test: expand React subscribe test coverage",
+   "mergedAt": "2026-03-30T18:44:39Z",
+   "author": "mahmoodhamdi",
+   "query": "test: expand React subscribe test coverage. Summary The React-level tests/subscribe.test.tsx only had a single test that checked typeof subscribe === 'function' . Meanwhile, the vanilla counterpart ( tests/vanilla/subscribe.test.tsx ) has 9 comprehensive tests. This expands the React subscribe tests to cover actual subscription behavior through the create() API. Tests Added - State identity check (same reference \u2192 no notification) - State change notification with previous/current state - subscribeWithSelector : slice-based subscriptions - subscribeWithSelector : custom equality functions - subscribeWithSelector : fireImmediately option - Unsubscription - Multiple subscribers - Selective unsubscription (one listener removed, others remain) Goes from 1 test \u2192 12 tests for React subscribe behavior. Verification - All 207 tests pass - TypeScript check clean - ESLint clean - Prettier clean",
+   "qrels_files": [
+    "tests/subscribe.test.tsx"
+   ],
+   "drift": 0.0
+  },
+  {
+   "number": 3471,
+   "title": "test(middleware/immer): add runtime tests for immer middleware",
+   "mergedAt": "2026-04-21T02:31:02Z",
+   "author": "KimHyeongRae0",
+   "query": "test(middleware/immer): add runtime tests for immer middleware. Related Bug Reports or Discussions N/A \u2014 coverage-only test additions. No source changes. Summary The immer middleware ( src/middleware/immer.ts ) has no dedicated runtime test file. tests/middlewareTypes.test.tsx only exercises it at the type level, leaving the store.setState override (lines 77\u201383) entirely uncovered at runtime. Other middleware ( devtools , persist , subscribeWithSelector ) already have dedicated runtime test files. This mirrors the pattern accepted in 3442 (vanilla had subscribe coverage, React did not \u2192 add the missing runtime tests). Tests added ( tests/immer.test.tsx ) - should mutate state via an immer draft (function updater) \u2014 covers the produce(updater) path - should merge state when given a non-function updater \u2014 covers the : updater path - should replace the entire state when replace flag is true \u2014 covers replace flag propagation - should produce nested state updates via a draft without mutating the previous state \u2014 verifies immer's structural sharing - should work with vanilla createStore \u2014 covers the vanilla surface Coverage delta for src/middleware/immer.ts | | Before | After | | ------------ | -----: | ----: | | Statements | 71.42% | 100% | | Branches | 0% | 100% | | Functions",
+   "qrels_files": [
+    "tests/immer.test.tsx"
+   ],
+   "drift": 0.0
+  },
+  {
+   "number": 3483,
+   "title": "fix(tests): change parameters for 'expect' in test",
+   "mergedAt": "2026-05-04T14:03:43Z",
+   "author": "lstak",
+   "query": "fix(tests): change parameters for 'expect' in test. Related Bug Reports or Discussions There are no related bug reports. It is just a small issue in one of the test files. It was detected while working with Claude Code with Opus 4.6. Summary The changed lines originally referred to aoi1 and initialstate1 (repeated test). This looks like a copy&paste issue. Change to api2 and api3 Check List",
+   "qrels_files": [
+    "tests/devtools.test.tsx"
+   ],
+   "drift": 0.027729967489003582
+  },
+  {
+   "number": 3469,
+   "title": "fix(devtools): support Firefox/Safari stack format in findCallerName",
+   "mergedAt": "2026-05-04T23:13:47Z",
+   "author": "SBolsec",
+   "query": "fix(devtools): support Firefox/Safari stack format in findCallerName. Related Bug Reports or Discussions no existing issue \u2014 built on top of 2987 Summary PR 2987 added findCallerName to infer action types from the call stack, but the regex /.+ (.+) .+/ only matches V8-style frames ( at funcName (source:line:col) ). SpiderMonkey (Firefox) and JavaScriptCore (Safari) use a different format \u2014 funcName@source:line:col \u2014 with no spaces, so the regex silently falls back to \"anonymous\". See [MDN: Error.stack]( for the format differences across engines. Changes: - Add a second regex for the Gecko/JSC stack format ( /^([^@]+)@/ ) - Extract both regexes to module-level constants so they are compiled once, not on every setState call - Export findCallerName and add a unit test covering the Firefox stack format Check List",
+   "qrels_files": [
+    "src/middleware/devtools.ts",
+    "tests/devtools.test.tsx"
+   ],
+   "drift": 0.01385167955860872
+  },
+  {
+   "number": 3511,
+   "title": "fix(devtools): improve type inference for Devtools initializer",
+   "mergedAt": "2026-05-28T09:46:10Z",
+   "author": "dbritto-dev",
+   "query": "fix(devtools): improve type inference for Devtools initializer. Related Bug Reports or Discussions Related Discussion: 3510 Regression PR: 2875 Summary - Improves type inference for the devtools initializer in the Devtools middleware type. - Adds a dedicated type-level regression test for the 3510 scenario in tests/middlewareTypes.test.tsx to ensure create ()(devtools((set, get) = ...)) keeps set/get correctly inferred. Check List",
+   "qrels_files": [
+    "src/middleware/devtools.ts",
+    "tests/middlewareTypes.test.tsx"
+   ],
+   "drift": 0.0040000000000000036
+  }
+ ]
+}

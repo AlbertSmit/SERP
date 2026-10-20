@@ -1,0 +1,5305 @@
+{
+ "meta": {
+  "repo": "pmndrs/zustand",
+  "head": "d7a5583cffd80af515f7dfb69583c95cbdc9e2ce",
+  "checkout": "experiments/stages/repos/zustand",
+  "corpus_dirs": [
+   "src",
+   "tests",
+   "examples"
+  ],
+  "query_source": "merged PR title + body, truncated to 200 whitespace tokens",
+  "qrels_source": "code files changed by the merged PR",
+  "pr_window": "merged >= 2023-01-01",
+  "pr_limit": 1000,
+  "seed": 1729,
+  "parser": "tolerant line/brace TypeScript scanner (see REAL_REPO.md)",
+  "variants": {
+   "full": "pre-registered query text",
+   "no_paths": "post-hoc: file names and paths removed from the query, to test whether the lexical baseline is saturating on path mentions"
+  },
+  "constants": {
+   "rrf_k": 60,
+   "pool_depth": 100,
+   "seed_chunks": 10,
+   "hub_df_frac": 0.05,
+   "cesr_budget": 2000,
+   "mu": 0.2,
+   "cost_exponent": 0.35,
+   "bm25_tie": 0.01,
+   "small_set": 3,
+   "max_symbol_constraints": 4,
+   "max_file_constraints": 3,
+   "resamples": 1000
+  },
+  "claim": "PR-derived, non-circular: neither queries nor labels come from the graph. Labels are 'files the author changed', which includes tests and refactors and is therefore noisy in a known direction. Corpus and graph are at HEAD while PRs merged earlier, so qrels for old PRs describe code that has since moved; per-PR drift is recorded."
+ },
+ "prs": {
+  "count": 92,
+  "numbers": [
+   1435,
+   1463,
+   1518,
+   1523,
+   1540,
+   1589,
+   1667,
+   1647,
+   1689,
+   1692,
+   1763,
+   1972,
+   1976,
+   1991,
+   2060,
+   2088,
+   2090,
+   2099,
+   2213,
+   2244,
+   2236,
+   2257,
+   2266,
+   2300,
+   2301,
+   2302,
+   2298,
+   2332,
+   2365,
+   2374,
+   2360,
+   2395,
+   2427,
+   2466,
+   2585,
+   2586,
+   2580,
+   2678,
+   2696,
+   2701,
+   2703,
+   2795,
+   2821,
+   2832,
+   2844,
+   2845,
+   2875,
+   2877,
+   2913,
+   2935,
+   3030,
+   3032,
+   3082,
+   2982,
+   3116,
+   3122,
+   3108,
+   3111,
+   3113,
+   3129,
+   2987,
+   3130,
+   3131,
+   3139,
+   3148,
+   3157,
+   3147,
+   3151,
+   3161,
+   3162,
+   3192,
+   3206,
+   3252,
+   3308,
+   3209,
+   3321,
+   3324,
+   3349,
+   3336,
+   3352,
+   3356,
+   3362,
+   3367,
+   3371,
+   3391,
+   3414,
+   3443,
+   3442,
+   3471,
+   3483,
+   3469,
+   3511
+  ],
+  "by_era": {
+   "2023-2024": 49,
+   "2025-2026": 43
+  },
+  "changed_files": {
+   "2": 31,
+   "3": 12,
+   "4": 5,
+   "1": 42,
+   "5": 2
+  },
+  "drift": {
+   "mean": 0.23123442001853572,
+   "median": 0.18011082622723903,
+   "share_le_0.2": 0.5217391304347826,
+   "by_era": {
+    "2023-2024": {
+     "prs": 49,
+     "mean": 0.3745775895005177
+    },
+    "2025-2026": {
+     "prs": 43,
+     "mean": 0.0678898780506957
+    }
+   }
+  },
+  "dropped": {
+   "docs_or_ci_only": 384,
+   "dependency_bump": 10,
+   "bot": 2,
+   "query_too_short": 5,
+   "outside_corpus_dirs": 24,
+   "file_gone_at_head": 7,
+   "file_count_out_of_range": 12,
+   "before_window": 395
+  },
+  "titles": [
+   {
+    "number": 1435,
+    "title": "feat(middleware/devtools): Better redux devtools. One connection for all zustand stores",
+    "merged": "2023-01-01",
+    "files": [
+     "src/middleware/devtools.ts",
+     "tests/devtools.test.tsx"
+    ]
+   },
+   {
+    "number": 1463,
+    "title": "feat(middleware/persist): new storage option",
+    "merged": "2023-01-01",
+    "files": [
+     "src/middleware/persist.ts",
+     "tests/middlewareTypes.test.tsx",
+     "tests/types.test.tsx"
+    ]
+   },
+   {
+    "number": 1518,
+    "title": "fix(middleware/persist): hydrate in sync (new impl with storage option)",
+    "merged": "2023-01-10",
+    "files": [
+     "src/middleware/persist.ts",
+     "tests/persistAsync.test.tsx",
+     "tests/persistSync.test.tsx"
+    ]
+   },
+   {
+    "number": 1523,
+    "title": "chore: show deprecated message only in DEV",
+    "merged": "2023-01-10",
+    "files": [
+     "src/middleware/persist.ts",
+     "src/react.ts",
+     "src/shallow.ts",
+     "src/vanilla.ts"
+    ]
+   },
+   {
+    "number": 1540,
+    "title": "fix(middleware/persist): Fix the storage type",
+    "merged": "2023-01-13",
+    "files": [
+     "src/middleware/persist.ts"
+    ]
+   },
+   {
+    "number": 1589,
+    "title": "fix(react, types): relax react types",
+    "merged": "2023-03-06",
+    "files": [
+     "src/react.ts",
+     "tests/types.test.tsx"
+    ]
+   },
+   {
+    "number": 1667,
+    "title": "fix: typo in shallow.ts",
+    "merged": "2023-03-06",
+    "files": [
+     "src/shallow.ts"
+    ]
+   },
+   {
+    "number": 1647,
+    "title": "feat(middleware/persist): add skip hydration option #405",
+    "merged": "2023-03-31",
+    "files": [
+     "src/middleware/persist.ts",
+     "tests/persistAsync.test.tsx",
+     "tests/persistSync.test.tsx"
+    ]
+   },
+   {
+    "number": 1689,
+    "title": "fix(middleware/persist): ensure `persist` does not drop updates in `onRehydrateStorage` when using a synchronous storage API",
+    "merged": "2023-03-31",
+    "files": [
+     "src/middleware/persist.ts",
+     "tests/persistAsync.test.tsx",
+     "tests/persistSync.test.tsx"
+    ]
+   },
+   {
+    "number": 1692,
+    "title": "fix(middleware/persist): ensure argument for `onRehydrateStorage` and `onHydrate` is defined on first hydration",
+    "merged": "2023-03-31",
+    "files": [
+     "src/middleware/persist.ts",
+     "tests/persistAsync.test.tsx",
+     "tests/persistSync.test.tsx"
+    ]
+   },
+   {
+    "number": 1763,
+    "title": "feat(middleware/persist): improve createJSONStorage for Maps",
+    "merged": "2023-05-04",
+    "files": [
+     "src/middleware/persist.ts",
+     "tests/persistAsync.test.tsx",
+     "tests/persistSync.test.tsx",
+     "tests/test-utils.ts"
+    ]
+   },
+   {
+    "number": 1972,
+    "title": "fix(types): accept undefined equalityFn for the deprecated useStore",
+    "merged": "2023-08-06",
+    "files": [
+     "src/react.ts"
+    ]
+   },
+   {
+    "number": 1976,
+    "title": "fix: improve warning for deprecated equalityFn",
+    "merged": "2023-08-06",
+    "files": [
+     "src/react.ts"
+    ]
+   },
+   {
+    "number": 1991,
+    "title": "fix(types)(middleware/devtools): avoid copying types",
+    "merged": "2023-10-02",
+    "files": [
+     "src/middleware/devtools.ts"
+    ]
+   },
+   {
+    "number": 2060,
+    "title": "fix(traditional): make defaultEqualityFn optional in TS Types",
+    "merged": "2023-10-02",
+    "files": [
+     "src/traditional.ts"
+    ]
+   },
+   {
+    "number": 2088,
+    "title": "test(ssr): Validate state synchronization between server and client in React 18 using Zustand (#903)",
+    "merged": "2023-10-02",
+    "files": [
+     "tests/ssr.test.tsx"
+    ]
+   },
+   {
+    "number": 2090,
+    "title": "feat: add useShallow",
+    "merged": "2023-10-02",
+    "files": [
+     "src/shallow.ts",
+     "tests/shallow.test.tsx"
+    ]
+   },
+   {
+    "number": 2099,
+    "title": "fix(types): mitigate devtools typing",
+    "merged": "2023-10-05",
+    "files": [
+     "src/middleware/devtools.ts"
+    ]
+   },
+   {
+    "number": 2213,
+    "title": "fix(vanilla): unexpected null state update behavior",
+    "merged": "2023-11-27",
+    "files": [
+     "src/vanilla.ts",
+     "tests/vanilla/basic.test.ts"
+    ]
+   },
+   {
+    "number": 2244,
+    "title": "chore(test): stop testing deprecated features and test subscribe in vanilla",
+    "merged": "2023-12-12",
+    "files": [
+     "tests/shallow.test.tsx",
+     "tests/subscribe.test.tsx",
+     "tests/vanilla/subscribe.test.tsx"
+    ]
+   },
+   {
+    "number": 2236,
+    "title": "[v5] breaking: make React 18 as minimal requirement",
+    "merged": "2023-12-17",
+    "files": [
+     "tests/devtools.test.tsx"
+    ]
+   },
+   {
+    "number": 2257,
+    "title": "[v5] breaking: require TypeScript 4.5 and update tests",
+    "merged": "2023-12-18",
+    "files": [
+     "tests/types.test.tsx"
+    ]
+   },
+   {
+    "number": 2266,
+    "title": "fix: Add deprecation notice for getServerState() in WithReact type",
+    "merged": "2024-01-20",
+    "files": [
+     "src/react.ts",
+     "src/traditional.ts"
+    ]
+   },
+   {
+    "number": 2300,
+    "title": "[v5]: Drop `getServerState`",
+    "merged": "2024-01-20",
+    "files": [
+     "src/react.ts",
+     "src/traditional.ts"
+    ]
+   },
+   {
+    "number": 2301,
+    "title": "[v5]: do not depend on use-sync-external-store",
+    "merged": "2024-01-20",
+    "files": [
+     "src/react.ts"
+    ]
+   },
+   {
+    "number": 2302,
+    "title": "[v5]: refactor useMemoSelector",
+    "merged": "2024-01-21",
+    "files": [
+     "src/react.ts",
+     "src/react/shallow.ts",
+     "tests/basic.test.tsx"
+    ]
+   },
+   {
+    "number": 2298,
+    "title": "Update docs related to  SSR/Hydration and SSR Apps",
+    "merged": "2024-02-08",
+    "files": [
+     "src/react.ts",
+     "src/traditional.ts"
+    ]
+   },
+   {
+    "number": 2332,
+    "title": "Relax types for `persist` middleware",
+    "merged": "2024-02-17",
+    "files": [
+     "src/middleware/persist.ts"
+    ]
+   },
+   {
+    "number": 2365,
+    "title": "refactor: Switch to Object.hasOwn",
+    "merged": "2024-02-29",
+    "files": [
+     "src/vanilla/shallow.ts"
+    ]
+   },
+   {
+    "number": 2374,
+    "title": "refactor(shallow): Use for..of instead of C-style for",
+    "merged": "2024-02-29",
+    "files": [
+     "src/vanilla/shallow.ts"
+    ]
+   },
+   {
+    "number": 2360,
+    "title": "fix: return type of persist migrate function changed to PersistedState",
+    "merged": "2024-03-02",
+    "files": [
+     "src/middleware/persist.ts"
+    ]
+   },
+   {
+    "number": 2395,
+    "title": "[v5]: follow React \"standard\" way with breaking behavioral change",
+    "merged": "2024-03-09",
+    "files": [
+     "src/react.ts",
+     "tests/basic.test.tsx",
+     "tests/ssr.test.tsx"
+    ]
+   },
+   {
+    "number": 2427,
+    "title": "[v5] Rewrite shallow to support iterables",
+    "merged": "2024-03-23",
+    "files": [
+     "src/vanilla/shallow.ts",
+     "tests/vanilla/shallow.test.tsx"
+    ]
+   },
+   {
+    "number": 2466,
+    "title": "[v5] Remove Devtools warning",
+    "merged": "2024-04-16",
+    "files": [
+     "src/middleware/devtools.ts",
+     "tests/devtools.test.tsx"
+    ]
+   },
+   {
+    "number": 2585,
+    "title": "update: example/demo",
+    "merged": "2024-06-06",
+    "files": [
+     "examples/demo/src/components/CodePreview.jsx",
+     "examples/demo/src/components/Details.jsx",
+     "examples/demo/src/components/Fireflies.jsx",
+     "examples/demo/src/components/Scene.jsx",
+     "examples/demo/src/materials/layerMaterial.js"
+    ]
+   },
+   {
+    "number": 2586,
+    "title": "useStore uses ReadonlyStoreApi",
+    "merged": "2024-06-26",
+    "files": [
+     "src/react.ts",
+     "src/traditional.ts"
+    ]
+   },
+   {
+    "number": 2580,
+    "title": "fix(types)!: require complete state if `setState`'s `replace` flag is set",
+    "merged": "2024-06-29",
+    "files": [
+     "src/middleware/devtools.ts",
+     "src/middleware/immer.ts",
+     "src/middleware/persist.ts",
+     "src/vanilla.ts"
+    ]
+   },
+   {
+    "number": 2678,
+    "title": "fix(storage): avoid calling setItem with the state just retrieved",
+    "merged": "2024-08-15",
+    "files": [
+     "src/middleware/persist.ts",
+     "tests/persistSync.test.tsx"
+    ]
+   },
+   {
+    "number": 2696,
+    "title": "Fix Immer type inference for `setState`",
+    "merged": "2024-08-27",
+    "files": [
+     "src/middleware/immer.ts",
+     "tests/middlewareTypes.test.tsx"
+    ]
+   },
+   {
+    "number": 2701,
+    "title": "refactor useShallow",
+    "merged": "2024-08-27",
+    "files": [
+     "src/react/shallow.ts"
+    ]
+   },
+   {
+    "number": 2703,
+    "title": "revert useShallow refactor in #2701",
+    "merged": "2024-09-15",
+    "files": [
+     "src/react.ts",
+     "src/react/shallow.ts",
+     "src/traditional.ts"
+    ]
+   },
+   {
+    "number": 2795,
+    "title": "fix(shallow): fallback map-like iterator comparison",
+    "merged": "2024-10-27",
+    "files": [
+     "src/vanilla/shallow.ts",
+     "tests/vanilla/shallow.test.tsx"
+    ]
+   },
+   {
+    "number": 2821,
+    "title": "fix(shallow): iterable-like insensitive keys order comparison (alternate implementation)",
+    "merged": "2024-10-30",
+    "files": [
+     "src/vanilla/shallow.ts",
+     "tests/vanilla/shallow.test.tsx"
+    ]
+   },
+   {
+    "number": 2832,
+    "title": "test: use screen exposed by React Testing Library",
+    "merged": "2024-11-04",
+    "files": [
+     "tests/basic.test.tsx",
+     "tests/persistAsync.test.tsx"
+    ]
+   },
+   {
+    "number": 2844,
+    "title": "test: incorporate eslint-plugin-testing-library and fix reported issues",
+    "merged": "2024-11-09",
+    "files": [
+     "tests/basic.test.tsx",
+     "tests/persistAsync.test.tsx",
+     "tests/shallow.test.tsx",
+     "tests/ssr.test.tsx"
+    ]
+   },
+   {
+    "number": 2845,
+    "title": "test: use @vitest/eslint-plugin",
+    "merged": "2024-11-10",
+    "files": [
+     "tests/devtools.test.tsx"
+    ]
+   },
+   {
+    "number": 2875,
+    "title": "fix(middleware): devtools type error #2700",
+    "merged": "2024-12-04",
+    "files": [
+     "src/middleware/devtools.ts",
+     "tests/middlewareTypes.test.tsx"
+    ]
+   },
+   {
+    "number": 2877,
+    "title": "fix(persist): fix async migrate on persist middleware",
+    "merged": "2024-12-04",
+    "files": [
+     "src/middleware/persist.ts",
+     "tests/persistAsync.test.tsx",
+     "tests/persistSync.test.tsx"
+    ]
+   },
+   {
+    "number": 2913,
+    "title": "feat: starter example",
+    "merged": "2024-12-28",
+    "files": [
+     "examples/starter/src/index.tsx",
+     "examples/starter/src/vite-env.d.ts",
+     "examples/starter/vite.config.ts"
+    ]
+   },
+   {
+    "number": 2935,
+    "title": "feat(types): Make ExtractState public",
+    "merged": "2025-01-07",
+    "files": [
+     "src/react.ts",
+     "src/vanilla.ts"
+    ]
+   },
+   {
+    "number": 3030,
+    "title": "refactor(middleware/combine.ts): change exported function to 'function declaration'",
+    "merged": "2025-02-27",
+    "files": [
+     "src/middleware/combine.ts"
+    ]
+   },
+   {
+    "number": 3032,
+    "title": "refactor(middleware): rename argument names like 'a', 'f'",
+    "merged": "2025-02-28",
+    "files": [
+     "src/middleware/combine.ts",
+     "src/middleware/devtools.ts",
+     "src/middleware/immer.ts",
+     "src/middleware/redux.ts"
+    ]
+   },
+   {
+    "number": 3082,
+    "title": "fix: handle hardware acceleration disabled scenario in demo site",
+    "merged": "2025-04-15",
+    "files": [
+     "examples/demo/src/components/Scene.jsx"
+    ]
+   },
+   {
+    "number": 2982,
+    "title": "refactor(traditional): remove duplicated ExtractState type declaration",
+    "merged": "2025-05-01",
+    "files": [
+     "src/traditional.ts"
+    ]
+   },
+   {
+    "number": 3116,
+    "title": "chore(eslint): enforce file extension usage for internal modules, ignore external packages",
+    "merged": "2025-05-10",
+    "files": [
+     "src/traditional.ts"
+    ]
+   },
+   {
+    "number": 3122,
+    "title": "chore(eslint): update to 'eslint-plugin-react-hooks@6.0.0-rc.1', remove 'eslint-plugin-react-compiler'",
+    "merged": "2025-05-17",
+    "files": [
+     "tests/middlewareTypes.test.tsx"
+    ]
+   },
+   {
+    "number": 3108,
+    "title": "feat(vanilla): update shallow compare function and tests",
+    "merged": "2025-05-21",
+    "files": [
+     "src/vanilla/shallow.ts",
+     "tests/vanilla/shallow.test.tsx"
+    ]
+   },
+   {
+    "number": 3111,
+    "title": "feat: add devtools.cleanup() method",
+    "merged": "2025-05-21",
+    "files": [
+     "src/middleware/devtools.ts",
+     "tests/devtools.test.tsx"
+    ]
+   },
+   {
+    "number": 3113,
+    "title": "refactor: remove unnecessary type assertion in createJSONStorage",
+    "merged": "2025-05-21",
+    "files": [
+     "src/middleware/persist.ts"
+    ]
+   },
+   {
+    "number": 3129,
+    "title": "test(vanilla/shallow): add test for pure iterable with different values returns false",
+    "merged": "2025-05-21",
+    "files": [
+     "tests/vanilla/shallow.test.tsx"
+    ]
+   },
+   {
+    "number": 2987,
+    "title": "feat(devtool): inferred action type",
+    "merged": "2025-05-21",
+    "files": [
+     "src/middleware/devtools.ts",
+     "tests/devtools.test.tsx"
+    ]
+   },
+   {
+    "number": 3130,
+    "title": "test(vanilla/basic): add test for 'getInitialState'",
+    "merged": "2025-05-21",
+    "files": [
+     "tests/vanilla/basic.test.ts"
+    ]
+   },
+   {
+    "number": 3131,
+    "title": "test(vanilla/subscribe): add test for covering fireImmediately option in 'subscribeWithSelector'",
+    "merged": "2025-05-22",
+    "files": [
+     "tests/vanilla/subscribe.test.tsx"
+    ]
+   },
+   {
+    "number": 3139,
+    "title": "chore: fix some typos in comment",
+    "merged": "2025-06-03",
+    "files": [
+     "tests/persistAsync.test.tsx",
+     "tests/persistSync.test.tsx"
+    ]
+   },
+   {
+    "number": 3148,
+    "title": "fix(docs): links to the demo and the docs",
+    "merged": "2025-06-08",
+    "files": [
+     "examples/demo/src/components/Details.jsx"
+    ]
+   },
+   {
+    "number": 3157,
+    "title": "test(shallow): update 'shallow' and 'useShallow' imports to use 'zustand/shallow'",
+    "merged": "2025-06-19",
+    "files": [
+     "tests/shallow.test.tsx",
+     "tests/vanilla/shallow.test.tsx"
+    ]
+   },
+   {
+    "number": 3147,
+    "title": "fix(devtools): Avoid inferring action type when explicit action name is provided",
+    "merged": "2025-06-23",
+    "files": [
+     "src/middleware/devtools.ts"
+    ]
+   },
+   {
+    "number": 3151,
+    "title": "refactor(middleware): replace export * with explicit named and type exports",
+    "merged": "2025-06-23",
+    "files": [
+     "src/middleware.ts"
+    ]
+   },
+   {
+    "number": 3161,
+    "title": "refactor: remove unused import in example & fix typo in tests",
+    "merged": "2025-06-28",
+    "files": [
+     "examples/demo/src/components/Scene.jsx",
+     "tests/types.test.tsx"
+    ]
+   },
+   {
+    "number": 3162,
+    "title": "test(*): add 'expect' with 'toBeInTheDocument'",
+    "merged": "2025-06-29",
+    "files": [
+     "tests/basic.test.tsx",
+     "tests/persistAsync.test.tsx"
+    ]
+   },
+   {
+    "number": 3192,
+    "title": "fix(react): useCallback for getSnapshot",
+    "merged": "2025-07-31",
+    "files": [
+     "src/react.ts"
+    ]
+   },
+   {
+    "number": 3206,
+    "title": "feat(middleare/persist): return storage promise from setState",
+    "merged": "2025-08-19",
+    "files": [
+     "src/middleware/persist.ts",
+     "tests/persistAsync.test.tsx"
+    ]
+   },
+   {
+    "number": 3252,
+    "title": "docs and tests: filter out specific actions from being sent to Redux DevTools",
+    "merged": "2025-10-31",
+    "files": [
+     "tests/devtools.test.tsx"
+    ]
+   },
+   {
+    "number": 3308,
+    "title": "experimental: unstable ssrSafe middleware",
+    "merged": "2025-11-29",
+    "files": [
+     "src/middleware.ts",
+     "src/middleware/ssrSafe.ts"
+    ]
+   },
+   {
+    "number": 3209,
+    "title": "feat: add zustand playground",
+    "merged": "2025-11-29",
+    "files": [
+     "examples/demo/src/components/Details.jsx"
+    ]
+   },
+   {
+    "number": 3321,
+    "title": "chore(eslint): enable 'testing-library', 'jest-dom', 'vitest' plugins and fix violations",
+    "merged": "2025-12-11",
+    "files": [
+     "tests/basic.test.tsx",
+     "tests/middlewareTypes.test.tsx",
+     "tests/types.test.tsx"
+    ]
+   },
+   {
+    "number": 3324,
+    "title": "test: replace 'findByText' with 'getByText' and simplify timer usage",
+    "merged": "2025-12-21",
+    "files": [
+     "tests/basic.test.tsx",
+     "tests/persistAsync.test.tsx",
+     "tests/persistSync.test.tsx",
+     "tests/ssr.test.tsx",
+     "tests/test-utils.ts"
+    ]
+   },
+   {
+    "number": 3349,
+    "title": "test: remove eslint-disable for no-unused-expressions",
+    "merged": "2026-01-11",
+    "files": [
+     "tests/middlewareTypes.test.tsx"
+    ]
+   },
+   {
+    "number": 3336,
+    "title": "fix(persist): prevent race condition during concurrent rehydrate calls",
+    "merged": "2026-01-12",
+    "files": [
+     "src/middleware/persist.ts",
+     "tests/persistAsync.test.tsx"
+    ]
+   },
+   {
+    "number": 3352,
+    "title": "test(middlewareTypes): replace 'void' with 'expectTypeOf' for type assertions",
+    "merged": "2026-01-12",
+    "files": [
+     "tests/middlewareTypes.test.tsx"
+    ]
+   },
+   {
+    "number": 3356,
+    "title": "test(ssr): remove 'skipIf' since all CI React versions are 18+",
+    "merged": "2026-01-13",
+    "files": [
+     "tests/ssr.test.tsx"
+    ]
+   },
+   {
+    "number": 3362,
+    "title": "chore: improve typing in devtools middleware",
+    "merged": "2026-01-20",
+    "files": [
+     "src/middleware/devtools.ts"
+    ]
+   },
+   {
+    "number": 3367,
+    "title": "fix(persist): avoid relying on global localStorage",
+    "merged": "2026-02-01",
+    "files": [
+     "src/middleware/persist.ts"
+    ]
+   },
+   {
+    "number": 3371,
+    "title": "fix(immer): Proper typing for immer middleware in combination with slices ",
+    "merged": "2026-02-01",
+    "files": [
+     "src/middleware/immer.ts",
+     "tests/middlewareTypes.test.tsx"
+    ]
+   },
+   {
+    "number": 3391,
+    "title": "fix(persist): use latest state in post-rehydration callback",
+    "merged": "2026-03-16",
+    "files": [
+     "src/middleware/persist.ts",
+     "tests/persistAsync.test.tsx"
+    ]
+   },
+   {
+    "number": 3414,
+    "title": "fix(devtools): correct redux devtools config type extension",
+    "merged": "2026-03-16",
+    "files": [
+     "src/middleware/devtools.ts"
+    ]
+   },
+   {
+    "number": 3443,
+    "title": "refactor(devtools): remove duplicate module augmentation",
+    "merged": "2026-03-30",
+    "files": [
+     "src/middleware/devtools.ts"
+    ]
+   },
+   {
+    "number": 3442,
+    "title": "test: expand React subscribe test coverage",
+    "merged": "2026-03-30",
+    "files": [
+     "tests/subscribe.test.tsx"
+    ]
+   },
+   {
+    "number": 3471,
+    "title": "test(middleware/immer): add runtime tests for immer middleware",
+    "merged": "2026-04-21",
+    "files": [
+     "tests/immer.test.tsx"
+    ]
+   },
+   {
+    "number": 3483,
+    "title": "fix(tests): change parameters for 'expect' in test",
+    "merged": "2026-05-04",
+    "files": [
+     "tests/devtools.test.tsx"
+    ]
+   },
+   {
+    "number": 3469,
+    "title": "fix(devtools): support Firefox/Safari stack format in findCallerName",
+    "merged": "2026-05-04",
+    "files": [
+     "src/middleware/devtools.ts",
+     "tests/devtools.test.tsx"
+    ]
+   },
+   {
+    "number": 3511,
+    "title": "fix(devtools): improve type inference for Devtools initializer",
+    "merged": "2026-05-28",
+    "files": [
+     "src/middleware/devtools.ts",
+     "tests/middlewareTypes.test.tsx"
+    ]
+   }
+  ]
+ },
+ "parser": {
+  "files": 48,
+  "chunks": 1111,
+  "chunk_kinds": {
+   "block": 976,
+   "type": 70,
+   "function": 56,
+   "interface": 9
+  },
+  "graph": {
+   "files": 48,
+   "chunks": 1111,
+   "symbols": 123,
+   "call_edges": 1305,
+   "import_edges": 126,
+   "import_edges_resolved": 30,
+   "export_edges": 46,
+   "contains_edges": 1111,
+   "defined_in_edges": 1111,
+   "cross_file_call_edges": 1207,
+   "multi_definition_symbols": 11,
+   "avg_call_out_degree": 1.1746174617461747,
+   "avg_out_degree_with_imports": 5.004500450045004,
+   "chunks_with_calls": 722,
+   "files_with_imports": 37
+  },
+  "chunks_per_file": {
+   "src/index.ts": 1,
+   "src/middleware/combine.ts": 4,
+   "src/middleware/devtools.ts": 57,
+   "src/middleware/immer.ts": 15,
+   "src/middleware/persist.ts": 25,
+   "src/middleware/redux.ts": 13,
+   "src/middleware/ssrSafe.ts": 4,
+   "src/middleware/subscribeWithSelector.ts": 11,
+   "src/middleware.ts": 1,
+   "src/react/shallow.ts": 2,
+   "src/react.ts": 15,
+   "src/shallow.ts": 1,
+   "src/traditional.ts": 18,
+   "src/types.d.ts": 1,
+   "src/vanilla/shallow.ts": 6,
+   "src/vanilla.ts": 16,
+   "tests/basic.test.tsx": 116,
+   "tests/devtools.test.tsx": 231,
+   "tests/immer.test.tsx": 13,
+   "tests/middlewareTypes.test.tsx": 49,
+   "tests/persistAsync.test.tsx": 155,
+   "tests/persistSync.test.tsx": 97,
+   "tests/setup.ts": 1,
+   "tests/shallow.test.tsx": 34,
+   "tests/ssr.test.tsx": 21,
+   "tests/subscribe.test.tsx": 31,
+   "tests/test-utils.ts": 5,
+   "tests/types.test.tsx": 32,
+   "tests/vanilla/basic.test.ts": 26,
+   "tests/vanilla/shallow.test.tsx": 38,
+   "tests/vanilla/subscribe.test.tsx": 22,
+   "examples/demo/eslint.config.js": 2,
+   "examples/demo/src/App.jsx": 4,
+   "examples/demo/src/components/CodePreview.jsx": 3,
+   "examples/demo/src/components/CopyButton.jsx": 3,
+   "examples/demo/src/components/Details.jsx": 1,
+   "examples/demo/src/components/Fireflies.jsx": 4,
+   "examples/demo/src/components/Scene.jsx": 6,
+   "examples/demo/src/components/SnippetLang.jsx": 1,
+   "examples/demo/src/main.jsx": 2,
+   "examples/demo/src/materials/layerMaterial.js": 4,
+   "examples/demo/src/resources/javascript-code.js": 3,
+   "examples/demo/src/resources/typescript-code.js": 4,
+   "examples/demo/src/utils/copy-to-clipboard.js": 1,
+   "examples/demo/vite.config.js": 2,
+   "examples/starter/src/index.tsx": 7,
+   "examples/starter/src/vite-env.d.ts": 1,
+   "examples/starter/vite.config.ts": 2
+  },
+  "mean_dl": 45.96399639963997,
+  "max_dl": 814
+ },
+ "queries": {
+  "count": 92,
+  "by_era": {
+   "2023-2024": 49,
+   "2025-2026": 43
+  },
+  "qrel_sizes": {
+   "1": 42,
+   "2": 31,
+   "3": 12,
+   "4": 5,
+   "5": 2
+  },
+  "with_test_qrel": 0.5760869565217391
+ },
+ "full": {
+  "systems": {
+   "bm25_chunk": {
+    "recall@1": 0.3826086956521739,
+    "recall@5": 0.7490942028985507,
+    "recall@10": 0.8278985507246376,
+    "all@10": 0.782608695652174,
+    "ndcg@10": 0.6854814668795666,
+    "mrr@10": 0.6744565217391304,
+    "queries": 92
+   },
+   "bm25_file": {
+    "recall@1": 0.3826086956521739,
+    "recall@5": 0.7490942028985507,
+    "recall@10": 0.8278985507246376,
+    "all@10": 0.782608695652174,
+    "ndcg@10": 0.6854814668795666,
+    "mrr@10": 0.6744565217391304,
+    "queries": 92
+   },
+   "bm25_file_sum": {
+    "recall@1": 0.11539855072463767,
+    "recall@5": 0.49293478260869567,
+    "recall@10": 0.7650362318840579,
+    "all@10": 0.6847826086956522,
+    "ndcg@10": 0.46434691492764363,
+    "mrr@10": 0.4020056935817805,
+    "queries": 92
+   },
+   "entity_file": {
+    "recall@1": 0.08188405797101449,
+    "recall@5": 0.30235507246376814,
+    "recall@10": 0.31322463768115943,
+    "all@10": 0.2826086956521739,
+    "ndcg@10": 0.23308793606609404,
+    "mrr@10": 0.22228260869565217,
+    "queries": 92
+   },
+   "graph_file": {
+    "recall@1": 0.27753623188405796,
+    "recall@5": 0.5364130434782608,
+    "recall@10": 0.6070652173913043,
+    "all@10": 0.4891304347826087,
+    "ndcg@10": 0.5004391758443919,
+    "mrr@10": 0.526371635610766,
+    "queries": 92
+   },
+   "graph_rrf": {
+    "recall@1": 0.32101449275362315,
+    "recall@5": 0.7047101449275364,
+    "recall@10": 0.7871376811594202,
+    "all@10": 0.7391304347826086,
+    "ndcg@10": 0.6211608647599101,
+    "mrr@10": 0.6083462732919255,
+    "queries": 92
+   },
+   "cesr": {
+    "recall@1": 0.3826086956521739,
+    "recall@5": 0.7980072463768116,
+    "recall@10": 0.842391304347826,
+    "all@10": 0.7934782608695652,
+    "ndcg@10": 0.7032436249946751,
+    "mrr@10": 0.6817028985507246,
+    "queries": 92
+   },
+   "cesr_plus_graph": {
+    "recall@1": 0.3826086956521739,
+    "recall@5": 0.7871376811594203,
+    "recall@10": 0.8224637681159419,
+    "all@10": 0.782608695652174,
+    "ndcg@10": 0.6935549786758375,
+    "mrr@10": 0.6692028985507247,
+    "queries": 92
+   }
+  },
+  "all_at_10": {
+   "capped_at_3_qrel_files": {
+    "bm25_chunk": 0.8235294117647058,
+    "bm25_file": 0.8235294117647058,
+    "bm25_file_sum": 0.7294117647058823,
+    "entity_file": 0.3058823529411765,
+    "graph_file": 0.5058823529411764,
+    "graph_rrf": 0.7647058823529411,
+    "cesr": 0.8352941176470589,
+    "cesr_plus_graph": 0.8235294117647058
+   },
+   "all": {
+    "bm25_chunk": 0.782608695652174,
+    "bm25_file": 0.782608695652174,
+    "bm25_file_sum": 0.6847826086956522,
+    "entity_file": 0.2826086956521739,
+    "graph_file": 0.4891304347826087,
+    "graph_rrf": 0.7391304347826086,
+    "cesr": 0.7934782608695652,
+    "cesr_plus_graph": 0.782608695652174
+   }
+  },
+  "paired_vs_bm25_file": {
+   "bm25_chunk": {
+    "recall@1": {
+     "delta": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "wtl": [
+      0,
+      92,
+      0
+     ]
+    },
+    "recall@5": {
+     "delta": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "wtl": [
+      0,
+      92,
+      0
+     ]
+    },
+    "recall@10": {
+     "delta": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "wtl": [
+      0,
+      92,
+      0
+     ]
+    },
+    "all@10": {
+     "delta": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "wtl": [
+      0,
+      92,
+      0
+     ]
+    },
+    "ndcg@10": {
+     "delta": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "wtl": [
+      0,
+      92,
+      0
+     ]
+    },
+    "mrr@10": {
+     "delta": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "wtl": [
+      0,
+      92,
+      0
+     ]
+    }
+   },
+   "bm25_file_sum": {
+    "recall@1": {
+     "delta": -0.26721014492753625,
+     "ci95": [
+      -0.36596467391304355,
+      -0.1766077898550725
+     ],
+     "wtl": [
+      5,
+      49,
+      38
+     ]
+    },
+    "recall@5": {
+     "delta": -0.2561594202898551,
+     "ci95": [
+      -0.3514492753623188,
+      -0.15831068840579712
+     ],
+     "wtl": [
+      7,
+      48,
+      37
+     ]
+    },
+    "recall@10": {
+     "delta": -0.06286231884057972,
+     "ci95": [
+      -0.14619565217391303,
+      0.01814311594202896
+     ],
+     "wtl": [
+      9,
+      68,
+      15
+     ]
+    },
+    "all@10": {
+     "delta": -0.09782608695652174,
+     "ci95": [
+      -0.18478260869565216,
+      -0.010869565217391304
+     ],
+     "wtl": [
+      5,
+      73,
+      14
+     ]
+    },
+    "ndcg@10": {
+     "delta": -0.22113455195192294,
+     "ci95": [
+      -0.29291557143226665,
+      -0.15636171203324686
+     ],
+     "wtl": [
+      19,
+      9,
+      64
+     ]
+    },
+    "mrr@10": {
+     "delta": -0.27245082815734994,
+     "ci95": [
+      -0.36561960835058666,
+      -0.18749946083505864
+     ],
+     "wtl": [
+      16,
+      23,
+      53
+     ]
+    }
+   },
+   "entity_file": {
+    "recall@1": {
+     "delta": -0.30072463768115937,
+     "ci95": [
+      -0.39039855072463764,
+      -0.21374547101449276
+     ],
+     "wtl": [
+      2,
+      46,
+      44
+     ]
+    },
+    "recall@5": {
+     "delta": -0.44673913043478264,
+     "ci95": [
+      -0.5484374999999999,
+      -0.3479891304347826
+     ],
+     "wtl": [
+      3,
+      41,
+      48
+     ]
+    },
+    "recall@10": {
+     "delta": -0.5146739130434783,
+     "ci95": [
+      -0.6159646739130435,
+      -0.4159420289855073
+     ],
+     "wtl": [
+      1,
+      36,
+      55
+     ]
+    },
+    "all@10": {
+     "delta": -0.5,
+     "ci95": [
+      -0.6195652173913043,
+      -0.391304347826087
+     ],
+     "wtl": [
+      1,
+      44,
+      47
+     ]
+    },
+    "ndcg@10": {
+     "delta": -0.4523935308134725,
+     "ci95": [
+      -0.534492006456736,
+      -0.3757377498623443
+     ],
+     "wtl": [
+      8,
+      16,
+      68
+     ]
+    },
+    "mrr@10": {
+     "delta": -0.45217391304347826,
+     "ci95": [
+      -0.5367866847826086,
+      -0.3672961956521739
+     ],
+     "wtl": [
+      5,
+      22,
+      65
+     ]
+    }
+   },
+   "graph_file": {
+    "recall@1": {
+     "delta": -0.10507246376811594,
+     "ci95": [
+      -0.20289855072463767,
+      -0.007246376811594204
+     ],
+     "wtl": [
+      8,
+      62,
+      22
+     ]
+    },
+    "recall@5": {
+     "delta": -0.21268115942028984,
+     "ci95": [
+      -0.29331974637681163,
+      -0.13567028985507248
+     ],
+     "wtl": [
+      4,
+      57,
+      31
+     ]
+    },
+    "recall@10": {
+     "delta": -0.22083333333333338,
+     "ci95": [
+      -0.2975226449275363,
+      -0.1465398550724638
+     ],
+     "wtl": [
+      4,
+      57,
+      31
+     ]
+    },
+    "all@10": {
+     "delta": -0.29347826086956524,
+     "ci95": [
+      -0.391304347826087,
+      -0.1956521739130435
+     ],
+     "wtl": [
+      1,
+      63,
+      28
+     ]
+    },
+    "ndcg@10": {
+     "delta": -0.18504229103517456,
+     "ci95": [
+      -0.2560298644882283,
+      -0.11766128600749494
+     ],
+     "wtl": [
+      15,
+      29,
+      48
+     ]
+    },
+    "mrr@10": {
+     "delta": -0.14808488612836437,
+     "ci95": [
+      -0.23679671325051763,
+      -0.061839091614906846
+     ],
+     "wtl": [
+      12,
+      44,
+      36
+     ]
+    }
+   },
+   "graph_rrf": {
+    "recall@1": {
+     "delta": -0.06159420289855073,
+     "ci95": [
+      -0.15942028985507245,
+      0.03808876811594199
+     ],
+     "wtl": [
+      10,
+      64,
+      18
+     ]
+    },
+    "recall@5": {
+     "delta": -0.0443840579710145,
+     "ci95": [
+      -0.11050724637681159,
+      0.019927536231884056
+     ],
+     "wtl": [
+      6,
+      73,
+      13
+     ]
+    },
+    "recall@10": {
+     "delta": -0.0407608695652174,
+     "ci95": [
+      -0.09696557971014494,
+      0.012681159420289854
+     ],
+     "wtl": [
+      5,
+      78,
+      9
+     ]
+    },
+    "all@10": {
+     "delta": -0.043478260869565216,
+     "ci95": [
+      -0.10869565217391304,
+      0.021739130434782608
+     ],
+     "wtl": [
+      2,
+      84,
+      6
+     ]
+    },
+    "ndcg@10": {
+     "delta": -0.06432060211965655,
+     "ci95": [
+      -0.12284593121014553,
+      -0.005999740816304712
+     ],
+     "wtl": [
+      22,
+      32,
+      38
+     ]
+    },
+    "mrr@10": {
+     "delta": -0.06611024844720496,
+     "ci95": [
+      -0.1472832556935818,
+      0.014787137681159399
+     ],
+     "wtl": [
+      15,
+      51,
+      26
+     ]
+    }
+   },
+   "cesr": {
+    "recall@1": {
+     "delta": 0.0,
+     "ci95": [
+      -0.07427536231884058,
+      0.07971014492753623
+     ],
+     "wtl": [
+      11,
+      68,
+      13
+     ]
+    },
+    "recall@5": {
+     "delta": 0.04891304347826087,
+     "ci95": [
+      0.0018115942028985503,
+      0.10144927536231883
+     ],
+     "wtl": [
+      8,
+      83,
+      1
+     ]
+    },
+    "recall@10": {
+     "delta": 0.014492753623188404,
+     "ci95": [
+      0.0,
+      0.03985507246376812
+     ],
+     "wtl": [
+      2,
+      90,
+      0
+     ]
+    },
+    "all@10": {
+     "delta": 0.010869565217391304,
+     "ci95": [
+      0.0,
+      0.03260869565217391
+     ],
+     "wtl": [
+      1,
+      91,
+      0
+     ]
+    },
+    "ndcg@10": {
+     "delta": 0.01776215811510847,
+     "ci95": [
+      -0.02821875809127578,
+      0.06634274388401426
+     ],
+     "wtl": [
+      16,
+      60,
+      16
+     ]
+    },
+    "mrr@10": {
+     "delta": 0.0072463768115942065,
+     "ci95": [
+      -0.059334239130434785,
+      0.07927536231884058
+     ],
+     "wtl": [
+      13,
+      64,
+      15
+     ]
+    }
+   },
+   "cesr_plus_graph": {
+    "recall@1": {
+     "delta": 0.0,
+     "ci95": [
+      -0.07427536231884058,
+      0.07971014492753623
+     ],
+     "wtl": [
+      11,
+      68,
+      13
+     ]
+    },
+    "recall@5": {
+     "delta": 0.03804347826086957,
+     "ci95": [
+      -0.018138586956521742,
+      0.09331974637681156
+     ],
+     "wtl": [
+      9,
+      78,
+      5
+     ]
+    },
+    "recall@10": {
+     "delta": -0.005434782608695655,
+     "ci95": [
+      -0.03985507246376812,
+      0.03079710144927536
+     ],
+     "wtl": [
+      3,
+      85,
+      4
+     ]
+    },
+    "all@10": {
+     "delta": 0.0,
+     "ci95": [
+      -0.03260869565217391,
+      0.03260869565217391
+     ],
+     "wtl": [
+      1,
+      90,
+      1
+     ]
+    },
+    "ndcg@10": {
+     "delta": 0.008073511796270841,
+     "ci95": [
+      -0.0432496064656778,
+      0.05946189083015794
+     ],
+     "wtl": [
+      18,
+      55,
+      19
+     ]
+    },
+    "mrr@10": {
+     "delta": -0.0052536231884057925,
+     "ci95": [
+      -0.0738292572463768,
+      0.06712635869565217
+     ],
+     "wtl": [
+      13,
+      63,
+      16
+     ]
+    }
+   }
+  },
+  "slices": {
+   "era:2023-2024": {
+    "bm25_chunk": {
+     "recall@1": 0.2789115646258503,
+     "recall@5": 0.6751700680272108,
+     "recall@10": 0.7721088435374148,
+     "all@10": 0.6938775510204082,
+     "ndcg@10": 0.6151032172249085,
+     "mrr@10": 0.6086734693877551,
+     "queries": 49
+    },
+    "bm25_file": {
+     "recall@1": 0.2789115646258503,
+     "recall@5": 0.6751700680272108,
+     "recall@10": 0.7721088435374148,
+     "all@10": 0.6938775510204082,
+     "ndcg@10": 0.6151032172249085,
+     "mrr@10": 0.6086734693877551,
+     "queries": 49
+    },
+    "bm25_file_sum": {
+     "recall@1": 0.0901360544217687,
+     "recall@5": 0.4047619047619047,
+     "recall@10": 0.7108843537414965,
+     "all@10": 0.5918367346938775,
+     "ndcg@10": 0.43217880860168384,
+     "mrr@10": 0.3709507612568837,
+     "queries": 49
+    },
+    "entity_file": {
+     "recall@1": 0.06802721088435373,
+     "recall@5": 0.21258503401360546,
+     "recall@10": 0.2329931972789116,
+     "all@10": 0.20408163265306123,
+     "ndcg@10": 0.17787501561942443,
+     "mrr@10": 0.1717687074829932,
+     "queries": 49
+    },
+    "graph_file": {
+     "recall@1": 0.282312925170068,
+     "recall@5": 0.49489795918367346,
+     "recall@10": 0.5391156462585034,
+     "all@10": 0.40816326530612246,
+     "ndcg@10": 0.48523690979143463,
+     "mrr@10": 0.548153547133139,
+     "queries": 49
+    },
+    "graph_rrf": {
+     "recall@1": 0.3333333333333333,
+     "recall@5": 0.6496598639455783,
+     "recall@10": 0.7193877551020408,
+     "all@10": 0.6530612244897959,
+     "ndcg@10": 0.6084285338147778,
+     "mrr@10": 0.6392857142857142,
+     "queries": 49
+    },
+    "cesr": {
+     "recall@1": 0.3775510204081632,
+     "recall@5": 0.7363945578231293,
+     "recall@10": 0.7993197278911565,
+     "all@10": 0.7142857142857143,
+     "ndcg@10": 0.6890245805540216,
+     "mrr@10": 0.6948979591836734,
+     "queries": 49
+    },
+    "cesr_plus_graph": {
+     "recall@1": 0.3775510204081632,
+     "recall@5": 0.7227891156462586,
+     "recall@10": 0.7551020408163265,
+     "all@10": 0.6938775510204082,
+     "ndcg@10": 0.6670782269158625,
+     "mrr@10": 0.6784013605442177,
+     "queries": 49
+    }
+   },
+   "era:2025-2026": {
+    "bm25_chunk": {
+     "recall@1": 0.5007751937984496,
+     "recall@5": 0.8333333333333334,
+     "recall@10": 0.8914728682170543,
+     "all@10": 0.8837209302325582,
+     "ndcg@10": 0.76567993741627,
+     "mrr@10": 0.7494186046511628,
+     "queries": 43
+    },
+    "bm25_file": {
+     "recall@1": 0.5007751937984496,
+     "recall@5": 0.8333333333333334,
+     "recall@10": 0.8914728682170543,
+     "all@10": 0.8837209302325582,
+     "ndcg@10": 0.76567993741627,
+     "mrr@10": 0.7494186046511628,
+     "queries": 43
+    },
+    "bm25_file_sum": {
+     "recall@1": 0.14418604651162792,
+     "recall@5": 0.5934108527131783,
+     "recall@10": 0.8267441860465116,
+     "all@10": 0.7906976744186046,
+     "ndcg@10": 0.5010035942293186,
+     "mrr@10": 0.4373938722775932,
+     "queries": 43
+    },
+    "entity_file": {
+     "recall@1": 0.09767441860465116,
+     "recall@5": 0.4046511627906976,
+     "recall@10": 0.4046511627906976,
+     "all@10": 0.37209302325581395,
+     "ndcg@10": 0.29600498494718275,
+     "mrr@10": 0.27984496124031005,
+     "queries": 43
+    },
+    "graph_file": {
+     "recall@1": 0.2720930232558139,
+     "recall@5": 0.5837209302325582,
+     "recall@10": 0.6844961240310078,
+     "all@10": 0.5813953488372093,
+     "ndcg@10": 0.5177626883233433,
+     "mrr@10": 0.5015503875968992,
+     "queries": 43
+    },
+    "graph_rrf": {
+     "recall@1": 0.3069767441860465,
+     "recall@5": 0.7674418604651163,
+     "recall@10": 0.8643410852713178,
+     "all@10": 0.8372093023255814,
+     "ndcg@10": 0.6356698000229676,
+     "mrr@10": 0.5730897009966778,
+     "queries": 43
+    },
+    "cesr": {
+     "recall@1": 0.3883720930232558,
+     "recall@5": 0.868217054263566,
+     "recall@10": 0.8914728682170543,
+     "all@10": 0.8837209302325582,
+     "ndcg@10": 0.7194467221479777,
+     "mrr@10": 0.6666666666666666,
+     "queries": 43
+    },
+    "cesr_plus_graph": {
+     "recall@1": 0.3883720930232558,
+     "recall@5": 0.8604651162790697,
+     "recall@10": 0.8992248062015503,
+     "all@10": 0.8837209302325582,
+     "ndcg@10": 0.7237261609139484,
+     "mrr@10": 0.6587209302325581,
+     "queries": 43
+    }
+   },
+   "qrel_files:1": {
+    "bm25_chunk": {
+     "recall@1": 0.5,
+     "recall@5": 0.8095238095238095,
+     "recall@10": 0.8809523809523809,
+     "all@10": 0.8809523809523809,
+     "ndcg@10": 0.6793430626757317,
+     "mrr@10": 0.6152777777777777,
+     "queries": 42
+    },
+    "bm25_file": {
+     "recall@1": 0.5,
+     "recall@5": 0.8095238095238095,
+     "recall@10": 0.8809523809523809,
+     "all@10": 0.8809523809523809,
+     "ndcg@10": 0.6793430626757317,
+     "mrr@10": 0.6152777777777777,
+     "queries": 42
+    },
+    "bm25_file_sum": {
+     "recall@1": 0.07142857142857142,
+     "recall@5": 0.42857142857142855,
+     "recall@10": 0.7619047619047619,
+     "all@10": 0.7619047619047619,
+     "ndcg@10": 0.3638665038510001,
+     "mrr@10": 0.2433295540438397,
+     "queries": 42
+    },
+    "entity_file": {
+     "recall@1": 0.09523809523809523,
+     "recall@5": 0.35714285714285715,
+     "recall@10": 0.38095238095238093,
+     "all@10": 0.38095238095238093,
+     "ndcg@10": 0.25361550331097643,
+     "mrr@10": 0.2111111111111111,
+     "queries": 42
+    },
+    "graph_file": {
+     "recall@1": 0.35714285714285715,
+     "recall@5": 0.5952380952380952,
+     "recall@10": 0.6428571428571429,
+     "all@10": 0.6428571428571429,
+     "ndcg@10": 0.4943039882484251,
+     "mrr@10": 0.4468253968253968,
+     "queries": 42
+    },
+    "graph_rrf": {
+     "recall@1": 0.42857142857142855,
+     "recall@5": 0.7619047619047619,
+     "recall@10": 0.8333333333333334,
+     "all@10": 0.8333333333333334,
+     "ndcg@10": 0.6100653155423255,
+     "mrr@10": 0.5404761904761906,
+     "queries": 42
+    },
+    "cesr": {
+     "recall@1": 0.5476190476190477,
+     "recall@5": 0.8571428571428571,
+     "recall@10": 0.9047619047619048,
+     "all@10": 0.9047619047619048,
+     "ndcg@10": 0.7256338614667011,
+     "mrr@10": 0.6674603174603174,
+     "queries": 42
+    },
+    "cesr_plus_graph": {
+     "recall@1": 0.5476190476190477,
+     "recall@5": 0.8571428571428571,
+     "recall@10": 0.9047619047619048,
+     "all@10": 0.9047619047619048,
+     "ndcg@10": 0.7262409969687905,
+     "mrr@10": 0.6682539682539682,
+     "queries": 42
+    }
+   },
+   "qrel_files:2": {
+    "bm25_chunk": {
+     "recall@1": 0.3387096774193548,
+     "recall@5": 0.7580645161290323,
+     "recall@10": 0.8387096774193549,
+     "all@10": 0.8064516129032258,
+     "ndcg@10": 0.7228589269347372,
+     "mrr@10": 0.7379032258064516,
+     "queries": 31
+    },
+    "bm25_file": {
+     "recall@1": 0.3387096774193548,
+     "recall@5": 0.7580645161290323,
+     "recall@10": 0.8387096774193549,
+     "all@10": 0.8064516129032258,
+     "ndcg@10": 0.7228589269347372,
+     "mrr@10": 0.7379032258064516,
+     "queries": 31
+    },
+    "bm25_file_sum": {
+     "recall@1": 0.1774193548387097,
+     "recall@5": 0.5967741935483871,
+     "recall@10": 0.7903225806451613,
+     "all@10": 0.7096774193548387,
+     "ndcg@10": 0.5491264742048593,
+     "mrr@10": 0.5253968253968254,
+     "queries": 31
+    },
+    "entity_file": {
+     "recall@1": 0.0967741935483871,
+     "recall@5": 0.3548387096774194,
+     "recall@10": 0.3548387096774194,
+     "all@10": 0.3225806451612903,
+     "ndcg@10": 0.28593909425854774,
+     "mrr@10": 0.2768817204301075,
+     "queries": 31
+    },
+    "graph_file": {
+     "recall@1": 0.24193548387096775,
+     "recall@5": 0.5,
+     "recall@10": 0.5806451612903226,
+     "all@10": 0.3548387096774194,
+     "ndcg@10": 0.5045550423106503,
+     "mrr@10": 0.5935483870967742,
+     "queries": 31
+    },
+    "graph_rrf": {
+     "recall@1": 0.24193548387096775,
+     "recall@5": 0.7096774193548387,
+     "recall@10": 0.7903225806451613,
+     "all@10": 0.7419354838709677,
+     "ndcg@10": 0.630034819389701,
+     "mrr@10": 0.6344086021505375,
+     "queries": 31
+    },
+    "cesr": {
+     "recall@1": 0.27419354838709675,
+     "recall@5": 0.8064516129032258,
+     "recall@10": 0.8387096774193549,
+     "all@10": 0.8064516129032258,
+     "ndcg@10": 0.6976657595572803,
+     "mrr@10": 0.6779569892473118,
+     "queries": 31
+    },
+    "cesr_plus_graph": {
+     "recall@1": 0.27419354838709675,
+     "recall@5": 0.8064516129032258,
+     "recall@10": 0.8064516129032258,
+     "all@10": 0.8064516129032258,
+     "ndcg@10": 0.6887365971074951,
+     "mrr@10": 0.6586021505376344,
+     "queries": 31
+    }
+   },
+   "qrel_files:3": {
+    "bm25_chunk": {
+     "recall@1": 0.25000000000000006,
+     "recall@5": 0.7222222222222222,
+     "recall@10": 0.8055555555555555,
+     "all@10": 0.6666666666666666,
+     "ndcg@10": 0.7513229924907571,
+     "mrr@10": 0.8333333333333334,
+     "queries": 12
+    },
+    "bm25_file": {
+     "recall@1": 0.25000000000000006,
+     "recall@5": 0.7222222222222222,
+     "recall@10": 0.8055555555555555,
+     "all@10": 0.6666666666666666,
+     "ndcg@10": 0.7513229924907571,
+     "mrr@10": 0.8333333333333334,
+     "queries": 12
+    },
+    "bm25_file_sum": {
+     "recall@1": 0.13888888888888887,
+     "recall@5": 0.5833333333333334,
+     "recall@10": 0.8611111111111112,
+     "all@10": 0.6666666666666666,
+     "ndcg@10": 0.6390467307709778,
+     "mrr@10": 0.6238095238095239,
+     "queries": 12
+    },
+    "entity_file": {
+     "recall@1": 0.027777777777777776,
+     "recall@5": 0.05555555555555555,
+     "recall@10": 0.05555555555555555,
+     "all@10": 0.0,
+     "ndcg@10": 0.06378005308238514,
+     "mrr@10": 0.125,
+     "queries": 12
+    },
+    "graph_file": {
+     "recall@1": 0.19444444444444442,
+     "recall@5": 0.5833333333333333,
+     "recall@10": 0.6666666666666666,
+     "all@10": 0.4166666666666667,
+     "ndcg@10": 0.5835719163700376,
+     "mrr@10": 0.6763888888888889,
+     "queries": 12
+    },
+    "graph_rrf": {
+     "recall@1": 0.2777777777777778,
+     "recall@5": 0.6944444444444443,
+     "recall@10": 0.8055555555555555,
+     "all@10": 0.5833333333333334,
+     "ndcg@10": 0.7549514002133354,
+     "mrr@10": 0.8730158730158729,
+     "queries": 12
+    },
+    "cesr": {
+     "recall@1": 0.25000000000000006,
+     "recall@5": 0.8055555555555555,
+     "recall@10": 0.8333333333333335,
+     "all@10": 0.6666666666666666,
+     "ndcg@10": 0.7905640913299598,
+     "mrr@10": 0.861111111111111,
+     "queries": 12
+    },
+    "cesr_plus_graph": {
+     "recall@1": 0.25000000000000006,
+     "recall@5": 0.7222222222222223,
+     "recall@10": 0.8055555555555555,
+     "all@10": 0.5833333333333334,
+     "ndcg@10": 0.7536040336520405,
+     "mrr@10": 0.829861111111111,
+     "queries": 12
+    }
+   },
+   "qrel_files:4-5": {
+    "bm25_chunk": {
+     "recall@1": 0.09999999999999999,
+     "recall@5": 0.39285714285714285,
+     "recall@10": 0.5,
+     "all@10": 0.2857142857142857,
+     "ndcg@10": 0.4439119536676358,
+     "mrr@10": 0.4761904761904762,
+     "queries": 7
+    },
+    "bm25_file": {
+     "recall@1": 0.09999999999999999,
+     "recall@5": 0.39285714285714285,
+     "recall@10": 0.5,
+     "all@10": 0.2857142857142857,
+     "ndcg@10": 0.4439119536676358,
+     "mrr@10": 0.4761904761904762,
+     "queries": 7
+    },
+    "bm25_file_sum": {
+     "recall@1": 0.0642857142857143,
+     "recall@5": 0.2642857142857143,
+     "recall@10": 0.5071428571428571,
+     "all@10": 0.14285714285714285,
+     "ndcg@10": 0.3922916488569759,
+     "mrr@10": 0.42738095238095236,
+     "queries": 7
+    },
+    "entity_file": {
+     "recall@1": 0.028571428571428574,
+     "recall@5": 0.16428571428571428,
+     "recall@10": 0.16428571428571428,
+     "all@10": 0.0,
+     "ndcg@10": 0.16610948857372027,
+     "mrr@10": 0.21428571428571427,
+     "queries": 7
+    },
+    "graph_file": {
+     "recall@1": 0.09999999999999999,
+     "recall@5": 0.2642857142857143,
+     "recall@10": 0.40714285714285714,
+     "all@10": 0.2857142857142857,
+     "ndcg@10": 0.37650962331137083,
+     "mrr@10": 0.4489795918367347,
+     "queries": 7
+    },
+    "graph_rrf": {
+     "recall@1": 0.09999999999999999,
+     "recall@5": 0.35714285714285715,
+     "recall@10": 0.4642857142857143,
+     "all@10": 0.42857142857142855,
+     "ndcg@10": 0.41908001449904214,
+     "mrr@10": 0.44642857142857145,
+     "queries": 7
+    },
+    "cesr": {
+     "recall@1": 0.09999999999999999,
+     "recall@5": 0.39285714285714285,
+     "recall@10": 0.5,
+     "all@10": 0.2857142857142857,
+     "ndcg@10": 0.4439119536676358,
+     "mrr@10": 0.4761904761904762,
+     "queries": 7
+    },
+    "cesr_plus_graph": {
+     "recall@1": 0.09999999999999999,
+     "recall@5": 0.39285714285714285,
+     "recall@10": 0.42857142857142855,
+     "all@10": 0.2857142857142857,
+     "ndcg@10": 0.4158361787615717,
+     "mrr@10": 0.44642857142857145,
+     "queries": 7
+    }
+   },
+   "touches_test": {
+    "bm25_chunk": {
+     "recall@1": 0.3544025157232704,
+     "recall@5": 0.7987421383647798,
+     "recall@10": 0.8820754716981132,
+     "all@10": 0.8301886792452831,
+     "ndcg@10": 0.7389858928863114,
+     "mrr@10": 0.7333333333333334,
+     "queries": 53
+    },
+    "bm25_file": {
+     "recall@1": 0.3544025157232704,
+     "recall@5": 0.7987421383647798,
+     "recall@10": 0.8820754716981132,
+     "all@10": 0.8301886792452831,
+     "ndcg@10": 0.7389858928863114,
+     "mrr@10": 0.7333333333333334,
+     "queries": 53
+    },
+    "bm25_file_sum": {
+     "recall@1": 0.20031446540880504,
+     "recall@5": 0.7031446540880503,
+     "recall@10": 0.9254716981132075,
+     "all@10": 0.8301886792452831,
+     "ndcg@10": 0.6341941696259518,
+     "mrr@10": 0.5936732554657083,
+     "queries": 53
+    },
+    "entity_file": {
+     "recall@1": 0.03207547169811321,
+     "recall@5": 0.25440251572327044,
+     "recall@10": 0.25440251572327044,
+     "all@10": 0.20754716981132076,
+     "ndcg@10": 0.17513915360002805,
+     "mrr@10": 0.16572327044025156,
+     "queries": 53
+    },
+    "graph_file": {
+     "recall@1": 0.18773584905660376,
+     "recall@5": 0.4861635220125786,
+     "recall@10": 0.5553459119496855,
+     "all@10": 0.37735849056603776,
+     "ndcg@10": 0.4605908270762637,
+     "mrr@10": 0.5128930817610063,
+     "queries": 53
+    },
+    "graph_rrf": {
+     "recall@1": 0.20974842767295596,
+     "recall@5": 0.7075471698113207,
+     "recall@10": 0.8066037735849056,
+     "all@10": 0.7358490566037735,
+     "ndcg@10": 0.6018715582054762,
+     "mrr@10": 0.5899595687331536,
+     "queries": 53
+    },
+    "cesr": {
+     "recall@1": 0.26006289308176095,
+     "recall@5": 0.8301886792452831,
+     "recall@10": 0.8883647798742137,
+     "all@10": 0.8301886792452831,
+     "ndcg@10": 0.703411977091565,
+     "mrr@10": 0.6723270440251572,
+     "queries": 53
+    },
+    "cesr_plus_graph": {
+     "recall@1": 0.26006289308176095,
+     "recall@5": 0.8113207547169812,
+     "recall@10": 0.8537735849056604,
+     "all@10": 0.8113207547169812,
+     "ndcg@10": 0.6829692678854967,
+     "mrr@10": 0.649056603773585,
+     "queries": 53
+    }
+   },
+   "source_only": {
+    "bm25_chunk": {
+     "recall@1": 0.4209401709401709,
+     "recall@5": 0.6816239316239316,
+     "recall@10": 0.7542735042735043,
+     "all@10": 0.717948717948718,
+     "ndcg@10": 0.6127703238447594,
+     "mrr@10": 0.5944444444444444,
+     "queries": 39
+    },
+    "bm25_file": {
+     "recall@1": 0.4209401709401709,
+     "recall@5": 0.6816239316239316,
+     "recall@10": 0.7542735042735043,
+     "all@10": 0.717948717948718,
+     "ndcg@10": 0.6127703238447594,
+     "mrr@10": 0.5944444444444444,
+     "queries": 39
+    },
+    "bm25_file_sum": {
+     "recall@1": 0.0,
+     "recall@5": 0.20726495726495722,
+     "recall@10": 0.547008547008547,
+     "all@10": 0.48717948717948717,
+     "ndcg@10": 0.23352885085045563,
+     "mrr@10": 0.14153439153439154,
+     "queries": 39
+    },
+    "entity_file": {
+     "recall@1": 0.1495726495726496,
+     "recall@5": 0.3675213675213675,
+     "recall@10": 0.39316239316239315,
+     "all@10": 0.38461538461538464,
+     "ndcg@10": 0.31183884557126074,
+     "mrr@10": 0.2991452991452992,
+     "queries": 39
+    },
+    "graph_file": {
+     "recall@1": 0.39957264957264954,
+     "recall@5": 0.6047008547008547,
+     "recall@10": 0.6773504273504273,
+     "all@10": 0.6410256410256411,
+     "ndcg@10": 0.5545920600677459,
+     "mrr@10": 0.5446886446886448,
+     "queries": 39
+    },
+    "graph_rrf": {
+     "recall@1": 0.47222222222222215,
+     "recall@5": 0.7008547008547008,
+     "recall@10": 0.7606837606837606,
+     "all@10": 0.7435897435897436,
+     "ndcg@10": 0.6473745377697815,
+     "mrr@10": 0.6333333333333332,
+     "queries": 39
+    },
+    "cesr": {
+     "recall@1": 0.5491452991452991,
+     "recall@5": 0.7542735042735043,
+     "recall@10": 0.7799145299145298,
+     "all@10": 0.7435897435897436,
+     "ndcg@10": 0.7030148388117218,
+     "mrr@10": 0.6944444444444444,
+     "queries": 39
+    },
+    "cesr_plus_graph": {
+     "recall@1": 0.5491452991452991,
+     "recall@5": 0.7542735042735043,
+     "recall@10": 0.7799145299145298,
+     "all@10": 0.7435897435897436,
+     "ndcg@10": 0.7079406882114284,
+     "mrr@10": 0.6965811965811965,
+     "queries": 39
+    }
+   }
+  },
+  "file_group_recall": {
+   "bm25_chunk": {
+    "test": {
+     "queries": 53,
+     "recall@10": 0.9135220125786163
+    },
+    "source": {
+     "queries": 69,
+     "recall@10": 0.8031400966183575
+    }
+   },
+   "bm25_file": {
+    "test": {
+     "queries": 53,
+     "recall@10": 0.9135220125786163
+    },
+    "source": {
+     "queries": 69,
+     "recall@10": 0.8031400966183575
+    }
+   },
+   "bm25_file_sum": {
+    "test": {
+     "queries": 53,
+     "recall@10": 0.9836477987421384
+    },
+    "source": {
+     "queries": 69,
+     "recall@10": 0.6570048309178743
+    }
+   },
+   "entity_file": {
+    "test": {
+     "queries": 53,
+     "recall@10": 0.2371069182389937
+    },
+    "source": {
+     "queries": 69,
+     "recall@10": 0.36714975845410625
+    }
+   },
+   "graph_file": {
+    "test": {
+     "queries": 53,
+     "recall@10": 0.49245283018867925
+    },
+    "source": {
+     "queries": 69,
+     "recall@10": 0.7451690821256038
+    }
+   },
+   "graph_rrf": {
+    "test": {
+     "queries": 53,
+     "recall@10": 0.8128930817610064
+    },
+    "source": {
+     "queries": 69,
+     "recall@10": 0.8067632850241545
+    }
+   },
+   "cesr": {
+    "test": {
+     "queries": 53,
+     "recall@10": 0.9198113207547169
+    },
+    "source": {
+     "queries": 69,
+     "recall@10": 0.8176328502415459
+    }
+   },
+   "cesr_plus_graph": {
+    "test": {
+     "queries": 53,
+     "recall@10": 0.8600628930817611
+    },
+    "source": {
+     "queries": 69,
+     "recall@10": 0.8176328502415459
+    }
+   }
+  },
+  "chunk_diagnostics": {
+   "bm25_chunk": {
+    "chunk_recall@10": 0.7576086956521739,
+    "chunk_recall@100": 0.9474637681159419
+   },
+   "graph_rrf": {
+    "chunk_recall@10": 0.6135869565217391,
+    "chunk_recall@100": 0.9077898550724638
+   },
+   "cesr": {
+    "chunk_recall@10": 0.6681159420289855,
+    "chunk_recall@100": 0.7034420289855072
+   },
+   "cesr_plus_graph": {
+    "chunk_recall@10": 0.6681159420289855,
+    "chunk_recall@100": 0.7034420289855072
+   }
+  },
+  "ceiling": {
+   "files_in_pool": 0.9474637681159419,
+   "all_files_in_pool": 0.9239130434782609,
+   "pool_depth": 100
+  },
+  "constraints": {
+   "queries_with_constraints": 0.6847826086956522,
+   "mean_labels": 1.9456521739130435,
+   "mean_symbols": 0.6739130434782609,
+   "mean_file_hits": 1.0978260869565217,
+   "queries_with_symbol": 0.42391304347826086,
+   "queries_with_file": 0.5978260869565217,
+   "mean_mandatory": 1.1521739130434783,
+   "mean_selected_chunks": 14.41304347826087,
+   "file_hit_precision": 0.6121212121212121,
+   "symbol_file_precision": 0.5
+  },
+  "provenance": {
+   "porter_only": 0.5642210144927535,
+   "graph": 0.3508152173913044,
+   "outside_porter_top100": 0.06295289855072464,
+   "pool_size": 169.0108695652174
+  },
+  "gate": {
+   "rule": "graph_rrf or cesr or cesr_plus_graph beats bm25_file on file recall@10 or file nDCG@10 with a paired-bootstrap 95% CI lower bound above zero",
+   "checks": {
+    "graph_rrf:recall@10": {
+     "delta": -0.0407608695652174,
+     "ci95": [
+      -0.09696557971014494,
+      0.012681159420289854
+     ],
+     "wtl": [
+      5,
+      78,
+      9
+     ],
+     "ci_above_zero": false
+    },
+    "graph_rrf:ndcg@10": {
+     "delta": -0.06432060211965655,
+     "ci95": [
+      -0.12284593121014553,
+      -0.005999740816304712
+     ],
+     "wtl": [
+      22,
+      32,
+      38
+     ],
+     "ci_above_zero": false
+    },
+    "cesr:recall@10": {
+     "delta": 0.014492753623188404,
+     "ci95": [
+      0.0,
+      0.03985507246376812
+     ],
+     "wtl": [
+      2,
+      90,
+      0
+     ],
+     "ci_above_zero": false
+    },
+    "cesr:ndcg@10": {
+     "delta": 0.01776215811510847,
+     "ci95": [
+      -0.02821875809127578,
+      0.06634274388401426
+     ],
+     "wtl": [
+      16,
+      60,
+      16
+     ],
+     "ci_above_zero": false
+    },
+    "cesr_plus_graph:recall@10": {
+     "delta": -0.005434782608695655,
+     "ci95": [
+      -0.03985507246376812,
+      0.03079710144927536
+     ],
+     "wtl": [
+      3,
+      85,
+      4
+     ],
+     "ci_above_zero": false
+    },
+    "cesr_plus_graph:ndcg@10": {
+     "delta": 0.008073511796270841,
+     "ci95": [
+      -0.0432496064656778,
+      0.05946189083015794
+     ],
+     "wtl": [
+      18,
+      55,
+      19
+     ],
+     "ci_above_zero": false
+    }
+   },
+   "passing_checks": [],
+   "passed": false
+  },
+  "latency_ms_per_query": 5.588687942413937,
+  "miss_decomposition": {
+   "relevant_file_instances": 170,
+   "missed_at_10": 37,
+   "missed_share": 0.21764705882352942,
+   "missed_in_pool": 26,
+   "missed_outside_pool": 11,
+   "missed_test": 8,
+   "missed_never_scored": 4
+  },
+  "queries_changed": {
+   "cesr": [
+    {
+     "qid": "1972",
+     "bm25_file": 0.0,
+     "cesr_recall10": 1.0,
+     "relevant": [
+      "src/react.ts"
+     ]
+    },
+    {
+     "qid": "2244",
+     "bm25_file": 0.3333333333333333,
+     "cesr_recall10": 0.6666666666666666,
+     "relevant": [
+      "tests/shallow.test.tsx",
+      "tests/subscribe.test.tsx",
+      "tests/vanilla/subscribe.test.tsx"
+     ]
+    }
+   ],
+   "graph_rrf": [
+    {
+     "qid": "1589",
+     "bm25_file": 0.5,
+     "graph_recall10": 0.0,
+     "relevant": [
+      "src/react.ts",
+      "tests/types.test.tsx"
+     ]
+    },
+    {
+     "qid": "1972",
+     "bm25_file": 0.0,
+     "graph_recall10": 1.0,
+     "relevant": [
+      "src/react.ts"
+     ]
+    },
+    {
+     "qid": "2213",
+     "bm25_file": 0.5,
+     "graph_recall10": 0.0,
+     "relevant": [
+      "src/vanilla.ts",
+      "tests/vanilla/basic.test.ts"
+     ]
+    },
+    {
+     "qid": "2244",
+     "bm25_file": 0.3333333333333333,
+     "graph_recall10": 0.6666666666666666,
+     "relevant": [
+      "tests/shallow.test.tsx",
+      "tests/subscribe.test.tsx",
+      "tests/vanilla/subscribe.test.tsx"
+     ]
+    },
+    {
+     "qid": "2374",
+     "bm25_file": 1.0,
+     "graph_recall10": 0.0,
+     "relevant": [
+      "src/vanilla/shallow.ts"
+     ]
+    },
+    {
+     "qid": "2395",
+     "bm25_file": 1.0,
+     "graph_recall10": 0.3333333333333333,
+     "relevant": [
+      "src/react.ts",
+      "tests/basic.test.tsx",
+      "tests/ssr.test.tsx"
+     ]
+    },
+    {
+     "qid": "2580",
+     "bm25_file": 0.75,
+     "graph_recall10": 1.0,
+     "relevant": [
+      "src/middleware/devtools.ts",
+      "src/middleware/immer.ts",
+      "src/middleware/persist.ts",
+      "src/vanilla.ts"
+     ]
+    },
+    {
+     "qid": "2832",
+     "bm25_file": 1.0,
+     "graph_recall10": 0.5,
+     "relevant": [
+      "tests/basic.test.tsx",
+      "tests/persistAsync.test.tsx"
+     ]
+    },
+    {
+     "qid": "2844",
+     "bm25_file": 0.75,
+     "graph_recall10": 0.25,
+     "relevant": [
+      "tests/basic.test.tsx",
+      "tests/persistAsync.test.tsx",
+      "tests/shallow.test.tsx",
+      "tests/ssr.test.tsx"
+     ]
+    },
+    {
+     "qid": "2875",
+     "bm25_file": 1.0,
+     "graph_recall10": 0.5,
+     "relevant": [
+      "src/middleware/devtools.ts",
+      "tests/middlewareTypes.test.tsx"
+     ]
+    },
+    {
+     "qid": "3161",
+     "bm25_file": 0.0,
+     "graph_recall10": 0.5,
+     "relevant": [
+      "examples/demo/src/components/Scene.jsx",
+      "tests/types.test.tsx"
+     ]
+    },
+    {
+     "qid": "3321",
+     "bm25_file": 0.3333333333333333,
+     "graph_recall10": 0.6666666666666666,
+     "relevant": [
+      "tests/basic.test.tsx",
+      "tests/middlewareTypes.test.tsx",
+      "tests/types.test.tsx"
+     ]
+    },
+    {
+     "qid": "3349",
+     "bm25_file": 1.0,
+     "graph_recall10": 0.0,
+     "relevant": [
+      "tests/middlewareTypes.test.tsx"
+     ]
+    },
+    {
+     "qid": "3483",
+     "bm25_file": 1.0,
+     "graph_recall10": 0.0,
+     "relevant": [
+      "tests/devtools.test.tsx"
+     ]
+    }
+   ]
+  },
+  "random_baseline": {
+   "recall@1": 0.02717391304347826,
+   "recall@5": 0.07463768115942028,
+   "recall@10": 0.22771739130434782,
+   "all@10": 0.11956521739130435,
+   "ndcg@10": 0.11663193506744203,
+   "mrr@10": 0.10545634920634919,
+   "queries": 92
+  }
+ },
+ "no_paths": {
+  "systems": {
+   "bm25_chunk": {
+    "recall@1": 0.3717391304347826,
+    "recall@5": 0.7338768115942029,
+    "recall@10": 0.806159420289855,
+    "all@10": 0.7608695652173914,
+    "ndcg@10": 0.6721637729347916,
+    "mrr@10": 0.6653079710144929,
+    "queries": 92
+   },
+   "bm25_file": {
+    "recall@1": 0.3717391304347826,
+    "recall@5": 0.7338768115942029,
+    "recall@10": 0.806159420289855,
+    "all@10": 0.7608695652173914,
+    "ndcg@10": 0.6721637729347916,
+    "mrr@10": 0.6653079710144929,
+    "queries": 92
+   },
+   "bm25_file_sum": {
+    "recall@1": 0.11539855072463767,
+    "recall@5": 0.49293478260869567,
+    "recall@10": 0.7672101449275364,
+    "all@10": 0.6956521739130435,
+    "ndcg@10": 0.46381458235974227,
+    "mrr@10": 0.4007979641131815,
+    "queries": 92
+   },
+   "entity_file": {
+    "recall@1": 0.08188405797101449,
+    "recall@5": 0.2914855072463768,
+    "recall@10": 0.30235507246376814,
+    "all@10": 0.2717391304347826,
+    "ndcg@10": 0.22623000396205645,
+    "mrr@10": 0.21684782608695652,
+    "queries": 92
+   },
+   "graph_file": {
+    "recall@1": 0.26666666666666666,
+    "recall@5": 0.5364130434782608,
+    "recall@10": 0.6124999999999999,
+    "all@10": 0.5,
+    "ndcg@10": 0.49899740294607914,
+    "mrr@10": 0.5214803312629399,
+    "queries": 92
+   },
+   "graph_rrf": {
+    "recall@1": 0.30471014492753623,
+    "recall@5": 0.7047101449275364,
+    "recall@10": 0.7762681159420289,
+    "all@10": 0.7282608695652174,
+    "ndcg@10": 0.609548837695429,
+    "mrr@10": 0.5983825051759836,
+    "queries": 92
+   },
+   "cesr": {
+    "recall@1": 0.36086956521739133,
+    "recall@5": 0.7740942028985508,
+    "recall@10": 0.8206521739130435,
+    "all@10": 0.7717391304347826,
+    "ndcg@10": 0.6784568265534611,
+    "mrr@10": 0.6594202898550724,
+    "queries": 92
+   },
+   "cesr_plus_graph": {
+    "recall@1": 0.36086956521739133,
+    "recall@5": 0.7490942028985508,
+    "recall@10": 0.789855072463768,
+    "all@10": 0.75,
+    "ndcg@10": 0.6628757611517634,
+    "mrr@10": 0.6423913043478261,
+    "queries": 92
+   }
+  },
+  "all_at_10": {
+   "capped_at_3_qrel_files": {
+    "bm25_chunk": 0.8,
+    "bm25_file": 0.8,
+    "bm25_file_sum": 0.7294117647058823,
+    "entity_file": 0.29411764705882354,
+    "graph_file": 0.5176470588235295,
+    "graph_rrf": 0.7529411764705882,
+    "cesr": 0.8117647058823529,
+    "cesr_plus_graph": 0.788235294117647
+   },
+   "all": {
+    "bm25_chunk": 0.7608695652173914,
+    "bm25_file": 0.7608695652173914,
+    "bm25_file_sum": 0.6956521739130435,
+    "entity_file": 0.2717391304347826,
+    "graph_file": 0.5,
+    "graph_rrf": 0.7282608695652174,
+    "cesr": 0.7717391304347826,
+    "cesr_plus_graph": 0.75
+   }
+  },
+  "paired_vs_bm25_file": {
+   "bm25_chunk": {
+    "recall@1": {
+     "delta": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "wtl": [
+      0,
+      92,
+      0
+     ]
+    },
+    "recall@5": {
+     "delta": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "wtl": [
+      0,
+      92,
+      0
+     ]
+    },
+    "recall@10": {
+     "delta": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "wtl": [
+      0,
+      92,
+      0
+     ]
+    },
+    "all@10": {
+     "delta": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "wtl": [
+      0,
+      92,
+      0
+     ]
+    },
+    "ndcg@10": {
+     "delta": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "wtl": [
+      0,
+      92,
+      0
+     ]
+    },
+    "mrr@10": {
+     "delta": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "wtl": [
+      0,
+      92,
+      0
+     ]
+    }
+   },
+   "bm25_file_sum": {
+    "recall@1": {
+     "delta": -0.25634057971014496,
+     "ci95": [
+      -0.3478260869565217,
+      -0.16754981884057973
+     ],
+     "wtl": [
+      5,
+      50,
+      37
+     ]
+    },
+    "recall@5": {
+     "delta": -0.24094202898550726,
+     "ci95": [
+      -0.33605072463768115,
+      -0.14402173913043478
+     ],
+     "wtl": [
+      7,
+      50,
+      35
+     ]
+    },
+    "recall@10": {
+     "delta": -0.03894927536231885,
+     "ci95": [
+      -0.11961050724637681,
+      0.03901721014492748
+     ],
+     "wtl": [
+      10,
+      69,
+      13
+     ]
+    },
+    "all@10": {
+     "delta": -0.06521739130434782,
+     "ci95": [
+      -0.15217391304347827,
+      0.022010869565217143
+     ],
+     "wtl": [
+      6,
+      74,
+      12
+     ]
+    },
+    "ndcg@10": {
+     "delta": -0.2083491905750494,
+     "ci95": [
+      -0.27858865729802995,
+      -0.14255377547070192
+     ],
+     "wtl": [
+      19,
+      11,
+      62
+     ]
+    },
+    "mrr@10": {
+     "delta": -0.26451000690131127,
+     "ci95": [
+      -0.3552171756383713,
+      -0.18344278381642515
+     ],
+     "wtl": [
+      16,
+      25,
+      51
+     ]
+    }
+   },
+   "entity_file": {
+    "recall@1": {
+     "delta": -0.28985507246376807,
+     "ci95": [
+      -0.3768568840579711,
+      -0.20833333333333331
+     ],
+     "wtl": [
+      2,
+      47,
+      43
+     ]
+    },
+    "recall@5": {
+     "delta": -0.44239130434782614,
+     "ci95": [
+      -0.5423913043478261,
+      -0.341838768115942
+     ],
+     "wtl": [
+      3,
+      41,
+      48
+     ]
+    },
+    "recall@10": {
+     "delta": -0.503804347826087,
+     "ci95": [
+      -0.6059827898550725,
+      -0.41030797101449273
+     ],
+     "wtl": [
+      1,
+      37,
+      54
+     ]
+    },
+    "all@10": {
+     "delta": -0.4891304347826087,
+     "ci95": [
+      -0.5978260869565217,
+      -0.39103260869565243
+     ],
+     "wtl": [
+      1,
+      45,
+      46
+     ]
+    },
+    "ndcg@10": {
+     "delta": -0.4459337689727351,
+     "ci95": [
+      -0.5299411372634235,
+      -0.3691721270039652
+     ],
+     "wtl": [
+      9,
+      17,
+      66
+     ]
+    },
+    "mrr@10": {
+     "delta": -0.4484601449275362,
+     "ci95": [
+      -0.535516304347826,
+      -0.36122509057971014
+     ],
+     "wtl": [
+      6,
+      23,
+      63
+     ]
+    }
+   },
+   "graph_file": {
+    "recall@1": {
+     "delta": -0.10507246376811594,
+     "ci95": [
+      -0.20289855072463767,
+      -0.007246376811594204
+     ],
+     "wtl": [
+      8,
+      62,
+      22
+     ]
+    },
+    "recall@5": {
+     "delta": -0.19746376811594205,
+     "ci95": [
+      -0.2826313405797101,
+      -0.11141304347826086
+     ],
+     "wtl": [
+      5,
+      57,
+      30
+     ]
+    },
+    "recall@10": {
+     "delta": -0.1936594202898551,
+     "ci95": [
+      -0.27266757246376816,
+      -0.11756340579710148
+     ],
+     "wtl": [
+      5,
+      58,
+      29
+     ]
+    },
+    "all@10": {
+     "delta": -0.2608695652173913,
+     "ci95": [
+      -0.358695652173913,
+      -0.16304347826086957
+     ],
+     "wtl": [
+      2,
+      64,
+      26
+     ]
+    },
+    "ndcg@10": {
+     "delta": -0.1731663699887125,
+     "ci95": [
+      -0.24757371101573314,
+      -0.10196424691636422
+     ],
+     "wtl": [
+      16,
+      29,
+      47
+     ]
+    },
+    "mrr@10": {
+     "delta": -0.1438276397515528,
+     "ci95": [
+      -0.2348052536231884,
+      -0.057122153209109745
+     ],
+     "wtl": [
+      13,
+      44,
+      35
+     ]
+    }
+   },
+   "graph_rrf": {
+    "recall@1": {
+     "delta": -0.06702898550724637,
+     "ci95": [
+      -0.16132246376811593,
+      0.02536231884057971
+     ],
+     "wtl": [
+      10,
+      64,
+      18
+     ]
+    },
+    "recall@5": {
+     "delta": -0.02916666666666667,
+     "ci95": [
+      -0.09621376811594204,
+      0.04077898550724636
+     ],
+     "wtl": [
+      8,
+      71,
+      13
+     ]
+    },
+    "recall@10": {
+     "delta": -0.029891304347826088,
+     "ci95": [
+      -0.09239130434782608,
+      0.02898550724637681
+     ],
+     "wtl": [
+      6,
+      77,
+      9
+     ]
+    },
+    "all@10": {
+     "delta": -0.03260869565217391,
+     "ci95": [
+      -0.09782608695652174,
+      0.03260869565217391
+     ],
+     "wtl": [
+      3,
+      83,
+      6
+     ]
+    },
+    "ndcg@10": {
+     "delta": -0.06261493523936264,
+     "ci95": [
+      -0.12352661659395917,
+      -0.0019393403879281285
+     ],
+     "wtl": [
+      24,
+      32,
+      36
+     ]
+    },
+    "mrr@10": {
+     "delta": -0.06692546583850931,
+     "ci95": [
+      -0.14936755952380953,
+      0.014145639233954456
+     ],
+     "wtl": [
+      16,
+      51,
+      25
+     ]
+    }
+   },
+   "cesr": {
+    "recall@1": {
+     "delta": -0.010869565217391304,
+     "ci95": [
+      -0.08333333333333334,
+      0.06159420289855072
+     ],
+     "wtl": [
+      10,
+      69,
+      13
+     ]
+    },
+    "recall@5": {
+     "delta": 0.04021739130434783,
+     "ci95": [
+      0.00036231884057971,
+      0.08333333333333333
+     ],
+     "wtl": [
+      8,
+      83,
+      1
+     ]
+    },
+    "recall@10": {
+     "delta": 0.014492753623188404,
+     "ci95": [
+      0.0,
+      0.03985507246376812
+     ],
+     "wtl": [
+      2,
+      90,
+      0
+     ]
+    },
+    "all@10": {
+     "delta": 0.010869565217391304,
+     "ci95": [
+      0.0,
+      0.03260869565217391
+     ],
+     "wtl": [
+      1,
+      91,
+      0
+     ]
+    },
+    "ndcg@10": {
+     "delta": 0.006293053618669605,
+     "ci95": [
+      -0.036391772024031516,
+      0.05158163936343374
+     ],
+     "wtl": [
+      15,
+      61,
+      16
+     ]
+    },
+    "mrr@10": {
+     "delta": -0.0058876811594202935,
+     "ci95": [
+      -0.06993659420289856,
+      0.059150815217391316
+     ],
+     "wtl": [
+      11,
+      66,
+      15
+     ]
+    }
+   },
+   "cesr_plus_graph": {
+    "recall@1": {
+     "delta": -0.010869565217391304,
+     "ci95": [
+      -0.08333333333333334,
+      0.06159420289855072
+     ],
+     "wtl": [
+      10,
+      69,
+      13
+     ]
+    },
+    "recall@5": {
+     "delta": 0.01521739130434782,
+     "ci95": [
+      -0.044583333333333336,
+      0.06848278985507246
+     ],
+     "wtl": [
+      9,
+      76,
+      7
+     ]
+    },
+    "recall@10": {
+     "delta": -0.01630434782608696,
+     "ci95": [
+      -0.059827898550724644,
+      0.023550724637681153
+     ],
+     "wtl": [
+      3,
+      84,
+      5
+     ]
+    },
+    "all@10": {
+     "delta": -0.010869565217391304,
+     "ci95": [
+      -0.05434782608695652,
+      0.021739130434782608
+     ],
+     "wtl": [
+      1,
+      89,
+      2
+     ]
+    },
+    "ndcg@10": {
+     "delta": -0.009288011783028221,
+     "ci95": [
+      -0.06336913600815396,
+      0.04211662224968215
+     ],
+     "wtl": [
+      17,
+      56,
+      19
+     ]
+    },
+    "mrr@10": {
+     "delta": -0.02291666666666667,
+     "ci95": [
+      -0.09468070652173911,
+      0.04629528985507246
+     ],
+     "wtl": [
+      11,
+      65,
+      16
+     ]
+    }
+   }
+  },
+  "slices": {
+   "era:2023-2024": {
+    "bm25_chunk": {
+     "recall@1": 0.2789115646258503,
+     "recall@5": 0.6547619047619047,
+     "recall@10": 0.7517006802721088,
+     "all@10": 0.673469387755102,
+     "ndcg@10": 0.6048991355922554,
+     "mrr@10": 0.6018707482993197,
+     "queries": 49
+    },
+    "bm25_file": {
+     "recall@1": 0.2789115646258503,
+     "recall@5": 0.6547619047619047,
+     "recall@10": 0.7517006802721088,
+     "all@10": 0.673469387755102,
+     "ndcg@10": 0.6048991355922554,
+     "mrr@10": 0.6018707482993197,
+     "queries": 49
+    },
+    "bm25_file_sum": {
+     "recall@1": 0.0901360544217687,
+     "recall@5": 0.4047619047619047,
+     "recall@10": 0.7108843537414965,
+     "all@10": 0.5918367346938775,
+     "ndcg@10": 0.43217880860168384,
+     "mrr@10": 0.3709507612568837,
+     "queries": 49
+    },
+    "entity_file": {
+     "recall@1": 0.06802721088435373,
+     "recall@5": 0.21258503401360546,
+     "recall@10": 0.2329931972789116,
+     "all@10": 0.20408163265306123,
+     "ndcg@10": 0.17787501561942443,
+     "mrr@10": 0.1717687074829932,
+     "queries": 49
+    },
+    "graph_file": {
+     "recall@1": 0.282312925170068,
+     "recall@5": 0.49489795918367346,
+     "recall@10": 0.5391156462585034,
+     "all@10": 0.40816326530612246,
+     "ndcg@10": 0.48523690979143463,
+     "mrr@10": 0.548153547133139,
+     "queries": 49
+    },
+    "graph_rrf": {
+     "recall@1": 0.3129251700680272,
+     "recall@5": 0.6496598639455783,
+     "recall@10": 0.7193877551020408,
+     "all@10": 0.6530612244897959,
+     "ndcg@10": 0.5968096880611735,
+     "mrr@10": 0.6239795918367347,
+     "queries": 49
+    },
+    "cesr": {
+     "recall@1": 0.3571428571428571,
+     "recall@5": 0.7159863945578232,
+     "recall@10": 0.7789115646258503,
+     "all@10": 0.6938775510204082,
+     "ndcg@10": 0.6680680415784441,
+     "mrr@10": 0.6744897959183673,
+     "queries": 49
+    },
+    "cesr_plus_graph": {
+     "recall@1": 0.3571428571428571,
+     "recall@5": 0.7023809523809524,
+     "recall@10": 0.7346938775510204,
+     "all@10": 0.673469387755102,
+     "ndcg@10": 0.6461216879402849,
+     "mrr@10": 0.6579931972789116,
+     "queries": 49
+    }
+   },
+   "era:2025-2026": {
+    "bm25_chunk": {
+     "recall@1": 0.4775193798449612,
+     "recall@5": 0.824031007751938,
+     "recall@10": 0.868217054263566,
+     "all@10": 0.8604651162790697,
+     "ndcg@10": 0.7488141736274493,
+     "mrr@10": 0.7375968992248062,
+     "queries": 43
+    },
+    "bm25_file": {
+     "recall@1": 0.4775193798449612,
+     "recall@5": 0.824031007751938,
+     "recall@10": 0.868217054263566,
+     "all@10": 0.8604651162790697,
+     "ndcg@10": 0.7488141736274493,
+     "mrr@10": 0.7375968992248062,
+     "queries": 43
+    },
+    "bm25_file_sum": {
+     "recall@1": 0.14418604651162792,
+     "recall@5": 0.5934108527131783,
+     "recall@10": 0.8313953488372093,
+     "all@10": 0.813953488372093,
+     "ndcg@10": 0.4998646501305528,
+     "mrr@10": 0.4348098929494278,
+     "queries": 43
+    },
+    "entity_file": {
+     "recall@1": 0.09767441860465116,
+     "recall@5": 0.38139534883720927,
+     "recall@10": 0.38139534883720927,
+     "all@10": 0.3488372093023256,
+     "ndcg@10": 0.28133219998040465,
+     "mrr@10": 0.2682170542635659,
+     "queries": 43
+    },
+    "graph_file": {
+     "recall@1": 0.24883720930232556,
+     "recall@5": 0.5837209302325582,
+     "recall@10": 0.696124031007752,
+     "all@10": 0.6046511627906976,
+     "ndcg@10": 0.5146779649129996,
+     "mrr@10": 0.4910852713178295,
+     "queries": 43
+    },
+    "graph_rrf": {
+     "recall@1": 0.29534883720930233,
+     "recall@5": 0.7674418604651163,
+     "recall@10": 0.8410852713178294,
+     "all@10": 0.813953488372093,
+     "ndcg@10": 0.6240655430926038,
+     "mrr@10": 0.5692137320044296,
+     "queries": 43
+    },
+    "cesr": {
+     "recall@1": 0.3651162790697674,
+     "recall@5": 0.8403100775193798,
+     "recall@10": 0.868217054263566,
+     "all@10": 0.8604651162790697,
+     "ndcg@10": 0.690295209431969,
+     "mrr@10": 0.6422480620155039,
+     "queries": 43
+    },
+    "cesr_plus_graph": {
+     "recall@1": 0.3651162790697674,
+     "recall@5": 0.8023255813953488,
+     "recall@10": 0.8527131782945736,
+     "all@10": 0.8372093023255814,
+     "ndcg@10": 0.6819676120206574,
+     "mrr@10": 0.6246124031007751,
+     "queries": 43
+    }
+   },
+   "qrel_files:1": {
+    "bm25_chunk": {
+     "recall@1": 0.47619047619047616,
+     "recall@5": 0.7857142857142857,
+     "recall@10": 0.8333333333333334,
+     "all@10": 0.8333333333333334,
+     "ndcg@10": 0.6532137979023587,
+     "mrr@10": 0.5952380952380952,
+     "queries": 42
+    },
+    "bm25_file": {
+     "recall@1": 0.47619047619047616,
+     "recall@5": 0.7857142857142857,
+     "recall@10": 0.8333333333333334,
+     "all@10": 0.8333333333333334,
+     "ndcg@10": 0.6532137979023587,
+     "mrr@10": 0.5952380952380952,
+     "queries": 42
+    },
+    "bm25_file_sum": {
+     "recall@1": 0.07142857142857142,
+     "recall@5": 0.42857142857142855,
+     "recall@10": 0.7619047619047619,
+     "all@10": 0.7619047619047619,
+     "ndcg@10": 0.36149477358852883,
+     "mrr@10": 0.24068405139833712,
+     "queries": 42
+    },
+    "entity_file": {
+     "recall@1": 0.09523809523809523,
+     "recall@5": 0.3333333333333333,
+     "recall@10": 0.35714285714285715,
+     "all@10": 0.35714285714285715,
+     "ndcg@10": 0.23859336632117983,
+     "mrr@10": 0.19920634920634922,
+     "queries": 42
+    },
+    "graph_file": {
+     "recall@1": 0.3333333333333333,
+     "recall@5": 0.5952380952380952,
+     "recall@10": 0.6428571428571429,
+     "all@10": 0.6428571428571429,
+     "ndcg@10": 0.4855166014286979,
+     "mrr@10": 0.4349206349206349,
+     "queries": 42
+    },
+    "graph_rrf": {
+     "recall@1": 0.38095238095238093,
+     "recall@5": 0.7619047619047619,
+     "recall@10": 0.8095238095238095,
+     "all@10": 0.8095238095238095,
+     "ndcg@10": 0.5792414851741546,
+     "mrr@10": 0.5067460317460317,
+     "queries": 42
+    },
+    "cesr": {
+     "recall@1": 0.5,
+     "recall@5": 0.8095238095238095,
+     "recall@10": 0.8571428571428571,
+     "all@10": 0.8571428571428571,
+     "ndcg@10": 0.6769713912086333,
+     "mrr@10": 0.6186507936507937,
+     "queries": 42
+    },
+    "cesr_plus_graph": {
+     "recall@1": 0.5,
+     "recall@5": 0.7857142857142857,
+     "recall@10": 0.8333333333333334,
+     "all@10": 0.8333333333333334,
+     "ndcg@10": 0.664023206664851,
+     "mrr@10": 0.6095238095238096,
+     "queries": 42
+    }
+   },
+   "qrel_files:2": {
+    "bm25_chunk": {
+     "recall@1": 0.3387096774193548,
+     "recall@5": 0.7580645161290323,
+     "recall@10": 0.8387096774193549,
+     "all@10": 0.8064516129032258,
+     "ndcg@10": 0.7206209952052717,
+     "mrr@10": 0.7379032258064516,
+     "queries": 31
+    },
+    "bm25_file": {
+     "recall@1": 0.3387096774193548,
+     "recall@5": 0.7580645161290323,
+     "recall@10": 0.8387096774193549,
+     "all@10": 0.8064516129032258,
+     "ndcg@10": 0.7206209952052717,
+     "mrr@10": 0.7379032258064516,
+     "queries": 31
+    },
+    "bm25_file_sum": {
+     "recall@1": 0.1774193548387097,
+     "recall@5": 0.5967741935483871,
+     "recall@10": 0.7903225806451613,
+     "all@10": 0.7096774193548387,
+     "ndcg@10": 0.5477553298884033,
+     "mrr@10": 0.5253968253968254,
+     "queries": 31
+    },
+    "entity_file": {
+     "recall@1": 0.0967741935483871,
+     "recall@5": 0.3548387096774194,
+     "recall@10": 0.3548387096774194,
+     "all@10": 0.3225806451612903,
+     "ndcg@10": 0.28593909425854774,
+     "mrr@10": 0.2768817204301075,
+     "queries": 31
+    },
+    "graph_file": {
+     "recall@1": 0.24193548387096775,
+     "recall@5": 0.5,
+     "recall@10": 0.5967741935483871,
+     "all@10": 0.3870967741935484,
+     "ndcg@10": 0.5121817242391586,
+     "mrr@10": 0.5951612903225806,
+     "queries": 31
+    },
+    "graph_rrf": {
+     "recall@1": 0.25806451612903225,
+     "recall@5": 0.7096774193548387,
+     "recall@10": 0.7903225806451613,
+     "all@10": 0.7419354838709677,
+     "ndcg@10": 0.6373346382777951,
+     "mrr@10": 0.6505376344086021,
+     "queries": 31
+    },
+    "cesr": {
+     "recall@1": 0.27419354838709675,
+     "recall@5": 0.8064516129032258,
+     "recall@10": 0.8387096774193549,
+     "all@10": 0.8064516129032258,
+     "ndcg@10": 0.6911046010388339,
+     "mrr@10": 0.6779569892473118,
+     "queries": 31
+    },
+    "cesr_plus_graph": {
+     "recall@1": 0.27419354838709675,
+     "recall@5": 0.7903225806451613,
+     "recall@10": 0.8064516129032258,
+     "all@10": 0.8064516129032258,
+     "ndcg@10": 0.6819836674478386,
+     "mrr@10": 0.6586021505376344,
+     "queries": 31
+    }
+   },
+   "qrel_files:3": {
+    "bm25_chunk": {
+     "recall@1": 0.25000000000000006,
+     "recall@5": 0.7222222222222222,
+     "recall@10": 0.8055555555555555,
+     "all@10": 0.6666666666666666,
+     "ndcg@10": 0.7513229924907571,
+     "mrr@10": 0.8333333333333334,
+     "queries": 12
+    },
+    "bm25_file": {
+     "recall@1": 0.25000000000000006,
+     "recall@5": 0.7222222222222222,
+     "recall@10": 0.8055555555555555,
+     "all@10": 0.6666666666666666,
+     "ndcg@10": 0.7513229924907571,
+     "mrr@10": 0.8333333333333334,
+     "queries": 12
+    },
+    "bm25_file_sum": {
+     "recall@1": 0.13888888888888887,
+     "recall@5": 0.5833333333333334,
+     "recall@10": 0.8611111111111112,
+     "all@10": 0.6666666666666666,
+     "ndcg@10": 0.6390467307709778,
+     "mrr@10": 0.6238095238095239,
+     "queries": 12
+    },
+    "entity_file": {
+     "recall@1": 0.027777777777777776,
+     "recall@5": 0.05555555555555555,
+     "recall@10": 0.05555555555555555,
+     "all@10": 0.0,
+     "ndcg@10": 0.06378005308238514,
+     "mrr@10": 0.125,
+     "queries": 12
+    },
+    "graph_file": {
+     "recall@1": 0.19444444444444442,
+     "recall@5": 0.5833333333333333,
+     "recall@10": 0.6666666666666666,
+     "all@10": 0.4166666666666667,
+     "ndcg@10": 0.5835719163700376,
+     "mrr@10": 0.6763888888888889,
+     "queries": 12
+    },
+    "graph_rrf": {
+     "recall@1": 0.2777777777777778,
+     "recall@5": 0.6944444444444443,
+     "recall@10": 0.8055555555555555,
+     "all@10": 0.5833333333333334,
+     "ndcg@10": 0.7549514002133354,
+     "mrr@10": 0.8730158730158729,
+     "queries": 12
+    },
+    "cesr": {
+     "recall@1": 0.25000000000000006,
+     "recall@5": 0.8055555555555555,
+     "recall@10": 0.8333333333333335,
+     "all@10": 0.6666666666666666,
+     "ndcg@10": 0.7905640913299598,
+     "mrr@10": 0.861111111111111,
+     "queries": 12
+    },
+    "cesr_plus_graph": {
+     "recall@1": 0.25000000000000006,
+     "recall@5": 0.7222222222222223,
+     "recall@10": 0.8055555555555555,
+     "all@10": 0.5833333333333334,
+     "ndcg@10": 0.7536040336520405,
+     "mrr@10": 0.829861111111111,
+     "queries": 12
+    }
+   },
+   "qrel_files:4-5": {
+    "bm25_chunk": {
+     "recall@1": 0.09999999999999999,
+     "recall@5": 0.33571428571428574,
+     "recall@10": 0.5,
+     "all@10": 0.2857142857142857,
+     "ndcg@10": 0.43556583383560765,
+     "mrr@10": 0.4761904761904762,
+     "queries": 7
+    },
+    "bm25_file": {
+     "recall@1": 0.09999999999999999,
+     "recall@5": 0.33571428571428574,
+     "recall@10": 0.5,
+     "all@10": 0.2857142857142857,
+     "ndcg@10": 0.43556583383560765,
+     "mrr@10": 0.4761904761904762,
+     "queries": 7
+    },
+    "bm25_file_sum": {
+     "recall@1": 0.0642857142857143,
+     "recall@5": 0.2642857142857143,
+     "recall@10": 0.5357142857142857,
+     "all@10": 0.2857142857142857,
+     "ndcg@10": 0.40559787008369097,
+     "mrr@10": 0.42738095238095236,
+     "queries": 7
+    },
+    "entity_file": {
+     "recall@1": 0.028571428571428574,
+     "recall@5": 0.16428571428571428,
+     "recall@10": 0.16428571428571428,
+     "all@10": 0.0,
+     "ndcg@10": 0.16610948857372027,
+     "mrr@10": 0.21428571428571427,
+     "queries": 7
+    },
+    "graph_file": {
+     "recall@1": 0.09999999999999999,
+     "recall@5": 0.2642857142857143,
+     "recall@10": 0.40714285714285714,
+     "all@10": 0.2857142857142857,
+     "ndcg@10": 0.37650962331137083,
+     "mrr@10": 0.4489795918367347,
+     "queries": 7
+    },
+    "graph_rrf": {
+     "recall@1": 0.09999999999999999,
+     "recall@5": 0.35714285714285715,
+     "recall@10": 0.4642857142857143,
+     "all@10": 0.42857142857142855,
+     "ndcg@10": 0.41908001449904214,
+     "mrr@10": 0.44642857142857145,
+     "queries": 7
+    },
+    "cesr": {
+     "recall@1": 0.09999999999999999,
+     "recall@5": 0.36428571428571427,
+     "recall@10": 0.5,
+     "all@10": 0.2857142857142857,
+     "ndcg@10": 0.43917398342749514,
+     "mrr@10": 0.4761904761904762,
+     "queries": 7
+    },
+    "cesr_plus_graph": {
+     "recall@1": 0.09999999999999999,
+     "recall@5": 0.39285714285714285,
+     "recall@10": 0.42857142857142855,
+     "all@10": 0.2857142857142857,
+     "ndcg@10": 0.4158361787615717,
+     "mrr@10": 0.44642857142857145,
+     "queries": 7
+    }
+   },
+   "touches_test": {
+    "bm25_chunk": {
+     "recall@1": 0.3544025157232704,
+     "recall@5": 0.7911949685534592,
+     "recall@10": 0.8632075471698113,
+     "all@10": 0.8113207547169812,
+     "ndcg@10": 0.7303025543908602,
+     "mrr@10": 0.7300314465408806,
+     "queries": 53
+    },
+    "bm25_file": {
+     "recall@1": 0.3544025157232704,
+     "recall@5": 0.7911949685534592,
+     "recall@10": 0.8632075471698113,
+     "all@10": 0.8113207547169812,
+     "ndcg@10": 0.7303025543908602,
+     "mrr@10": 0.7300314465408806,
+     "queries": 53
+    },
+    "bm25_file_sum": {
+     "recall@1": 0.20031446540880504,
+     "recall@5": 0.7031446540880503,
+     "recall@10": 0.9292452830188679,
+     "all@10": 0.8490566037735849,
+     "ndcg@10": 0.6340969838635352,
+     "mrr@10": 0.5925202156334232,
+     "queries": 53
+    },
+    "entity_file": {
+     "recall@1": 0.03207547169811321,
+     "recall@5": 0.25440251572327044,
+     "recall@10": 0.25440251572327044,
+     "all@10": 0.20754716981132076,
+     "ndcg@10": 0.17513915360002805,
+     "mrr@10": 0.16572327044025156,
+     "queries": 53
+    },
+    "graph_file": {
+     "recall@1": 0.18773584905660376,
+     "recall@5": 0.4861635220125786,
+     "recall@10": 0.5647798742138365,
+     "all@10": 0.39622641509433965,
+     "ndcg@10": 0.4652187109747818,
+     "mrr@10": 0.5138364779874214,
+     "queries": 53
+    },
+    "graph_rrf": {
+     "recall@1": 0.2191823899371069,
+     "recall@5": 0.7075471698113207,
+     "recall@10": 0.8066037735849056,
+     "all@10": 0.7358490566037735,
+     "ndcg@10": 0.606141263592852,
+     "mrr@10": 0.5993935309973045,
+     "queries": 53
+    },
+    "cesr": {
+     "recall@1": 0.26006289308176095,
+     "recall@5": 0.8075471698113207,
+     "recall@10": 0.8694968553459118,
+     "all@10": 0.8113207547169812,
+     "ndcg@10": 0.6867243393489266,
+     "mrr@10": 0.6619496855345912,
+     "queries": 53
+    },
+    "cesr_plus_graph": {
+     "recall@1": 0.26006289308176095,
+     "recall@5": 0.7830188679245284,
+     "recall@10": 0.8349056603773585,
+     "all@10": 0.7924528301886793,
+     "ndcg@10": 0.6662882429070125,
+     "mrr@10": 0.6386792452830189,
+     "queries": 53
+    }
+   },
+   "source_only": {
+    "bm25_chunk": {
+     "recall@1": 0.3952991452991453,
+     "recall@5": 0.655982905982906,
+     "recall@10": 0.7286324786324786,
+     "all@10": 0.6923076923076923,
+     "ndcg@10": 0.5931546596739804,
+     "mrr@10": 0.5773504273504273,
+     "queries": 39
+    },
+    "bm25_file": {
+     "recall@1": 0.3952991452991453,
+     "recall@5": 0.655982905982906,
+     "recall@10": 0.7286324786324786,
+     "all@10": 0.6923076923076923,
+     "ndcg@10": 0.5931546596739804,
+     "mrr@10": 0.5773504273504273,
+     "queries": 39
+    },
+    "bm25_file_sum": {
+     "recall@1": 0.0,
+     "recall@5": 0.20726495726495722,
+     "recall@10": 0.547008547008547,
+     "all@10": 0.48717948717948717,
+     "ndcg@10": 0.2324051649315107,
+     "mrr@10": 0.14025234025234026,
+     "queries": 39
+    },
+    "entity_file": {
+     "recall@1": 0.1495726495726496,
+     "recall@5": 0.34188034188034183,
+     "recall@10": 0.3675213675213675,
+     "all@10": 0.358974358974359,
+     "ndcg@10": 0.295661159582249,
+     "mrr@10": 0.28632478632478636,
+     "queries": 39
+    },
+    "graph_file": {
+     "recall@1": 0.3739316239316239,
+     "recall@5": 0.6047008547008547,
+     "recall@10": 0.6773504273504273,
+     "all@10": 0.6410256410256411,
+     "ndcg@10": 0.5449017792147652,
+     "mrr@10": 0.5318681318681319,
+     "queries": 39
+    },
+    "graph_rrf": {
+     "recall@1": 0.4209401709401709,
+     "recall@5": 0.7008547008547008,
+     "recall@10": 0.735042735042735,
+     "all@10": 0.717948717948718,
+     "ndcg@10": 0.6141796435271362,
+     "mrr@10": 0.5970085470085469,
+     "queries": 39
+    },
+    "cesr": {
+     "recall@1": 0.4978632478632478,
+     "recall@5": 0.7286324786324786,
+     "recall@10": 0.7542735042735043,
+     "all@10": 0.717948717948718,
+     "ndcg@10": 0.6672214886519311,
+     "mrr@10": 0.655982905982906,
+     "queries": 39
+    },
+    "cesr_plus_graph": {
+     "recall@1": 0.4978632478632478,
+     "recall@5": 0.7029914529914529,
+     "recall@10": 0.7286324786324786,
+     "all@10": 0.6923076923076923,
+     "ndcg@10": 0.6582382859459118,
+     "mrr@10": 0.6474358974358975,
+     "queries": 39
+    }
+   }
+  },
+  "file_group_recall": {
+   "bm25_chunk": {
+    "test": {
+     "queries": 53,
+     "recall@10": 0.8946540880503144
+    },
+    "source": {
+     "queries": 69,
+     "recall@10": 0.788647342995169
+    }
+   },
+   "bm25_file": {
+    "test": {
+     "queries": 53,
+     "recall@10": 0.8946540880503144
+    },
+    "source": {
+     "queries": 69,
+     "recall@10": 0.788647342995169
+    }
+   },
+   "bm25_file_sum": {
+    "test": {
+     "queries": 53,
+     "recall@10": 0.9874213836477986
+    },
+    "source": {
+     "queries": 69,
+     "recall@10": 0.6570048309178743
+    }
+   },
+   "entity_file": {
+    "test": {
+     "queries": 53,
+     "recall@10": 0.2371069182389937
+    },
+    "source": {
+     "queries": 69,
+     "recall@10": 0.35265700483091783
+    }
+   },
+   "graph_file": {
+    "test": {
+     "queries": 53,
+     "recall@10": 0.5113207547169811
+    },
+    "source": {
+     "queries": 69,
+     "recall@10": 0.7451690821256038
+    }
+   },
+   "graph_rrf": {
+    "test": {
+     "queries": 53,
+     "recall@10": 0.8128930817610064
+    },
+    "source": {
+     "queries": 69,
+     "recall@10": 0.7922705314009661
+    }
+   },
+   "cesr": {
+    "test": {
+     "queries": 53,
+     "recall@10": 0.9009433962264151
+    },
+    "source": {
+     "queries": 69,
+     "recall@10": 0.8031400966183575
+    }
+   },
+   "cesr_plus_graph": {
+    "test": {
+     "queries": 53,
+     "recall@10": 0.8411949685534592
+    },
+    "source": {
+     "queries": 69,
+     "recall@10": 0.788647342995169
+    }
+   }
+  },
+  "chunk_diagnostics": {
+   "bm25_chunk": {
+    "chunk_recall@10": 0.7489130434782609,
+    "chunk_recall@100": 0.9474637681159419
+   },
+   "graph_rrf": {
+    "chunk_recall@10": 0.6135869565217391,
+    "chunk_recall@100": 0.8969202898550724
+   },
+   "cesr": {
+    "chunk_recall@10": 0.6072463768115942,
+    "chunk_recall@100": 0.6425724637681159
+   },
+   "cesr_plus_graph": {
+    "chunk_recall@10": 0.6072463768115942,
+    "chunk_recall@100": 0.6425724637681159
+   }
+  },
+  "ceiling": {
+   "files_in_pool": 0.9474637681159419,
+   "all_files_in_pool": 0.9239130434782609,
+   "pool_depth": 100
+  },
+  "constraints": {
+   "queries_with_constraints": 0.6630434782608695,
+   "mean_labels": 1.75,
+   "mean_symbols": 0.6630434782608695,
+   "mean_file_hits": 0.9239130434782609,
+   "queries_with_symbol": 0.41304347826086957,
+   "queries_with_file": 0.5434782608695652,
+   "mean_mandatory": 1.076086956521739,
+   "mean_selected_chunks": 15.108695652173912,
+   "file_hit_precision": 0.5766666666666667,
+   "symbol_file_precision": 0.4868421052631579
+  },
+  "provenance": {
+   "porter_only": 0.5723214285714286,
+   "graph": 0.34087732919254654,
+   "outside_porter_top100": 0.07546583850931678,
+   "pool_size": 170.1304347826087
+  },
+  "gate": {
+   "rule": "graph_rrf or cesr or cesr_plus_graph beats bm25_file on file recall@10 or file nDCG@10 with a paired-bootstrap 95% CI lower bound above zero",
+   "checks": {
+    "graph_rrf:recall@10": {
+     "delta": -0.029891304347826088,
+     "ci95": [
+      -0.09239130434782608,
+      0.02898550724637681
+     ],
+     "wtl": [
+      6,
+      77,
+      9
+     ],
+     "ci_above_zero": false
+    },
+    "graph_rrf:ndcg@10": {
+     "delta": -0.06261493523936264,
+     "ci95": [
+      -0.12352661659395917,
+      -0.0019393403879281285
+     ],
+     "wtl": [
+      24,
+      32,
+      36
+     ],
+     "ci_above_zero": false
+    },
+    "cesr:recall@10": {
+     "delta": 0.014492753623188404,
+     "ci95": [
+      0.0,
+      0.03985507246376812
+     ],
+     "wtl": [
+      2,
+      90,
+      0
+     ],
+     "ci_above_zero": false
+    },
+    "cesr:ndcg@10": {
+     "delta": 0.006293053618669605,
+     "ci95": [
+      -0.036391772024031516,
+      0.05158163936343374
+     ],
+     "wtl": [
+      15,
+      61,
+      16
+     ],
+     "ci_above_zero": false
+    },
+    "cesr_plus_graph:recall@10": {
+     "delta": -0.01630434782608696,
+     "ci95": [
+      -0.059827898550724644,
+      0.023550724637681153
+     ],
+     "wtl": [
+      3,
+      84,
+      5
+     ],
+     "ci_above_zero": false
+    },
+    "cesr_plus_graph:ndcg@10": {
+     "delta": -0.009288011783028221,
+     "ci95": [
+      -0.06336913600815396,
+      0.04211662224968215
+     ],
+     "wtl": [
+      17,
+      56,
+      19
+     ],
+     "ci_above_zero": false
+    }
+   },
+   "passing_checks": [],
+   "passed": false
+  },
+  "latency_ms_per_query": 3.3145253597151325,
+  "miss_decomposition": {
+   "relevant_file_instances": 170,
+   "missed_at_10": 39,
+   "missed_share": 0.22941176470588234,
+   "missed_in_pool": 28,
+   "missed_outside_pool": 11,
+   "missed_test": 9,
+   "missed_never_scored": 4
+  },
+  "queries_changed": {
+   "cesr": [
+    {
+     "qid": "1972",
+     "bm25_file": 0.0,
+     "cesr_recall10": 1.0,
+     "relevant": [
+      "src/react.ts"
+     ]
+    },
+    {
+     "qid": "2244",
+     "bm25_file": 0.3333333333333333,
+     "cesr_recall10": 0.6666666666666666,
+     "relevant": [
+      "tests/shallow.test.tsx",
+      "tests/subscribe.test.tsx",
+      "tests/vanilla/subscribe.test.tsx"
+     ]
+    }
+   ],
+   "graph_rrf": [
+    {
+     "qid": "1589",
+     "bm25_file": 0.5,
+     "graph_recall10": 0.0,
+     "relevant": [
+      "src/react.ts",
+      "tests/types.test.tsx"
+     ]
+    },
+    {
+     "qid": "1667",
+     "bm25_file": 0.0,
+     "graph_recall10": 1.0,
+     "relevant": [
+      "src/shallow.ts"
+     ]
+    },
+    {
+     "qid": "1972",
+     "bm25_file": 0.0,
+     "graph_recall10": 1.0,
+     "relevant": [
+      "src/react.ts"
+     ]
+    },
+    {
+     "qid": "2213",
+     "bm25_file": 0.5,
+     "graph_recall10": 0.0,
+     "relevant": [
+      "src/vanilla.ts",
+      "tests/vanilla/basic.test.ts"
+     ]
+    },
+    {
+     "qid": "2244",
+     "bm25_file": 0.3333333333333333,
+     "graph_recall10": 0.6666666666666666,
+     "relevant": [
+      "tests/shallow.test.tsx",
+      "tests/subscribe.test.tsx",
+      "tests/vanilla/subscribe.test.tsx"
+     ]
+    },
+    {
+     "qid": "2374",
+     "bm25_file": 1.0,
+     "graph_recall10": 0.0,
+     "relevant": [
+      "src/vanilla/shallow.ts"
+     ]
+    },
+    {
+     "qid": "2395",
+     "bm25_file": 1.0,
+     "graph_recall10": 0.3333333333333333,
+     "relevant": [
+      "src/react.ts",
+      "tests/basic.test.tsx",
+      "tests/ssr.test.tsx"
+     ]
+    },
+    {
+     "qid": "2580",
+     "bm25_file": 0.75,
+     "graph_recall10": 1.0,
+     "relevant": [
+      "src/middleware/devtools.ts",
+      "src/middleware/immer.ts",
+      "src/middleware/persist.ts",
+      "src/vanilla.ts"
+     ]
+    },
+    {
+     "qid": "2832",
+     "bm25_file": 1.0,
+     "graph_recall10": 0.5,
+     "relevant": [
+      "tests/basic.test.tsx",
+      "tests/persistAsync.test.tsx"
+     ]
+    },
+    {
+     "qid": "2844",
+     "bm25_file": 0.75,
+     "graph_recall10": 0.25,
+     "relevant": [
+      "tests/basic.test.tsx",
+      "tests/persistAsync.test.tsx",
+      "tests/shallow.test.tsx",
+      "tests/ssr.test.tsx"
+     ]
+    },
+    {
+     "qid": "2875",
+     "bm25_file": 1.0,
+     "graph_recall10": 0.5,
+     "relevant": [
+      "src/middleware/devtools.ts",
+      "tests/middlewareTypes.test.tsx"
+     ]
+    },
+    {
+     "qid": "3151",
+     "bm25_file": 1.0,
+     "graph_recall10": 0.0,
+     "relevant": [
+      "src/middleware.ts"
+     ]
+    },
+    {
+     "qid": "3161",
+     "bm25_file": 0.0,
+     "graph_recall10": 0.5,
+     "relevant": [
+      "examples/demo/src/components/Scene.jsx",
+      "tests/types.test.tsx"
+     ]
+    },
+    {
+     "qid": "3321",
+     "bm25_file": 0.3333333333333333,
+     "graph_recall10": 0.6666666666666666,
+     "relevant": [
+      "tests/basic.test.tsx",
+      "tests/middlewareTypes.test.tsx",
+      "tests/types.test.tsx"
+     ]
+    },
+    {
+     "qid": "3483",
+     "bm25_file": 1.0,
+     "graph_recall10": 0.0,
+     "relevant": [
+      "tests/devtools.test.tsx"
+     ]
+    }
+   ]
+  }
+ },
+ "runtime": {
+  "corpus_build_ms": 698.2155840378255,
+  "total_s": 7.3284501660382375
+ },
+ "samples": [
+  {
+   "number": 1435,
+   "title": "feat(middleware/devtools): Better redux devtools. One connection for all zustand stores",
+   "merged": "2023-01-01",
+   "drift": 0.2949173395257675,
+   "query": "feat(middleware/devtools): Better redux devtools. One connection for all zustand stores. Fixes - A new feature for better redux devtools integration. One redux devtools connection can be used for all zustand stores. Summary one redux devtools connection for all zustand stores add store devtools option to name different stores in devtoolsOptions backward compatibility with old api usage add devOnlyDevtools export that helps to exclude devtools from prod builds without changing code add demo project in documentations temporary npmjs package with this PR features: Check List - [v] yarn run pretti",
+   "qrels": [
+    "src/middleware/devtools.ts",
+    "tests/devtools.test.tsx"
+   ],
+   "constraints": {
+    "labels": [
+     "DEFINES(DevtoolsOptions)",
+     "EXPORTS(src/middleware/devtools.ts)",
+     "DEFINES(Redux)",
+     "EXPORTS(src/middleware/redux.ts)",
+     "DEFINES(redux)",
+     "COVERS(src/middleware/devtools.ts)",
+     "COVERS(src/middleware/redux.ts)",
+     "COVERS(tests/devtools.test.tsx)"
+    ],
+    "symbols": [
+     "DevtoolsOptions",
+     "Redux",
+     "redux"
+    ],
+    "files": [
+     "src/middleware/devtools.ts",
+     "src/middleware/redux.ts",
+     "tests/devtools.test.tsx"
+    ],
+    "cues": [
+     "exports",
+     "defines"
+    ]
+   },
+   "top10": {
+    "bm25_chunk": [
+     "tests/devtools.test.tsx",
+     "src/middleware/devtools.ts",
+     "src/middleware/persist.ts",
+     "tests/middlewareTypes.test.tsx",
+     "src/middleware.ts",
+     "tests/persistSync.test.tsx",
+     "tests/persistAsync.test.tsx",
+     "src/middleware/redux.ts",
+     "tests/vanilla/shallow.test.tsx",
+     "tests/basic.test.tsx"
+    ],
+    "bm25_file": [
+     "tests/devtools.test.tsx",
+     "src/middleware/devtools.ts",
+     "src/middleware/persist.ts",
+     "tests/middlewareTypes.test.tsx",
+     "src/middleware.ts",
+     "tests/persistSync.test.tsx",
+     "tests/persistAsync.test.tsx",
+     "src/middleware/redux.ts",
+     "tests/vanilla/shallow.test.tsx",
+     "tests/basic.test.tsx"
+    ],
+    "bm25_file_sum": [
+     "tests/devtools.test.tsx",
+     "tests/persistAsync.test.tsx",
+     "src/middleware/devtools.ts",
+     "tests/persistSync.test.tsx",
+     "tests/basic.test.tsx",
+     "tests/middlewareTypes.test.tsx",
+     "src/middleware/persist.ts",
+     "src/middleware/redux.ts",
+     "tests/types.test.tsx",
+     "tests/subscribe.test.tsx"
+    ],
+    "entity_file": [
+     "src/middleware.ts",
+     "src/middleware/devtools.ts",
+     "src/middleware/redux.ts",
+     "tests/devtools.test.tsx",
+     "tests/middlewareTypes.test.tsx",
+     "tests/vanilla/shallow.test.tsx"
+    ],
+    "graph_file": [
+     "src/middleware/devtools.ts",
+     "src/middleware/persist.ts",
+     "tests/persistAsync.test.tsx",
+     "tests/persistSync.test.tsx",
+     "src/middleware/redux.ts",
+     "src/middleware.ts",
+     "src/vanilla.ts"
+    ],
+    "graph_rrf": [
+     "src/middleware.ts",
+     "src/middleware/devtools.ts",
+     "src/middleware/redux.ts",
+     "tests/devtools.test.tsx",
+     "tests/middlewareTypes.test.tsx",
+     "src/middleware/persist.ts",
+     "tests/vanilla/shallow.test.tsx",
+     "tests/persistAsync.test.tsx",
+     "tests/persistSync.test.tsx",
+     "src/vanilla.ts"
+    ],
+    "cesr": [
+     "src/middleware/devtools.ts",
+     "src/middleware/redux.ts",
+     "tests/devtools.test.tsx",
+     "src/middleware/persist.ts",
+     "tests/middlewareTypes.test.tsx",
+     "src/middleware.ts",
+     "tests/persistSync.test.tsx",
+     "tests/persistAsync.test.tsx",
+     "tests/vanilla/shallow.test.tsx",
+     "tests/basic.test.tsx"
+    ],
+    "cesr_plus_graph": [
+     "src/middleware/devtools.ts",
+     "src/middleware/redux.ts",
+     "tests/devtools.test.tsx",
+     "src/middleware.ts",
+     "tests/middlewareTypes.test.tsx",
+     "src/middleware/persist.ts",
+     "tests/vanilla/shallow.test.tsx",
+     "tests/persistAsync.test.tsx",
+     "tests/persistSync.test.tsx",
+     "src/vanilla.ts"
+    ]
+   }
+  },
+  {
+   "number": 2875,
+   "title": "fix(middleware): devtools type error #2700",
+   "merged": "2024-12-04",
+   "drift": 0.25545239365121875,
+   "query": "fix(middleware): devtools type error #2700. Related Bug Reports or Discussions Fixes 2700 Summary - Added inferred generic type variables U with some of them extending from the generic T , to support inferred return type - Added corresponding tests using the cases in 2700 Check List Notes Seems like no documentation update would be needed for this PR. Please feel free to let me know if I should update the docs.",
+   "qrels": [
+    "src/middleware/devtools.ts",
+    "tests/middlewareTypes.test.tsx"
+   ],
+   "constraints": {
+    "labels": [
+     "COVERS(src/middleware/devtools.ts)",
+     "COVERS(tests/devtools.test.tsx)"
+    ],
+    "symbols": [],
+    "files": [
+     "src/middleware/devtools.ts",
+     "tests/devtools.test.tsx"
+    ],
+    "cues": []
+   },
+   "top10": {
+    "bm25_chunk": [
+     "src/middleware/immer.ts",
+     "tests/devtools.test.tsx",
+     "src/middleware/persist.ts",
+     "examples/demo/src/components/CopyButton.jsx",
+     "tests/persistSync.test.tsx",
+     "tests/persistAsync.test.tsx",
+     "src/middleware/ssrSafe.ts",
+     "src/middleware/devtools.ts",
+     "tests/middlewareTypes.test.tsx",
+     "tests/types.test.tsx"
+    ],
+    "bm25_file": [
+     "src/middleware/immer.ts",
+     "tests/devtools.test.tsx",
+     "src/middleware/persist.ts",
+     "examples/demo/src/components/CopyButton.jsx",
+     "tests/persistSync.test.tsx",
+     "tests/persistAsync.test.tsx",
+     "src/middleware/ssrSafe.ts",
+     "src/middleware/devtools.ts",
+     "tests/middlewareTypes.test.tsx",
+     "tests/types.test.tsx"
+    ],
+    "bm25_file_sum": [
+     "tests/devtools.test.tsx",
+     "tests/basic.test.tsx",
+     "tests/persistAsync.test.tsx",
+     "tests/middlewareTypes.test.tsx",
+     "src/middleware/devtools.ts",
+     "tests/persistSync.test.tsx",
+     "tests/types.test.tsx",
+     "src/middleware/persist.ts",
+     "src/middleware/immer.ts",
+     "tests/vanilla/shallow.test.tsx"
+    ],
+    "entity_file": [],
+    "graph_file": [
+     "tests/middlewareTypes.test.tsx",
+     "src/middleware/persist.ts",
+     "tests/persistAsync.test.tsx",
+     "tests/persistSync.test.tsx",
+     "examples/demo/src/components/CopyButton.jsx",
+     "tests/immer.test.tsx",
+     "src/middleware/immer.ts",
+     "tests/subscribe.test.tsx",
+     "tests/vanilla/subscribe.test.tsx",
+     "src/middleware.ts"
+    ],
+    "graph_rrf": [
+     "src/middleware/persist.ts",
+     "tests/middlewareTypes.test.tsx",
+     "examples/demo/src/components/CopyButton.jsx",
+     "src/middleware/ssrSafe.ts",
+     "src/middleware/subscribeWithSelector.ts",
+     "src/middleware/immer.ts",
+     "tests/persistAsync.test.tsx",
+     "tests/devtools.test.tsx",
+     "src/vanilla.ts",
+     "tests/persistSync.test.tsx"
+    ],
+    "cesr": [
+     "src/middleware/devtools.ts",
+     "tests/devtools.test.tsx",
+     "src/middleware/immer.ts",
+     "src/middleware/persist.ts",
+     "examples/demo/src/components/CopyButton.jsx",
+     "tests/persistSync.test.tsx",
+     "tests/persistAsync.test.tsx",
+     "src/middleware/ssrSafe.ts",
+     "tests/middlewareTypes.test.tsx",
+     "tests/types.test.tsx"
+    ],
+    "cesr_plus_graph": [
+     "src/middleware/devtools.ts",
+     "tests/devtools.test.tsx",
+     "src/middleware/persist.ts",
+     "tests/middlewareTypes.test.tsx",
+     "examples/demo/src/components/CopyButton.jsx",
+     "src/middleware/ssrSafe.ts",
+     "src/middleware/subscribeWithSelector.ts",
+     "src/middleware/immer.ts",
+     "tests/persistAsync.test.tsx",
+     "src/vanilla.ts"
+    ]
+   }
+  },
+  {
+   "number": 3511,
+   "title": "fix(devtools): improve type inference for Devtools initializer",
+   "merged": "2026-05-28",
+   "drift": 0.0040000000000000036,
+   "query": "fix(devtools): improve type inference for Devtools initializer. Related Bug Reports or Discussions Related Discussion: 3510 Regression PR: 2875 Summary - Improves type inference for the devtools initializer in the Devtools middleware type. - Adds a dedicated type-level regression test for the 3510 scenario in tests/middlewareTypes.test.tsx to ensure create ()(devtools((set, get) = ...)) keeps set/get correctly inferred. Check List",
+   "qrels": [
+    "src/middleware/devtools.ts",
+    "tests/middlewareTypes.test.tsx"
+   ],
+   "constraints": {
+    "labels": [
+     "COVERS(tests/middlewareTypes.test.tsx)",
+     "COVERS(tests/types.test.tsx)",
+     "COVERS(src/middleware/devtools.ts)"
+    ],
+    "symbols": [],
+    "files": [
+     "tests/middlewareTypes.test.tsx",
+     "tests/types.test.tsx",
+     "src/middleware/devtools.ts"
+    ],
+    "cues": [
+     "defines"
+    ]
+   },
+   "top10": {
+    "bm25_chunk": [
+     "src/middleware/persist.ts",
+     "src/middleware/devtools.ts",
+     "tests/middlewareTypes.test.tsx",
+     "src/middleware/immer.ts",
+     "tests/devtools.test.tsx",
+     "src/middleware/ssrSafe.ts",
+     "src/middleware.ts",
+     "src/middleware/subscribeWithSelector.ts",
+     "src/middleware/redux.ts",
+     "tests/types.test.tsx"
+    ],
+    "bm25_file": [
+     "src/middleware/persist.ts",
+     "src/middleware/devtools.ts",
+     "tests/middlewareTypes.test.tsx",
+     "src/middleware/immer.ts",
+     "tests/devtools.test.tsx",
+     "src/middleware/ssrSafe.ts",
+     "src/middleware.ts",
+     "src/middleware/subscribeWithSelector.ts",
+     "src/middleware/redux.ts",
+     "tests/types.test.tsx"
+    ],
+    "bm25_file_sum": [
+     "tests/devtools.test.tsx",
+     "src/middleware/devtools.ts",
+     "tests/middlewareTypes.test.tsx",
+     "tests/basic.test.tsx",
+     "tests/persistAsync.test.tsx",
+     "tests/persistSync.test.tsx",
+     "tests/types.test.tsx",
+     "src/middleware/persist.ts",
+     "src/middleware/immer.ts",
+     "tests/vanilla/basic.test.ts"
+    ],
+    "entity_file": [],
+    "graph_file": [
+     "tests/devtools.test.tsx",
+     "src/middleware/persist.ts",
+     "tests/persistAsync.test.tsx",
+     "tests/persistSync.test.tsx",
+     "src/middleware/devtools.ts",
+     "src/middleware.ts",
+     "src/middleware/immer.ts",
+     "src/middleware/redux.ts",
+     "src/middleware/ssrSafe.ts",
+     "src/vanilla.ts"
+    ],
+    "graph_rrf": [
+     "tests/devtools.test.tsx",
+     "src/middleware/devtools.ts",
+     "src/middleware.ts",
+     "src/middleware/persist.ts",
+     "src/middleware/redux.ts",
+     "tests/middlewareTypes.test.tsx",
+     "src/middleware/immer.ts",
+     "src/middleware/ssrSafe.ts",
+     "src/vanilla.ts",
+     "tests/persistAsync.test.tsx"
+    ],
+    "cesr": [
+     "src/middleware/devtools.ts",
+     "tests/middlewareTypes.test.tsx",
+     "tests/types.test.tsx",
+     "src/middleware/persist.ts",
+     "src/middleware/immer.ts",
+     "tests/devtools.test.tsx",
+     "src/middleware/ssrSafe.ts",
+     "src/middleware.ts",
+     "src/middleware/subscribeWithSelector.ts",
+     "src/middleware/redux.ts"
+    ],
+    "cesr_plus_graph": [
+     "src/middleware/devtools.ts",
+     "tests/middlewareTypes.test.tsx",
+     "tests/types.test.tsx",
+     "tests/devtools.test.tsx",
+     "src/middleware.ts",
+     "src/middleware/persist.ts",
+     "src/middleware/redux.ts",
+     "src/middleware/immer.ts",
+     "src/middleware/ssrSafe.ts",
+     "src/vanilla.ts"
+    ]
+   }
+  }
+ ],
+ "systems": {
+  "bm25_chunk": {
+   "recall@1": 0.3826086956521739,
+   "recall@5": 0.7490942028985507,
+   "recall@10": 0.8278985507246376,
+   "all@10": 0.782608695652174,
+   "ndcg@10": 0.6854814668795666,
+   "mrr@10": 0.6744565217391304,
+   "queries": 92
+  },
+  "bm25_file": {
+   "recall@1": 0.3826086956521739,
+   "recall@5": 0.7490942028985507,
+   "recall@10": 0.8278985507246376,
+   "all@10": 0.782608695652174,
+   "ndcg@10": 0.6854814668795666,
+   "mrr@10": 0.6744565217391304,
+   "queries": 92
+  },
+  "bm25_file_sum": {
+   "recall@1": 0.11539855072463767,
+   "recall@5": 0.49293478260869567,
+   "recall@10": 0.7650362318840579,
+   "all@10": 0.6847826086956522,
+   "ndcg@10": 0.46434691492764363,
+   "mrr@10": 0.4020056935817805,
+   "queries": 92
+  },
+  "entity_file": {
+   "recall@1": 0.08188405797101449,
+   "recall@5": 0.30235507246376814,
+   "recall@10": 0.31322463768115943,
+   "all@10": 0.2826086956521739,
+   "ndcg@10": 0.23308793606609404,
+   "mrr@10": 0.22228260869565217,
+   "queries": 92
+  },
+  "graph_file": {
+   "recall@1": 0.27753623188405796,
+   "recall@5": 0.5364130434782608,
+   "recall@10": 0.6070652173913043,
+   "all@10": 0.4891304347826087,
+   "ndcg@10": 0.5004391758443919,
+   "mrr@10": 0.526371635610766,
+   "queries": 92
+  },
+  "graph_rrf": {
+   "recall@1": 0.32101449275362315,
+   "recall@5": 0.7047101449275364,
+   "recall@10": 0.7871376811594202,
+   "all@10": 0.7391304347826086,
+   "ndcg@10": 0.6211608647599101,
+   "mrr@10": 0.6083462732919255,
+   "queries": 92
+  },
+  "cesr": {
+   "recall@1": 0.3826086956521739,
+   "recall@5": 0.7980072463768116,
+   "recall@10": 0.842391304347826,
+   "all@10": 0.7934782608695652,
+   "ndcg@10": 0.7032436249946751,
+   "mrr@10": 0.6817028985507246,
+   "queries": 92
+  },
+  "cesr_plus_graph": {
+   "recall@1": 0.3826086956521739,
+   "recall@5": 0.7871376811594203,
+   "recall@10": 0.8224637681159419,
+   "all@10": 0.782608695652174,
+   "ndcg@10": 0.6935549786758375,
+   "mrr@10": 0.6692028985507247,
+   "queries": 92
+  }
+ },
+ "paired_vs_bm25_file": {
+  "bm25_chunk": {
+   "recall@1": {
+    "delta": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "wtl": [
+     0,
+     92,
+     0
+    ]
+   },
+   "recall@5": {
+    "delta": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "wtl": [
+     0,
+     92,
+     0
+    ]
+   },
+   "recall@10": {
+    "delta": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "wtl": [
+     0,
+     92,
+     0
+    ]
+   },
+   "all@10": {
+    "delta": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "wtl": [
+     0,
+     92,
+     0
+    ]
+   },
+   "ndcg@10": {
+    "delta": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "wtl": [
+     0,
+     92,
+     0
+    ]
+   },
+   "mrr@10": {
+    "delta": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "wtl": [
+     0,
+     92,
+     0
+    ]
+   }
+  },
+  "bm25_file_sum": {
+   "recall@1": {
+    "delta": -0.26721014492753625,
+    "ci95": [
+     -0.36596467391304355,
+     -0.1766077898550725
+    ],
+    "wtl": [
+     5,
+     49,
+     38
+    ]
+   },
+   "recall@5": {
+    "delta": -0.2561594202898551,
+    "ci95": [
+     -0.3514492753623188,
+     -0.15831068840579712
+    ],
+    "wtl": [
+     7,
+     48,
+     37
+    ]
+   },
+   "recall@10": {
+    "delta": -0.06286231884057972,
+    "ci95": [
+     -0.14619565217391303,
+     0.01814311594202896
+    ],
+    "wtl": [
+     9,
+     68,
+     15
+    ]
+   },
+   "all@10": {
+    "delta": -0.09782608695652174,
+    "ci95": [
+     -0.18478260869565216,
+     -0.010869565217391304
+    ],
+    "wtl": [
+     5,
+     73,
+     14
+    ]
+   },
+   "ndcg@10": {
+    "delta": -0.22113455195192294,
+    "ci95": [
+     -0.29291557143226665,
+     -0.15636171203324686
+    ],
+    "wtl": [
+     19,
+     9,
+     64
+    ]
+   },
+   "mrr@10": {
+    "delta": -0.27245082815734994,
+    "ci95": [
+     -0.36561960835058666,
+     -0.18749946083505864
+    ],
+    "wtl": [
+     16,
+     23,
+     53
+    ]
+   }
+  },
+  "entity_file": {
+   "recall@1": {
+    "delta": -0.30072463768115937,
+    "ci95": [
+     -0.39039855072463764,
+     -0.21374547101449276
+    ],
+    "wtl": [
+     2,
+     46,
+     44
+    ]
+   },
+   "recall@5": {
+    "delta": -0.44673913043478264,
+    "ci95": [
+     -0.5484374999999999,
+     -0.3479891304347826
+    ],
+    "wtl": [
+     3,
+     41,
+     48
+    ]
+   },
+   "recall@10": {
+    "delta": -0.5146739130434783,
+    "ci95": [
+     -0.6159646739130435,
+     -0.4159420289855073
+    ],
+    "wtl": [
+     1,
+     36,
+     55
+    ]
+   },
+   "all@10": {
+    "delta": -0.5,
+    "ci95": [
+     -0.6195652173913043,
+     -0.391304347826087
+    ],
+    "wtl": [
+     1,
+     44,
+     47
+    ]
+   },
+   "ndcg@10": {
+    "delta": -0.4523935308134725,
+    "ci95": [
+     -0.534492006456736,
+     -0.3757377498623443
+    ],
+    "wtl": [
+     8,
+     16,
+     68
+    ]
+   },
+   "mrr@10": {
+    "delta": -0.45217391304347826,
+    "ci95": [
+     -0.5367866847826086,
+     -0.3672961956521739
+    ],
+    "wtl": [
+     5,
+     22,
+     65
+    ]
+   }
+  },
+  "graph_file": {
+   "recall@1": {
+    "delta": -0.10507246376811594,
+    "ci95": [
+     -0.20289855072463767,
+     -0.007246376811594204
+    ],
+    "wtl": [
+     8,
+     62,
+     22
+    ]
+   },
+   "recall@5": {
+    "delta": -0.21268115942028984,
+    "ci95": [
+     -0.29331974637681163,
+     -0.13567028985507248
+    ],
+    "wtl": [
+     4,
+     57,
+     31
+    ]
+   },
+   "recall@10": {
+    "delta": -0.22083333333333338,
+    "ci95": [
+     -0.2975226449275363,
+     -0.1465398550724638
+    ],
+    "wtl": [
+     4,
+     57,
+     31
+    ]
+   },
+   "all@10": {
+    "delta": -0.29347826086956524,
+    "ci95": [
+     -0.391304347826087,
+     -0.1956521739130435
+    ],
+    "wtl": [
+     1,
+     63,
+     28
+    ]
+   },
+   "ndcg@10": {
+    "delta": -0.18504229103517456,
+    "ci95": [
+     -0.2560298644882283,
+     -0.11766128600749494
+    ],
+    "wtl": [
+     15,
+     29,
+     48
+    ]
+   },
+   "mrr@10": {
+    "delta": -0.14808488612836437,
+    "ci95": [
+     -0.23679671325051763,
+     -0.061839091614906846
+    ],
+    "wtl": [
+     12,
+     44,
+     36
+    ]
+   }
+  },
+  "graph_rrf": {
+   "recall@1": {
+    "delta": -0.06159420289855073,
+    "ci95": [
+     -0.15942028985507245,
+     0.03808876811594199
+    ],
+    "wtl": [
+     10,
+     64,
+     18
+    ]
+   },
+   "recall@5": {
+    "delta": -0.0443840579710145,
+    "ci95": [
+     -0.11050724637681159,
+     0.019927536231884056
+    ],
+    "wtl": [
+     6,
+     73,
+     13
+    ]
+   },
+   "recall@10": {
+    "delta": -0.0407608695652174,
+    "ci95": [
+     -0.09696557971014494,
+     0.012681159420289854
+    ],
+    "wtl": [
+     5,
+     78,
+     9
+    ]
+   },
+   "all@10": {
+    "delta": -0.043478260869565216,
+    "ci95": [
+     -0.10869565217391304,
+     0.021739130434782608
+    ],
+    "wtl": [
+     2,
+     84,
+     6
+    ]
+   },
+   "ndcg@10": {
+    "delta": -0.06432060211965655,
+    "ci95": [
+     -0.12284593121014553,
+     -0.005999740816304712
+    ],
+    "wtl": [
+     22,
+     32,
+     38
+    ]
+   },
+   "mrr@10": {
+    "delta": -0.06611024844720496,
+    "ci95": [
+     -0.1472832556935818,
+     0.014787137681159399
+    ],
+    "wtl": [
+     15,
+     51,
+     26
+    ]
+   }
+  },
+  "cesr": {
+   "recall@1": {
+    "delta": 0.0,
+    "ci95": [
+     -0.07427536231884058,
+     0.07971014492753623
+    ],
+    "wtl": [
+     11,
+     68,
+     13
+    ]
+   },
+   "recall@5": {
+    "delta": 0.04891304347826087,
+    "ci95": [
+     0.0018115942028985503,
+     0.10144927536231883
+    ],
+    "wtl": [
+     8,
+     83,
+     1
+    ]
+   },
+   "recall@10": {
+    "delta": 0.014492753623188404,
+    "ci95": [
+     0.0,
+     0.03985507246376812
+    ],
+    "wtl": [
+     2,
+     90,
+     0
+    ]
+   },
+   "all@10": {
+    "delta": 0.010869565217391304,
+    "ci95": [
+     0.0,
+     0.03260869565217391
+    ],
+    "wtl": [
+     1,
+     91,
+     0
+    ]
+   },
+   "ndcg@10": {
+    "delta": 0.01776215811510847,
+    "ci95": [
+     -0.02821875809127578,
+     0.06634274388401426
+    ],
+    "wtl": [
+     16,
+     60,
+     16
+    ]
+   },
+   "mrr@10": {
+    "delta": 0.0072463768115942065,
+    "ci95": [
+     -0.059334239130434785,
+     0.07927536231884058
+    ],
+    "wtl": [
+     13,
+     64,
+     15
+    ]
+   }
+  },
+  "cesr_plus_graph": {
+   "recall@1": {
+    "delta": 0.0,
+    "ci95": [
+     -0.07427536231884058,
+     0.07971014492753623
+    ],
+    "wtl": [
+     11,
+     68,
+     13
+    ]
+   },
+   "recall@5": {
+    "delta": 0.03804347826086957,
+    "ci95": [
+     -0.018138586956521742,
+     0.09331974637681156
+    ],
+    "wtl": [
+     9,
+     78,
+     5
+    ]
+   },
+   "recall@10": {
+    "delta": -0.005434782608695655,
+    "ci95": [
+     -0.03985507246376812,
+     0.03079710144927536
+    ],
+    "wtl": [
+     3,
+     85,
+     4
+    ]
+   },
+   "all@10": {
+    "delta": 0.0,
+    "ci95": [
+     -0.03260869565217391,
+     0.03260869565217391
+    ],
+    "wtl": [
+     1,
+     90,
+     1
+    ]
+   },
+   "ndcg@10": {
+    "delta": 0.008073511796270841,
+    "ci95": [
+     -0.0432496064656778,
+     0.05946189083015794
+    ],
+    "wtl": [
+     18,
+     55,
+     19
+    ]
+   },
+   "mrr@10": {
+    "delta": -0.0052536231884057925,
+    "ci95": [
+     -0.0738292572463768,
+     0.06712635869565217
+    ],
+    "wtl": [
+     13,
+     63,
+     16
+    ]
+   }
+  }
+ },
+ "gate": {
+  "rule": "graph_rrf or cesr or cesr_plus_graph beats bm25_file on file recall@10 or file nDCG@10 with a paired-bootstrap 95% CI lower bound above zero",
+  "checks": {
+   "graph_rrf:recall@10": {
+    "delta": -0.0407608695652174,
+    "ci95": [
+     -0.09696557971014494,
+     0.012681159420289854
+    ],
+    "wtl": [
+     5,
+     78,
+     9
+    ],
+    "ci_above_zero": false
+   },
+   "graph_rrf:ndcg@10": {
+    "delta": -0.06432060211965655,
+    "ci95": [
+     -0.12284593121014553,
+     -0.005999740816304712
+    ],
+    "wtl": [
+     22,
+     32,
+     38
+    ],
+    "ci_above_zero": false
+   },
+   "cesr:recall@10": {
+    "delta": 0.014492753623188404,
+    "ci95": [
+     0.0,
+     0.03985507246376812
+    ],
+    "wtl": [
+     2,
+     90,
+     0
+    ],
+    "ci_above_zero": false
+   },
+   "cesr:ndcg@10": {
+    "delta": 0.01776215811510847,
+    "ci95": [
+     -0.02821875809127578,
+     0.06634274388401426
+    ],
+    "wtl": [
+     16,
+     60,
+     16
+    ],
+    "ci_above_zero": false
+   },
+   "cesr_plus_graph:recall@10": {
+    "delta": -0.005434782608695655,
+    "ci95": [
+     -0.03985507246376812,
+     0.03079710144927536
+    ],
+    "wtl": [
+     3,
+     85,
+     4
+    ],
+    "ci_above_zero": false
+   },
+   "cesr_plus_graph:ndcg@10": {
+    "delta": 0.008073511796270841,
+    "ci95": [
+     -0.0432496064656778,
+     0.05946189083015794
+    ],
+    "wtl": [
+     18,
+     55,
+     19
+    ],
+    "ci_above_zero": false
+   }
+  },
+  "passing_checks": [],
+  "passed": false
+ },
+ "ceiling": {
+  "files_in_pool": 0.9474637681159419,
+  "all_files_in_pool": 0.9239130434782609,
+  "pool_depth": 100
+ }
+}
