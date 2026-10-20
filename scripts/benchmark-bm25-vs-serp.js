@@ -182,7 +182,7 @@ function bm25Packer(dbPath, query, budget) {
 // In a real benchmark this would be human-labeled qrels. Here we synthesize
 // a ground-truth set from symbol proximity: given a query, the "relevant"
 // chunks are those containing the top-2 rarest query tokens (by corpus frequency).
-function makeGroundTruth(targetDir) {
+function makeGroundTruth() {
   const engine = new SQLiteContextEngine(path.join(__dirname, "benchmark_corpus.sqlite"));
   const questions = [
     {
@@ -227,7 +227,7 @@ function makeGroundTruth(targetDir) {
   const truth = questions.map((q) => {
     const qTokens = new Set(q.query.toLowerCase().match(/[a-z0-9_]+/g) || []);
     const relevant = [];
-    for (const [cid, stats] of engine.docStats.entries()) {
+    for (const cid of engine.docStats.keys()) {
       const content = engine.getContent(cid).toLowerCase();
       let hitsAll = true;
       for (const w of q.expectedRare) {
@@ -266,7 +266,7 @@ console.log(`  Indexed ${totalChunks} chunks from ${totalFiles} files | Injected
 const engine = new SQLiteContextEngine(dbPath);
 
 // Build ground truth
-const questions = makeGroundTruth(targetDir);
+const questions = makeGroundTruth();
 
 // Measure: for each question, run BM25 vs SERP at the given budget
 console.log("\n[RUNNING HEAD-TO-HEAD]...");

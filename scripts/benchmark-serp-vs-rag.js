@@ -29,59 +29,7 @@ import { SQLiteContextEngine } from "../src/engine/engine.js";
 
 const __dirname = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
-// ---- Character n-gram TF-IDF proxy for embedding RAG ----
-// 3-gram + IDF similarity. This is the simplest viable proxy for a dense
-// embedding RAG pipeline — it captures subword/semantic overlap that pure
-// token-matching misses, but without any learned vectors.
-function makeNgrams(text, n = 3) {
-  const lower = text.toLowerCase();
-  const words = lower.match(/[a-z0-9_+\\-]+/g) || [];
-  const grams = new Set();
-  for (const w of words) {
-    for (let i = 0; i + n <= w.length; i++) {
-      grams.add(w.slice(i, i + n));
-    }
-  }
-  return grams;
-}
-
-function computeTfIdfSimilarity(queryText, docText, engine) {
-  // Build inverted index from corpus (use engine's N_i map)
-  const M = engine.M_ref || 1;
-  const qNgrams = makeNgrams(queryText);
-  const dNgrams = makeNgrams(docText);
-
-  // Query TF
-  const qTf = new Map();
-  for (const g of qNgrams) qTf.set(g, (qTf.get(g) || 0) + 1);
-
-  // Document TF (count n-grams in doc)
-  const dTf = new Map();
-  for (const g of dNgrams) dTf.set(g, (dTf.get(g) || 0) + 1);
-
-  // IDF: log(1 + (M - N_w + 0.5) / (N_w + 0.5))
-  // Use engine's N_i map
-  let simNumerator = 0.0;
-  let simDenomQ = 0.0;
-  let simDenomD = 0.0;
-
-  for (const [g, qtf] of qTf) {
-    const Ni = engine.N_i.get(g) || 1;
-    const idf = Math.log(1.0 + (M - Ni + 0.5) / (Ni + 0.5));
-    simNumerator += qtf * idf;
-    simDenomQ += qtf * qtf * idf * idf;
-  }
-  for (const [g, dtf] of dTf) {
-    simDenomD += dtf * dtf * idf * idf; // reuse IDF from above — simplified
-  }
-
-  // Actually redo more cleanly — let's just compute dot product / norms
-  // Simplify: use engine's computeCorpusSurprisal-style IDF per token
-  // For n-gram TF-IDF proxy, let's do per-word IDF:
-  return 0; // placeholder, will reimplement below
-}
-
-// Better: use word-level IDF with cosine similarity on word occurrence vectors
+// ---- Word-level IDF cosine similarity as a proxy for embedding RAG ----
 function computeCosineSimilarity(queryText, docText, engine) {
   const qWords = new Set((queryText || "").toLowerCase().match(/[a-z0-9_+\\-]+/g) || []);
   const dWords = new Set((docText || "").toLowerCase().match(/[a-z0-9_+\\-]+/g) || []);
@@ -189,7 +137,7 @@ function buildCorpus(targetDir, dbPath) {
 }
 
 // ---- Ground-truth relevance for codebase queries ----
-function buildGroundTruth(engine, targetDir) {
+function buildGroundTruth(engine) {
   // For each question, define the "relevant" chunks as those that contain
   // ALL the expected-rare tokens (a relaxed relevance judgment).
   const questions = [
@@ -219,7 +167,7 @@ function buildGroundTruth(engine, targetDir) {
   const truth = questions.map((q) => {
     const qTokens = new Set(q.query.toLowerCase().match(/[a-z0-9_]+/g) || []);
     const relevant = new Set();
-    for (const [cid, stats] of engine.docStats.entries()) {
+    for (const cid of engine.docStats.keys()) {
       const content = (engine.getContent(cid) || "").toLowerCase();
       // A chunk is relevant if it contains at least 2 of the query's substantive tokens
       let hits = 0;
@@ -250,7 +198,7 @@ console.log(`  Indexed ${corpusStats.totalChunks} chunks from ${corpusStats.tota
 const engine = new SQLiteContextEngine(dbPath);
 
 // Build ground truth
-const questions = buildGroundTruth(engine, targetDir);
+const questions = buildGroundTruth(engine);
 
 // === BM25 Baseline ===
 // Native SQLite FTS5 bm25() rank-order, pick top-K within budget

@@ -79,7 +79,7 @@ console.log("\n" + "=".repeat(60));
 console.log("DEMO 3: Boilerplate/Spam Robustness");
 console.log("=".repeat(60));
 
-const cleanChunk = engine.storeMemory("export function useValidatedQuery<T>(args) { const queryClient = getQueryClient(); return useQuery({...}); }", "demo_clean", "demo_clean_0");
+engine.storeMemory("export function useValidatedQuery<T>(args) { const queryClient = getQueryClient(); return useQuery({...}); }", "demo_clean", "demo_clean_0");
 const spamChunk = engine.storeMemory(Array(30).fill("crispr cas9 useEffect useCallback useRef useState").join(" ") + " INVALID_LOG_SPAM", "demo_spam", "demo_spam_0");
 const junkNoise = engine.storeMemory("alpha bravo charlie delta echo foxtrot hotel india juliet kilo lima mike november oscar papa queabec romeo sierra tango uniform victor whiskey xray yankee zulu", "demo_junk", "demo_junk_0");
 

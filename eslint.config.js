@@ -2,7 +2,7 @@ import js from '@eslint/js'
 import globals from 'globals'
 
 export default [
-  { ignores: ['node_modules/**', 'dist/**', 'build/**', '.cache/**'] },
+  { ignores: ['node_modules/**', 'dist/**', 'build/**', '.cache/**', 'experiments/stages/repos/**', '.venv/**', 'experiments/stages/ts7-graph/**'] },
   {
     files: ['**/*.{js,mjs,cjs}'],
     ...js.configs.recommended,

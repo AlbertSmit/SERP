@@ -51,10 +51,6 @@ function buildCorpus(targetDir, dbPath) {
   return { totalFiles: files.length, totalChunks: total };
 }
 
-function engStore(engine, docId, chunkId, content) {
-  engine.storeMemory(content, docId, chunkId);
-}
-
 function bm25Pack(dbPath, query, budget) {
   const db = new Database(dbPath);
   const ftsQuery = (query || "none").toLowerCase().match(/[a-z0-9_]+/g)?.map(t => `"${t}"`).join(" OR ") || "none";
@@ -116,7 +112,7 @@ function buildGroundTruth(engine, targetDir, questions) {
   return questions.map((q) => {
     const qTokens = new Set(q.query.toLowerCase().match(/[a-z0-9_]+/g) || []);
     const relevant = new Set();
-    for (const [cid, stats] of engine.docStats.entries()) {
+    for (const cid of engine.docStats.keys()) {
       const content = (engine.getContent(cid) || "").toLowerCase();
       let hits = 0;
       for (const w of qTokens) { if (w.length >= 4 && content.includes(w)) hits++; }
