@@ -140,7 +140,7 @@ something BM25 structurally cannot: retrieve both supporting facts.
 | Does char4/VC find relevant docs BM25 misses on Touche? | yes; three-way RRF +0.0459 nDCG, +0.0215 R@100, 25/6 new/lost | keep as a lexical recall layer |
 | Does fixed RRF stay non-inferior on nDCG? | yes on Touche; SciFact within margin | keep RRF |
 | Does the gram channel activate on unknown identifiers? | yes ungated; fixed with exact-term gate | gate mandatory |
-| Does residual/P4 packing beat truncation at a budget? | no; residual/P4 underfill and lose recall | demote P4 behind a flag |
+| Does residual/P4 packing beat truncation at a budget? | at nominal budget, no: truncation docRecall +0.110 [+0.077,+0.147] vs P4 and +0.116 vs residual; at matched tokens recall is a tie (P4 +0.010 ns, residual -0.002 ns). The nominal gap is budget underfill, not packing quality | truncation default; P4 experimental |
 | Is P4 the product differentiator? | no evidence; P4 scoring is tied with truncation at matched tokens | reposition SERP as budgeted evidence selection |
 | Can a no-embedding method beat BM25 on multi-hop? | yes; EBR +0.105 both@10, +0.023 nDCG on HotpotQA test | continue EBR, gate by query type |
 | Does EBR transfer beyond HotpotQA? | **yes**: 2Wiki dev all@10 +0.124, R@100 +0.133, nDCG +0.057; MuSiQue paragraph-level all@10 +0.065, R@100 +0.083, nDCG +0.033; all CIs above zero | keep the multi-hop direction; EBR is not Hotpot-specific |

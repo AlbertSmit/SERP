@@ -89,12 +89,16 @@ robustness. On real PR-derived code search, CESR did not beat BM25.
 Truncation is the default: take the fused ranks in order and skip chunks that
 do not fit. P4, residual and greedy packers stay available through
 `packRanked({ packer })` as **experimental** options. On the chunk benchmark
-(SciFact test, 300 queries, no CIs), current P4 and residual packing use about
-46–48 of 250 tokens. Their document recall is 0.49, against 0.60 for truncation.
-At matched token budgets, truncation still beats current P4. The coverage gate
+(SciFact test, 300 queries, paired bootstrap 95% CIs), current P4 and residual
+packing use about 46–48 of 250 tokens, so their lower recall (0.49 vs 0.60) is
+mostly budget underfill: at matched token spend truncation is not significantly
+better than P4 on document recall (+0.010 [−0.022, +0.039]), and against
+residual it is a recall tie with a small document-precision gain (+0.037
+[+0.010, +0.064]). P4 never beats truncation at equal tokens. The coverage gate
 trades recall for precision: at 250 tokens, gated truncation is 0.601 document
-recall / 0.206 document precision, while no-gate truncation is 0.688 / 0.101.
-The gate is a precision control, not a free win.
+recall / 0.206 document precision, while no-gate truncation is 0.688 / 0.101;
+both differences are significant. The gate is a precision control, not a free
+win.
 
 ## What SERP is not
 
@@ -127,7 +131,7 @@ All numbers are paired deltas with 95% bootstrap CIs, read from
 | Learned per-query selector | same 7 sets | **failed**: macro 0.4620 vs 0.4675; ArguAna −0.014 [−0.021, −0.007], Quora −0.023 [−0.025, −0.020]. A per-query oracle would gain +0.034, but that headroom was not learnable | `selective_lexical.json` |
 | RM3 vs BM25 | same 7 sets | NFCorpus +0.013, SciDocs +0.005, TREC-COVID +0.028 (CIs above 0); ArguAna −0.040 [−0.051, −0.030], Quora −0.017 [−0.019, −0.015] | `lexical_portfolio.json` |
 | Code graph / CESR on real PRs | zustand, n = 92 merged PRs, edited-file qrels | **did not beat BM25**. R@10 / nDCG@10: BM25 0.828 / 0.685; graph RRF 0.787 / 0.621 (nDCG −0.064 [−0.123, −0.006]); CESR 0.842 / 0.703 (nDCG +0.018 [−0.028, +0.066], 90/92 ties). Gate failed | `real_repo.json` |
-| Packing (P4/residual vs truncation) | SciFact test chunks, n = 300, budget 250 | doc recall: truncation 0.601, P4 0.491, residual 0.486, using 166 vs 47 vs 48 tokens; no CIs | `stage-benchmark.json` |
+| Packing (P4/residual vs truncation) | SciFact test chunks, n = 300, budget 250 | doc recall: truncation 0.601, P4 0.491, residual 0.486, using 166 vs 47 vs 48 tokens. Nominal-budget Δ vs P4 +0.110 [+0.077, +0.147]; at matched tokens +0.010 [−0.022, +0.039] (ns), so the gap is mostly underfill | `stage-benchmark.json` |
 
 ### Synthetic and capability results (circular; not relevance evidence)
 
@@ -151,9 +155,10 @@ P4 does not beat truncation. Do not cite them as evidence that P4 beats BM25.
 
 - EBR, CESR-U, RM3 and the cross-encoder are Python research code. They are not
   in the JS engine or the MCP server.
-- `packContext` (library) remains the legacy P4 path, which loses recall to
-  truncation on the chunk benchmark. The MCP tool defaults to `packHybrid` +
-  truncation; legacy P4 is available via `mode: "legacy"`.
+- `packContext` (library) remains the legacy P4 path, which loses nominal-budget
+  recall to truncation on the chunk benchmark by underfilling the budget. The MCP
+  tool defaults to `packHybrid` + truncation; legacy P4 is available via
+  `mode: "legacy"`.
 - The HotpotQA "test" split is a held-out 80% of the official dev set, retrieved
   from its 66,581 distractor paragraphs, not full Wikipedia. The 2Wiki and
   MuSiQue results are on dev splits with frozen constants. The router was
@@ -165,7 +170,9 @@ P4 does not beat truncation. Do not cite them as evidence that P4 beats BM25.
 - SciFact was used in earlier research and is a sanity check only. Touche has
   49 queries.
 - The neural reference is one model (MiniLM-L-6) on 1,000 queries.
-- Packing benchmarks report no CIs.
+- Packing CIs are paired over 300 SciFact queries. The nominal-budget gap to
+  P4/residual is mostly budget underfill: at matched token spend, document-recall
+  differences against P4 are not significant.
 - Non-goals: another weight search, tuning on test sets, a universal scorer.
 
 ## Reproduce

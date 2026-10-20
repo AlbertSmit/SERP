@@ -44,6 +44,23 @@ const SYSTEM_SPECS = {
   hybrid_truncate_matched_p4_current: {channels: ['word', 'gram'], packer: 'truncate'},
 };
 const SYSTEMS = Object.keys(SYSTEM_SPECS);
+const PER_QUERY_METRICS = [
+  'chunkRecall', 'docRecall', 'chunkPrecision', 'docPrecision', 'tokens', 'selected',
+];
+// The paired comparisons the packing decision rests on. The matched rows are
+// included because p4_current underfills the budget: comparing truncation at
+// 120/250/500 tokens with P4 at ~46 tokens is not a packing comparison.
+const PAIRED_COMPARISONS = [
+  {a: 'hybrid_truncate', b: 'p4_current', metrics: ['docRecall', 'docPrecision']},
+  {a: 'hybrid_truncate', b: 'hybrid_residual', metrics: ['docRecall', 'docPrecision']},
+  {a: 'hybrid_truncate', b: 'hybrid_truncate_nogate', metrics: ['docRecall', 'docPrecision']},
+  {a: 'hybrid_truncate', b: 'hybrid_p4', metrics: ['docRecall']},
+  {a: 'hybrid_truncate_matched_p4_current', b: 'p4_current',
+    metrics: ['docRecall', 'docPrecision']},
+  {a: 'hybrid_truncate_matched_residual', b: 'hybrid_residual',
+    metrics: ['docRecall', 'docPrecision']},
+];
+const BOOTSTRAP = {resamples: 1000, seed: 1729, level: 0.95};
 
 function readJsonl(file) {
   return fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).map(JSON.parse);
@@ -93,6 +110,7 @@ function evaluate(engine, queries, qrels, budget) {
     chunkRecall: 0, docRecall: 0, chunkPrecision: 0, docPrecision: 0,
     coverage: 0, tokens: 0, selected: 0, ms: 0, queries: 0,
   }]));
+  const perQuery = Object.fromEntries(SYSTEMS.map(s => [s, emptyQuerySeries()]));
   const cache = new Map();
   function selectCached(queryText, system, at) {
     const key = `${system}\u0000${at}\u0000${queryText}`;
@@ -121,8 +139,13 @@ function evaluate(engine, queries, qrels, budget) {
 
     for (const system of SYSTEMS) {
       const at = matchedBudget[system] ?? budget;
-      accumulate(rows[system], engine, selectCached(query.text, system, at),
-        {relChunks, relDocs, queryTokens});
+      recordSelection({
+        row: rows[system],
+        series: perQuery[system],
+        engine,
+        selection: selectCached(query.text, system, at),
+        context: {relChunks, relDocs, queryTokens},
+      });
     }
   }
 
@@ -132,25 +155,39 @@ function evaluate(engine, queries, qrels, budget) {
       row[key] = row.queries ? row[key] / row.queries : 0;
     }
   }
-  return rows;
+
+  return {rows, perQuery};
 }
 
-function accumulate(row, engine, selection, context) {
-  const {relChunks, relDocs, queryTokens} = context;
-  const stats = selectionStats(engine, selection.chunkIds, relChunks, queryTokens);
-  row.chunkRecall += stats.chunkHits / relChunks.size;
-  let docHits = 0;
-  for (const docId of relDocs) if (stats.selectedDocs.has(docId)) docHits += 1;
-  row.docRecall += docHits / relDocs.size;
-  row.chunkPrecision += selection.chunkIds.length
-    ? stats.chunkHits / selection.chunkIds.length : 0;
-  row.docPrecision += stats.selectedDocs.size
-    ? docHits / stats.selectedDocs.size : 0;
-  row.coverage += queryTokens.size ? stats.coveredTokens.size / queryTokens.size : 0;
-  row.tokens += stats.tokens;
-  row.selected += selection.chunkIds.length;
+function emptyQuerySeries() {
+  return Object.fromEntries(PER_QUERY_METRICS.map(key => [key, []]));
+}
+
+function recordSelection({row, series, engine, selection, context}) {
+  const metrics = queryMetrics(engine, selection, context);
+  for (const key of [...PER_QUERY_METRICS, 'coverage']) row[key] += metrics[key];
+  for (const key of PER_QUERY_METRICS) series[key].push(metrics[key]);
   row.ms += selection.ms;
   row.queries += 1;
+}
+
+function queryMetrics(engine, selection, context) {
+  const {relChunks, relDocs, queryTokens} = context;
+  const stats = selectionStats(engine, selection.chunkIds, relChunks, queryTokens);
+  let docHits = 0;
+  for (const docId of relDocs) if (stats.selectedDocs.has(docId)) docHits += 1;
+
+  return {
+    chunkRecall: stats.chunkHits / relChunks.size,
+    docRecall: docHits / relDocs.size,
+    chunkPrecision: selection.chunkIds.length
+      ? stats.chunkHits / selection.chunkIds.length : 0,
+    docPrecision: stats.selectedDocs.size
+      ? docHits / stats.selectedDocs.size : 0,
+    coverage: queryTokens.size ? stats.coveredTokens.size / queryTokens.size : 0,
+    tokens: stats.tokens,
+    selected: selection.chunkIds.length,
+  };
 }
 
 function selectionStats(engine, chunkIds, relChunks, queryTokens) {
@@ -350,6 +387,111 @@ function compareTerms(left, right) {
 }
 
 // ---------------------------------------------------------------------------
+// Paired bootstrap
+// ---------------------------------------------------------------------------
+
+function bootstrapComparisons(perQueryByBudget, budget) {
+  const perQuery = perQueryByBudget[budget];
+  const comparisons = [];
+  for (const pair of PAIRED_COMPARISONS) {
+    for (const metric of pair.metrics) {
+      comparisons.push(comparePair({perQuery, pair, metric, budget}));
+    }
+  }
+
+  return comparisons;
+}
+
+function comparePair({perQuery, pair, metric, budget}) {
+  const a = perQuery[pair.a][metric];
+  const b = perQuery[pair.b][metric];
+  const deltas = bootstrapDeltas(a, b).sort((left, right) => left - right);
+  const meanA = mean(a);
+  const meanB = mean(b);
+  const {wins, ties, losses} = outcomeCounts(a, b);
+  const tail = (1 - BOOTSTRAP.level) / 2;
+  const ciLow = quantile(deltas, tail);
+  const ciHigh = quantile(deltas, 1 - tail);
+
+  return {
+    budget,
+    a: pair.a,
+    b: pair.b,
+    metric,
+    queries: a.length,
+    mean_a: meanA,
+    mean_b: meanB,
+    delta: meanA - meanB,
+    ci95: [ciLow, ciHigh],
+    wins,
+    ties,
+    losses,
+    ci_excludes_zero: ciLow > 0 || ciHigh < 0,
+  };
+}
+
+function bootstrapDeltas(a, b) {
+  const n = a.length;
+  const random = mulberry32(BOOTSTRAP.seed);
+  const deltas = [];
+  for (let resample = 0; resample < BOOTSTRAP.resamples; resample++) {
+    let sumA = 0;
+    let sumB = 0;
+    for (let i = 0; i < n; i++) {
+      const index = Math.floor(random() * n);
+      sumA += a[index];
+      sumB += b[index];
+    }
+    deltas.push((sumA - sumB) / n);
+  }
+
+  return deltas;
+}
+
+// mulberry32: deterministic across platforms because Math.imul is exact 32-bit.
+function mulberry32(seed) {
+  let state = seed >>> 0;
+
+  return function random() {
+    state = (state + 0x6D2B79F5) >>> 0;
+    let t = state;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function outcomeCounts(a, b) {
+  let wins = 0;
+  let ties = 0;
+  let losses = 0;
+  for (let i = 0; i < a.length; i++) {
+    const delta = a[i] - b[i];
+    if (Math.abs(delta) < 1e-9) ties += 1;
+    else if (delta > 0) wins += 1;
+    else losses += 1;
+  }
+
+  return {wins, ties, losses};
+}
+
+function quantile(sorted, p) {
+  if (sorted.length === 0) return 0;
+  const position = (sorted.length - 1) * p;
+  const low = Math.floor(position);
+  const high = Math.ceil(position);
+  if (low === high) return sorted[low];
+
+  return sorted[low] + (sorted[high] - sorted[low]) * (position - low);
+}
+
+function mean(values) {
+  return values.length
+    ? values.reduce((total, value) => total + value, 0) / values.length : 0;
+}
+
+// ---------------------------------------------------------------------------
 // Report
 // ---------------------------------------------------------------------------
 
@@ -359,6 +501,21 @@ function printBudget(rows) {
   for (const [name, row] of Object.entries(rows)) {
     console.log(`${name.padEnd(38)} ${row.chunkRecall.toFixed(3).padStart(8)} ${row.chunkPrecision.toFixed(3).padStart(8)} ${row.docRecall.toFixed(3).padStart(8)} ${row.docPrecision.toFixed(3).padStart(8)} ${row.coverage.toFixed(3).padStart(8)} ${row.tokens.toFixed(1).padStart(8)} ${row.selected.toFixed(2).padStart(6)} ${row.ms.toFixed(2).padStart(8)}`);
   }
+}
+
+function printPaired(comparisons) {
+  const header = `${'budget'.padStart(6)} ${'comparison'.padEnd(58)} ${'metric'.padEnd(13)} ${'delta'.padStart(9)} ${'95% CI'.padStart(20)} ${'W/T/L'.padStart(12)}`;
+  console.log(header);
+  for (const comparison of comparisons) {
+    const label = `${comparison.a} vs ${comparison.b}`;
+    const ci = `[${formatSigned(comparison.ci95[0])}, ${formatSigned(comparison.ci95[1])}]`;
+    const outcomes = `${comparison.wins}/${comparison.ties}/${comparison.losses}`;
+    console.log(`${String(comparison.budget).padStart(6)} ${label.padEnd(58)} ${comparison.metric.padEnd(13)} ${formatSigned(comparison.delta).padStart(9)} ${ci.padStart(20)} ${outcomes.padStart(12)}`);
+  }
+}
+
+function formatSigned(value) {
+  return `${value >= 0 ? '+' : ''}${value.toFixed(4)}`;
 }
 
 function printExact(suite) {
@@ -384,13 +541,28 @@ function main() {
     const queries = readJsonl(path.join(DATA, 'queries.jsonl'));
     const qrels = readQrels(path.join(DATA, 'qrels/test.tsv'));
     const report = { database: DB, budgets: {} };
+    const perQueryByBudget = {};
 
     for (const budget of BUDGETS) {
       console.log(`\n== budget ${budget}`);
-      const rows = evaluate(engine, queries, qrels, budget);
+      const {rows, perQuery} = evaluate(engine, queries, qrels, budget);
       report.budgets[budget] = rows;
+      perQueryByBudget[budget] = perQuery;
       printBudget(rows);
     }
+
+    const comparisons = BUDGETS.flatMap(
+      (budget) => bootstrapComparisons(perQueryByBudget, budget),
+    );
+    report.paired = {
+      method: 'paired percentile bootstrap over queries',
+      resamples: BOOTSTRAP.resamples,
+      seed: BOOTSTRAP.seed,
+      level: BOOTSTRAP.level,
+      comparisons,
+    };
+    console.log('\n== paired bootstrap (1000 resamples, seed 1729, 95% CI)');
+    printPaired(comparisons);
 
     report.exactIdentifiers = exactIdentifierSuite(engine);
     console.log('\n== exact identifiers');
