@@ -1,5 +1,13 @@
 const TOKEN_RE = /\b[a-z0-9_]{2,}\b/g;
 
+export const STOPWORDS = new Set([
+  "a", "aan", "all", "als", "and", "are", "bij", "dat", "de", "der", "die", "dit", "een",
+  "en", "er", "for", "from", "het", "in", "is", "met", "naar", "of", "om", "op", "or",
+  "te", "that", "the", "this", "to", "uit", "van", "voor", "was", "were", "with", "wordt",
+  "zijn", "ok", "okay", "thanks", "thank", "hey", "yes", "no", "good", "sounds", "cool",
+  "sure", "great", "lol", "please",
+]);
+
 // Code-aware normalization so "C++", "C#", ".env", and single-letter languages survive
 export function tokenize(text) {
   const normalized = text
@@ -19,4 +27,8 @@ export function countTokens(tokens) {
   }
 
   return counts;
+}
+
+export function isSubstantiveToken(token) {
+  return token.length >= 2 && !STOPWORDS.has(token);
 }

@@ -1167,16 +1167,10 @@
         "budget": 50
       },
       "selected": [
-        "chunk_12",
-        "chunk_6",
-        "chunk_36",
-        "chunk_0"
+        "chunk_12"
       ],
       "accesses": [
-        2,
-        1,
-        1,
-        1
+        2
       ]
     },
     {
@@ -1188,16 +1182,10 @@
         "budget": 50
       },
       "selected": [
-        "chunk_12",
-        "chunk_36",
-        "chunk_0",
-        "chunk_48"
+        "chunk_12"
       ],
       "accesses": [
-        3,
-        2,
-        2,
-        2
+        3
       ]
     },
     {
@@ -1213,14 +1201,14 @@
       "selected": [
         "chunk_12",
         "chunk_42",
-        "chunk_6",
-        "chunk_36"
+        "chunk_18",
+        "chunk_5"
       ],
       "accesses": [
         3,
         1,
         1,
-        2
+        1
       ]
     },
     {
@@ -1230,38 +1218,10 @@
         "budget": 250
       },
       "selected": [
-        "chunk_12",
-        "chunk_6",
-        "chunk_36",
-        "chunk_0",
-        "chunk_30",
-        "chunk_42",
-        "chunk_7",
-        "chunk_1",
-        "chunk_31",
-        "chunk_37",
-        "chunk_13",
-        "chunk_43",
-        "chunk_18",
-        "chunk_48",
-        "chunk_19"
+        "chunk_12"
       ],
       "accesses": [
-        3,
-        1,
-        2,
-        2,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        2,
-        1
+        3
       ]
     },
     {
@@ -1273,38 +1233,10 @@
         "budget": 250
       },
       "selected": [
-        "chunk_12",
-        "chunk_36",
-        "chunk_0",
-        "chunk_48",
-        "chunk_24",
-        "chunk_1",
-        "chunk_37",
-        "chunk_13",
-        "chunk_30",
-        "chunk_6",
-        "chunk_49",
-        "chunk_42",
-        "chunk_31",
-        "chunk_18",
-        "chunk_7"
+        "chunk_12"
       ],
       "accesses": [
-        4,
-        3,
-        3,
-        3,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2
+        4
       ]
     },
     {
@@ -1320,35 +1252,141 @@
       "selected": [
         "chunk_12",
         "chunk_42",
-        "chunk_6",
-        "chunk_36",
         "chunk_18",
         "chunk_48",
+        "chunk_6",
+        "chunk_36",
         "chunk_13",
         "chunk_43",
-        "chunk_7",
-        "chunk_37",
-        "chunk_19",
-        "chunk_49",
         "chunk_24",
         "chunk_54",
+        "chunk_19",
+        "chunk_49",
+        "chunk_7",
+        "chunk_37",
         "chunk_0"
       ],
       "accesses": [
         4,
-        2,
-        2,
-        3,
-        2,
-        3,
-        2,
         1,
-        2,
-        2,
         1,
-        2,
-        2,
         1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "certificates memory",
+      "options": {
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "certificates memory",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "certificates memory",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "packContext",
+      "query": "certificates memory",
+      "options": {
+        "budget": 15
+      },
+      "selected": [
+        "chunk_20"
+      ],
+      "accesses": [
+        1
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "certificates memory",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 15
+      },
+      "selected": [
+        "chunk_20"
+      ],
+      "accesses": [
+        2
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "certificates memory",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 15
+      },
+      "selected": [
+        "chunk_20"
+      ],
+      "accesses": [
+        2
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "certificates memory",
+      "options": {
+        "budget": 50
+      },
+      "selected": [
+        "chunk_20"
+      ],
+      "accesses": [
+        2
+      ]
+    },
+    {
+      "method": "packContext",
+      "query": "certificates memory",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 50
+      },
+      "selected": [
+        "chunk_20"
+      ],
+      "accesses": [
         3
       ]
     },
@@ -1356,124 +1394,6 @@
       "method": "packContext",
       "query": "certificates memory",
       "options": {
-        "budget": 0
-      },
-      "selected": [],
-      "accesses": []
-    },
-    {
-      "method": "packContext",
-      "query": "certificates memory",
-      "options": {
-        "temporal_mode": true,
-        "reinforce_access": true,
-        "budget": 0
-      },
-      "selected": [],
-      "accesses": []
-    },
-    {
-      "method": "packContext",
-      "query": "certificates memory",
-      "options": {
-        "use_bridges": false,
-        "alpha_l": 0.6,
-        "lambda_decay": 0,
-        "w_bridge": 4,
-        "budget": 0
-      },
-      "selected": [],
-      "accesses": []
-    },
-    {
-      "method": "packContext",
-      "query": "certificates memory",
-      "options": {
-        "budget": 15
-      },
-      "selected": [
-        "chunk_20"
-      ],
-      "accesses": [
-        1
-      ]
-    },
-    {
-      "method": "packContext",
-      "query": "certificates memory",
-      "options": {
-        "temporal_mode": true,
-        "reinforce_access": true,
-        "budget": 15
-      },
-      "selected": [
-        "chunk_20"
-      ],
-      "accesses": [
-        2
-      ]
-    },
-    {
-      "method": "packContext",
-      "query": "certificates memory",
-      "options": {
-        "use_bridges": false,
-        "alpha_l": 0.6,
-        "lambda_decay": 0,
-        "w_bridge": 4,
-        "budget": 15
-      },
-      "selected": [
-        "chunk_20"
-      ],
-      "accesses": [
-        2
-      ]
-    },
-    {
-      "method": "packContext",
-      "query": "certificates memory",
-      "options": {
-        "budget": 50
-      },
-      "selected": [
-        "chunk_20",
-        "chunk_25",
-        "chunk_50",
-        "chunk_55"
-      ],
-      "accesses": [
-        2,
-        1,
-        1,
-        1
-      ]
-    },
-    {
-      "method": "packContext",
-      "query": "certificates memory",
-      "options": {
-        "temporal_mode": true,
-        "reinforce_access": true,
-        "budget": 50
-      },
-      "selected": [
-        "chunk_20",
-        "chunk_56",
-        "chunk_32",
-        "chunk_25"
-      ],
-      "accesses": [
-        3,
-        2,
-        2,
-        2
-      ]
-    },
-    {
-      "method": "packContext",
-      "query": "certificates memory",
-      "options": {
         "use_bridges": false,
         "alpha_l": 0.6,
         "lambda_decay": 0,
@@ -1488,7 +1408,7 @@
       ],
       "accesses": [
         3,
-        2,
+        1,
         1,
         1
       ]
@@ -1500,38 +1420,10 @@
         "budget": 250
       },
       "selected": [
-        "chunk_20",
-        "chunk_25",
-        "chunk_50",
-        "chunk_55",
-        "chunk_1",
-        "chunk_26",
-        "chunk_31",
-        "chunk_56",
-        "chunk_2",
-        "chunk_7",
-        "chunk_32",
-        "chunk_37",
-        "chunk_8",
-        "chunk_13",
-        "chunk_38"
+        "chunk_20"
       ],
       "accesses": [
-        3,
-        2,
-        1,
-        1,
-        2,
-        1,
-        2,
-        2,
-        1,
-        2,
-        2,
-        2,
-        1,
-        2,
-        1
+        3
       ]
     },
     {
@@ -1543,38 +1435,10 @@
         "budget": 250
       },
       "selected": [
-        "chunk_20",
-        "chunk_56",
-        "chunk_25",
-        "chunk_32",
-        "chunk_1",
-        "chunk_8",
-        "chunk_37",
-        "chunk_50",
-        "chunk_44",
-        "chunk_13",
-        "chunk_31",
-        "chunk_26",
-        "chunk_49",
-        "chunk_7",
-        "chunk_55"
+        "chunk_20"
       ],
       "accesses": [
-        4,
-        3,
-        3,
-        3,
-        3,
-        2,
-        3,
-        2,
-        2,
-        3,
-        3,
-        2,
-        3,
-        3,
-        2
+        4
       ]
     },
     {
@@ -1606,19 +1470,19 @@
       ],
       "accesses": [
         4,
-        3,
-        2,
-        2,
-        3,
-        2,
-        3,
-        3,
         1,
-        3,
-        3,
-        3,
-        2,
-        3,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
         1
       ]
     },
@@ -1707,15 +1571,9 @@
         "budget": 50
       },
       "selected": [
-        "chunk_15",
-        "chunk_45",
-        "chunk_21",
-        "chunk_51"
+        "chunk_15"
       ],
       "accesses": [
-        1,
-        2,
-        1,
         1
       ]
     },
@@ -1728,16 +1586,10 @@
         "budget": 50
       },
       "selected": [
-        "chunk_45",
-        "chunk_21",
-        "chunk_57",
-        "chunk_33"
+        "chunk_45"
       ],
       "accesses": [
-        3,
-        2,
-        2,
-        2
+        3
       ]
     },
     {
@@ -1759,7 +1611,7 @@
       "accesses": [
         1,
         3,
-        2,
+        1,
         1
       ]
     },
@@ -1770,37 +1622,9 @@
         "budget": 250
       },
       "selected": [
-        "chunk_15",
-        "chunk_45",
-        "chunk_21",
-        "chunk_51",
-        "chunk_27",
-        "chunk_57",
-        "chunk_3",
-        "chunk_33",
-        "chunk_9",
-        "chunk_39",
-        "chunk_10",
-        "chunk_20",
-        "chunk_16",
-        "chunk_26",
-        "chunk_22"
+        "chunk_15"
       ],
       "accesses": [
-        1,
-        3,
-        2,
-        1,
-        1,
-        2,
-        1,
-        2,
-        1,
-        1,
-        1,
-        4,
-        1,
-        2,
         1
       ]
     },
@@ -1813,38 +1637,10 @@
         "budget": 250
       },
       "selected": [
-        "chunk_45",
-        "chunk_21",
-        "chunk_57",
-        "chunk_33",
-        "chunk_15",
-        "chunk_9",
-        "chunk_51",
-        "chunk_27",
-        "chunk_3",
-        "chunk_39",
-        "chunk_40",
-        "chunk_56",
-        "chunk_52",
-        "chunk_50",
-        "chunk_28"
+        "chunk_45"
       ],
       "accesses": [
-        4,
-        3,
-        3,
-        3,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        4,
-        2,
-        3,
-        2
+        4
       ]
     },
     {
@@ -1875,18 +1671,18 @@
         "chunk_22"
       ],
       "accesses": [
-        2,
-        4,
-        3,
-        2,
-        2,
-        3,
-        2,
-        3,
-        2,
-        2,
         1,
-        2,
+        4,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
         1,
         1,
         1
@@ -2242,15 +2038,11 @@
       },
       "selected": [
         "chunk_12",
-        "chunk_0",
-        "chunk_25",
-        "chunk_1"
+        "chunk_0"
       ],
       "accesses": [
         5,
-        3,
-        3,
-        3
+        1
       ]
     },
     {
@@ -2263,15 +2055,11 @@
       },
       "selected": [
         "chunk_12",
-        "chunk_0",
-        "chunk_25",
-        "chunk_1"
+        "chunk_0"
       ],
       "accesses": [
         6,
-        4,
-        4,
-        4
+        2
       ]
     },
     {
@@ -2286,15 +2074,15 @@
       },
       "selected": [
         "chunk_12",
-        "chunk_36",
         "chunk_48",
+        "chunk_36",
         "chunk_0"
       ],
       "accesses": [
         6,
-        3,
-        3,
-        4
+        1,
+        1,
+        2
       ]
     },
     {
@@ -2305,36 +2093,10 @@
       },
       "selected": [
         "chunk_12",
-        "chunk_0",
-        "chunk_25",
-        "chunk_1",
-        "chunk_30",
-        "chunk_37",
-        "chunk_48",
-        "chunk_31",
-        "chunk_55",
-        "chunk_13",
-        "chunk_24",
-        "chunk_7",
-        "chunk_49",
-        "chunk_42",
-        "chunk_18"
+        "chunk_0"
       ],
       "accesses": [
         6,
-        4,
-        4,
-        4,
-        2,
-        3,
-        3,
-        3,
-        2,
-        3,
-        2,
-        3,
-        3,
-        2,
         2
       ]
     },
@@ -2348,36 +2110,10 @@
       },
       "selected": [
         "chunk_12",
-        "chunk_0",
-        "chunk_25",
-        "chunk_1",
-        "chunk_30",
-        "chunk_37",
-        "chunk_48",
-        "chunk_31",
-        "chunk_55",
-        "chunk_13",
-        "chunk_24",
-        "chunk_7",
-        "chunk_49",
-        "chunk_42",
-        "chunk_18"
+        "chunk_0"
       ],
       "accesses": [
         7,
-        5,
-        5,
-        5,
-        3,
-        4,
-        4,
-        4,
-        3,
-        4,
-        3,
-        4,
-        4,
-        3,
         3
       ]
     },
@@ -2393,307 +2129,247 @@
       },
       "selected": [
         "chunk_12",
-        "chunk_36",
         "chunk_48",
+        "chunk_36",
         "chunk_24",
         "chunk_0",
         "chunk_13",
-        "chunk_37",
         "chunk_49",
-        "chunk_42",
-        "chunk_18",
-        "chunk_6",
+        "chunk_37",
         "chunk_1",
-        "chunk_7",
+        "chunk_42",
+        "chunk_6",
+        "chunk_18",
+        "chunk_54",
         "chunk_30",
+        "chunk_43"
+      ],
+      "accesses": [
+        7,
+        1,
+        1,
+        1,
+        3,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 0
+      },
+      "selected": [],
+      "accesses": []
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "budget": 15
+      },
+      "selected": [
+        "chunk_20"
+      ],
+      "accesses": [
+        4
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 15
+      },
+      "selected": [
+        "chunk_20"
+      ],
+      "accesses": [
+        5
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 15
+      },
+      "selected": [
+        "chunk_20"
+      ],
+      "accesses": [
+        5
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "budget": 50
+      },
+      "selected": [
+        "chunk_20",
+        "chunk_56"
+      ],
+      "accesses": [
+        5,
+        1
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 50
+      },
+      "selected": [
+        "chunk_20",
+        "chunk_56"
+      ],
+      "accesses": [
+        6,
+        2
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 50
+      },
+      "selected": [
+        "chunk_20",
+        "chunk_56",
+        "chunk_25",
+        "chunk_32"
+      ],
+      "accesses": [
+        6,
+        2,
+        1,
+        1
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "budget": 250
+      },
+      "selected": [
+        "chunk_20",
+        "chunk_56"
+      ],
+      "accesses": [
+        6,
+        2
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "temporal_mode": true,
+        "reinforce_access": true,
+        "budget": 250
+      },
+      "selected": [
+        "chunk_20",
+        "chunk_56"
+      ],
+      "accesses": [
+        7,
+        3
+      ]
+    },
+    {
+      "method": "fullPipeline",
+      "query": "certificates memory",
+      "options": {
+        "use_bridges": false,
+        "alpha_l": 0.6,
+        "lambda_decay": 0,
+        "w_bridge": 4,
+        "budget": 250
+      },
+      "selected": [
+        "chunk_20",
+        "chunk_56",
+        "chunk_25",
+        "chunk_32",
+        "chunk_1",
+        "chunk_8",
+        "chunk_50",
+        "chunk_37",
+        "chunk_44",
+        "chunk_26",
+        "chunk_13",
+        "chunk_55",
+        "chunk_2",
+        "chunk_49",
         "chunk_31"
       ],
       "accesses": [
         7,
         3,
-        4,
-        3,
-        5,
-        4,
-        4,
-        4,
-        3,
-        3,
-        2,
-        5,
-        4,
-        3,
-        4
-      ]
-    },
-    {
-      "method": "fullPipeline",
-      "query": "certificates memory",
-      "options": {
-        "budget": 0
-      },
-      "selected": [],
-      "accesses": []
-    },
-    {
-      "method": "fullPipeline",
-      "query": "certificates memory",
-      "options": {
-        "temporal_mode": true,
-        "reinforce_access": true,
-        "budget": 0
-      },
-      "selected": [],
-      "accesses": []
-    },
-    {
-      "method": "fullPipeline",
-      "query": "certificates memory",
-      "options": {
-        "use_bridges": false,
-        "alpha_l": 0.6,
-        "lambda_decay": 0,
-        "w_bridge": 4,
-        "budget": 0
-      },
-      "selected": [],
-      "accesses": []
-    },
-    {
-      "method": "fullPipeline",
-      "query": "certificates memory",
-      "options": {
-        "budget": 15
-      },
-      "selected": [
-        "chunk_20"
-      ],
-      "accesses": [
-        4
-      ]
-    },
-    {
-      "method": "fullPipeline",
-      "query": "certificates memory",
-      "options": {
-        "temporal_mode": true,
-        "reinforce_access": true,
-        "budget": 15
-      },
-      "selected": [
-        "chunk_20"
-      ],
-      "accesses": [
-        5
-      ]
-    },
-    {
-      "method": "fullPipeline",
-      "query": "certificates memory",
-      "options": {
-        "use_bridges": false,
-        "alpha_l": 0.6,
-        "lambda_decay": 0,
-        "w_bridge": 4,
-        "budget": 15
-      },
-      "selected": [
-        "chunk_20"
-      ],
-      "accesses": [
-        5
-      ]
-    },
-    {
-      "method": "fullPipeline",
-      "query": "certificates memory",
-      "options": {
-        "budget": 50
-      },
-      "selected": [
-        "chunk_20",
-        "chunk_56",
-        "chunk_1",
-        "chunk_32"
-      ],
-      "accesses": [
-        5,
-        4,
-        5,
-        3
-      ]
-    },
-    {
-      "method": "fullPipeline",
-      "query": "certificates memory",
-      "options": {
-        "temporal_mode": true,
-        "reinforce_access": true,
-        "budget": 50
-      },
-      "selected": [
-        "chunk_20",
-        "chunk_56",
-        "chunk_1",
-        "chunk_32"
-      ],
-      "accesses": [
-        6,
-        5,
-        6,
-        4
-      ]
-    },
-    {
-      "method": "fullPipeline",
-      "query": "certificates memory",
-      "options": {
-        "use_bridges": false,
-        "alpha_l": 0.6,
-        "lambda_decay": 0,
-        "w_bridge": 4,
-        "budget": 50
-      },
-      "selected": [
-        "chunk_20",
-        "chunk_56",
-        "chunk_25",
-        "chunk_1"
-      ],
-      "accesses": [
-        6,
-        5,
-        5,
-        6
-      ]
-    },
-    {
-      "method": "fullPipeline",
-      "query": "certificates memory",
-      "options": {
-        "budget": 250
-      },
-      "selected": [
-        "chunk_20",
-        "chunk_56",
-        "chunk_1",
-        "chunk_32",
-        "chunk_37",
-        "chunk_8",
-        "chunk_55",
-        "chunk_26",
-        "chunk_31",
-        "chunk_13",
-        "chunk_44",
-        "chunk_7",
-        "chunk_49",
-        "chunk_2",
-        "chunk_38"
-      ],
-      "accesses": [
-        6,
-        5,
-        6,
-        4,
-        4,
-        2,
-        3,
-        2,
-        4,
-        4,
-        2,
-        4,
-        4,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
         1,
         1
-      ]
-    },
-    {
-      "method": "fullPipeline",
-      "query": "certificates memory",
-      "options": {
-        "temporal_mode": true,
-        "reinforce_access": true,
-        "budget": 250
-      },
-      "selected": [
-        "chunk_20",
-        "chunk_56",
-        "chunk_1",
-        "chunk_32",
-        "chunk_37",
-        "chunk_8",
-        "chunk_55",
-        "chunk_26",
-        "chunk_31",
-        "chunk_13",
-        "chunk_44",
-        "chunk_7",
-        "chunk_49",
-        "chunk_2",
-        "chunk_38"
-      ],
-      "accesses": [
-        7,
-        6,
-        7,
-        5,
-        5,
-        3,
-        4,
-        3,
-        5,
-        5,
-        3,
-        5,
-        5,
-        2,
-        2
-      ]
-    },
-    {
-      "method": "fullPipeline",
-      "query": "certificates memory",
-      "options": {
-        "use_bridges": false,
-        "alpha_l": 0.6,
-        "lambda_decay": 0,
-        "w_bridge": 4,
-        "budget": 250
-      },
-      "selected": [
-        "chunk_20",
-        "chunk_56",
-        "chunk_25",
-        "chunk_1",
-        "chunk_32",
-        "chunk_50",
-        "chunk_55",
-        "chunk_26",
-        "chunk_37",
-        "chunk_31",
-        "chunk_8",
-        "chunk_13",
-        "chunk_44",
-        "chunk_7",
-        "chunk_2"
-      ],
-      "accesses": [
-        7,
-        6,
-        5,
-        7,
-        5,
-        3,
-        4,
-        3,
-        5,
-        5,
-        3,
-        5,
-        3,
-        5,
-        2
       ]
     },
     {
@@ -2782,17 +2458,11 @@
       },
       "selected": [
         "chunk_45",
-        "chunk_40",
-        "chunk_16",
-        "chunk_52",
-        "chunk_10"
+        "chunk_20"
       ],
       "accesses": [
         5,
-        2,
-        1,
-        2,
-        1
+        7
       ]
     },
     {
@@ -2805,17 +2475,11 @@
       },
       "selected": [
         "chunk_45",
-        "chunk_40",
-        "chunk_16",
-        "chunk_52",
-        "chunk_10"
+        "chunk_20"
       ],
       "accesses": [
         6,
-        3,
-        2,
-        3,
-        2
+        8
       ]
     },
     {
@@ -2832,13 +2496,13 @@
         "chunk_45",
         "chunk_21",
         "chunk_57",
-        "chunk_15"
+        "chunk_33"
       ],
       "accesses": [
         6,
-        3,
-        3,
-        2
+        1,
+        1,
+        1
       ]
     },
     {
@@ -2849,37 +2513,11 @@
       },
       "selected": [
         "chunk_45",
-        "chunk_40",
-        "chunk_16",
-        "chunk_52",
-        "chunk_10",
-        "chunk_28",
-        "chunk_57",
-        "chunk_26",
-        "chunk_4",
-        "chunk_33",
-        "chunk_51",
-        "chunk_2",
-        "chunk_9",
-        "chunk_27",
-        "chunk_38"
+        "chunk_20"
       ],
       "accesses": [
         6,
-        3,
-        2,
-        3,
-        2,
-        2,
-        3,
-        3,
-        1,
-        3,
-        2,
-        2,
-        2,
-        2,
-        2
+        8
       ]
     },
     {
@@ -2892,37 +2530,11 @@
       },
       "selected": [
         "chunk_45",
-        "chunk_40",
-        "chunk_16",
-        "chunk_52",
-        "chunk_10",
-        "chunk_28",
-        "chunk_57",
-        "chunk_26",
-        "chunk_4",
-        "chunk_33",
-        "chunk_51",
-        "chunk_2",
-        "chunk_9",
-        "chunk_27",
-        "chunk_38"
+        "chunk_20"
       ],
       "accesses": [
         7,
-        4,
-        3,
-        4,
-        3,
-        3,
-        4,
-        4,
-        2,
-        4,
-        3,
-        3,
-        3,
-        3,
-        3
+        9
       ]
     },
     {
@@ -2939,35 +2551,35 @@
         "chunk_45",
         "chunk_21",
         "chunk_57",
+        "chunk_33",
         "chunk_15",
-        "chunk_51",
-        "chunk_33",
-        "chunk_27",
         "chunk_9",
+        "chunk_51",
+        "chunk_27",
         "chunk_3",
         "chunk_39",
         "chunk_40",
         "chunk_16",
         "chunk_52",
-        "chunk_10",
-        "chunk_28"
+        "chunk_28",
+        "chunk_10"
       ],
       "accesses": [
         7,
-        3,
-        4,
-        2,
-        3,
-        4,
-        3,
-        3,
-        2,
-        2,
-        4,
-        3,
-        4,
-        3,
-        3
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
       ]
     },
     {
@@ -3291,18 +2903,19 @@
   "scores": [
     {
       "id": "chunk_0",
-      "score": 27.197506012102846,
+      "score": 18.958305183594547,
       "temporal": 1
     },
     {
       "id": "chunk_1",
-      "score": 27.00370411482293,
-      "temporal": 0.9838023755213481
+      "score": 18.74164600560185,
+      "temporal": 0.9521899660223198
     },
     {
       "id": "chunk_2",
-      "score": 4.517912716674875,
-      "temporal": 0.9502870729232699
+      "score": 3.1561589806355883,
+      "temporal": 0.903045520965076
     }
-  ]
+  ],
+  "version": "SubConPack 2.0"
 }

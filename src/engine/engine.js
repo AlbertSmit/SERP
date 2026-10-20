@@ -1,6 +1,13 @@
 import Database from 'better-sqlite3';
 import { fileURLToPath } from 'node:url';
-import { tokenize, countTokens } from './tokenize.js';
+import { tokenize, countTokens, isSubstantiveToken } from './tokenize.js';
+
+const RELATED_TOKEN_DISCOUNT = 0.85;
+const HEADER_MATCH_MULTIPLIER = 1.4;
+const SMALL_VAULT_LIMIT = 100;
+const TRIGRAM_ABSTENTION_THRESHOLD = 0.45;
+const RARE_IDENTIFIER_MAX_DOC_FRACTION = 0.02;
+const RARE_IDENTIFIER_MAX_DOCS = 2;
 
 export const DEFAULT_DB_PATH = fileURLToPath(new URL('../../mcp_memory.sqlite', import.meta.url));
 
@@ -65,7 +72,11 @@ export class SQLiteContextEngine {
     // Bounded LRU caches for chunk content & token counts (prevents OOM at 1M rows)
     this.chunkContent = new Map();
     this.chunkCounts = new Map();
+    this.chunkHeaderCounts = new Map();
     this.MAX_CACHE_SIZE = 8000;
+    this.meanChunkLength = metaRows.length > 0
+      ? metaRows.reduce((sum, row) => sum + Number(row.L || 0), 0) / metaRows.length
+      : 1;
 
     // Prepared statements
     this.stmtMatchCandidates = this.db.prepare(
@@ -116,6 +127,7 @@ export class SQLiteContextEngine {
       const oldestKey = this.chunkContent.keys().next().value;
       this.chunkContent.delete(oldestKey);
       this.chunkCounts.delete(oldestKey);
+      this.chunkHeaderCounts.delete(oldestKey);
     }
     this.chunkContent.set(chunkId, content);
 
@@ -133,17 +145,28 @@ export class SQLiteContextEngine {
     return counts;
   }
 
+  chunkHeaderTokenCounts(chunkId) {
+    if (this.chunkHeaderCounts.has(chunkId)) return this.chunkHeaderCounts.get(chunkId);
+    const headings = this.getContent(chunkId)
+      .split("\n")
+      .filter((line) => /^\s{0,3}#{1,6}\s/.test(line))
+      .join(" ");
+    const counts = countTokens(tokenize(headings));
+    this.chunkHeaderCounts.set(chunkId, counts);
+
+    return counts;
+  }
+
   // Compute True Corpus Information Density (mean IDF of unique tokens)
   computeCorpusSurprisal(counts) {
     if (!counts || counts.size === 0) return 0.1;
-    const CHAT_STOP = new Set(["ok","okay","thanks","thank","bro","hey","yes","no","good","sounds","cool","sure","great","lol","please","and","the","for","with","from","that","this","using","all","are","was","were"]);
     let substantiveIdf = 0.0;
     let subCount = 0;
     const M = Math.max(this.M_ref, 100);
     for (const w of counts.keys()) {
-      if (w.length < 4 || CHAT_STOP.has(w)) continue;
+      if (!isSubstantiveToken(w)) continue;
       const N_w = this.N_i.get(w) || 1;
-      substantiveIdf += Math.log(1.0 + (M - Math.min(N_w, M) + 0.5) / (N_w + 0.5));
+      substantiveIdf += positiveRsjIdf(M, N_w);
       subCount++;
     }
     if (subCount === 0) return 0.5;
@@ -164,7 +187,7 @@ export class SQLiteContextEngine {
       eta: 1.0,
       epsilon: 0.35,
       lambda_s: 0.5,
-      L_mean: 160.0,
+      L_mean: this.meanChunkLength,
       conc_mean: 1.5,
       conc_std: 0.8,
       p_stretch: 0.45,
@@ -185,8 +208,11 @@ export class SQLiteContextEngine {
     let nActive = 0;
 
     for (const [w, q] of qCounts.entries()) {
-      const cRaw = cCounts.get(w) || 0;
-      if (cRaw <= 0) continue;
+      if (!isSubstantiveToken(w)) continue;
+      const infoW = this.informationWeight(w);
+      totalInfo += infoW * Math.max(q, 1);
+      const match = this.cachedTermMatch(chunkId, w, cCounts, p.matchCache);
+      if (match.count <= 0) continue;
       nActive++;
 
       const [N_i, T_i] = this.vocabStats(w);
@@ -194,7 +220,7 @@ export class SQLiteContextEngine {
       const beta_i = p.beta_0 * Math.pow(mu_i, -p.gamma_b);
 
       const volScaleL = Math.pow(L / Math.max(p.L_mean, 1.0), p.delta_l);
-      const cEff = Math.max(0.1, cRaw / Math.max(volScaleL, 0.1));
+      const cEff = Math.max(0.1, match.count / Math.max(volScaleL, 0.1));
 
       const pot =
         (1.0 - Math.exp(-beta_i * Math.pow(Math.max(cEff, 0.01), p.p_stretch))) /
@@ -204,10 +230,8 @@ export class SQLiteContextEngine {
       const entropyPen = p.delta_c * Math.tanh(p.eta * Math.max(0.0, deviation));
       const suppression = Math.exp(-entropyPen);
 
-      const infoW = Math.log(Math.max(this.M_ref, 1) / Math.max(N_i, 1));
       coreVals.push(infoW * pot * suppression * q);
       infoCover += infoW * Math.max(q, 1);
-      totalInfo += infoW * Math.max(q, 1);
     }
 
     if (nActive === 0) return 0.0;
@@ -232,11 +256,13 @@ export class SQLiteContextEngine {
     const candidates = this.contextCandidates(queryText, settings.bridgeCandidates);
     const rWeights = this.queryWeights(queryText);
     const chunkScores = new Map();
+    const matchCache = new Map();
     const p4Params = {
       delta_c: settings.alpha_l,
       alpha_l: settings.alpha_l,
       alpha_u: settings.alpha_u,
       lambda_decay: settings.lambda_decay,
+      matchCache,
     };
     for (const cid of candidates) {
       chunkScores.set(cid,
@@ -249,19 +275,26 @@ export class SQLiteContextEngine {
       coveredDocs: new Set(),
       totalL: 0,
       rWeights,
+      queryWeights: new Map(rWeights),
       chunkScores,
       initRSum: Math.max(sumWeights(rWeights), 1e-6),
+      firstMarginal: null,
+      matchCache,
     };
     while (state.totalL < settings.budget && state.selected.length < 15) {
-      const bestCid = this.bestContextCandidate(candidates, state, settings);
-      if (!bestCid) break;
+      if (sumWeights(rWeights) / state.initRSum < 0.08) break;
+      const best = this.bestContextCandidate(candidates, state, settings);
+      if (!best) break;
+      const { cid: bestCid, gain } = best;
+      if (state.firstMarginal === null) state.firstMarginal = gain;
+      else if (gain / state.firstMarginal < settings.rel_dropoff) break;
       const meta = this.docStats.get(bestCid);
       if (!meta || state.totalL + meta.L > settings.budget) break;
 
       state.selected.push(bestCid);
       state.selectedSet.add(bestCid);
       state.totalL += meta.L;
-      this.decayResidualWeights(bestCid, rWeights, settings.lambda_decay);
+      this.decayResidualWeights(bestCid, rWeights, settings.lambda_decay, matchCache);
       state.coveredDocs.add(this.parentDocument(bestCid));
     }
     if (settings.reinforce_access) {
@@ -280,9 +313,9 @@ export class SQLiteContextEngine {
   }
 
   contextCandidates(queryText, bridgeCandidates) {
-    const stopThreshold = Math.floor(0.15 * Math.max(this.M_ref, 1));
+    const stopThreshold = Math.max(Math.floor(0.4 * Math.max(this.M_ref, 1)), 25);
     const tokens = tokenize(queryText).filter(
-      (x) => x.length >= 2 && (!this.N_i.has(x) || this.N_i.get(x) <= stopThreshold)
+      (x) => isSubstantiveToken(x) && (!this.N_i.has(x) || this.N_i.get(x) <= stopThreshold)
     );
     const candidateSet = new Set();
     if (tokens.length > 0) {
@@ -300,6 +333,7 @@ export class SQLiteContextEngine {
     for (const cid of bridgeCandidates) {
       if (!cid.endsWith("_full")) candidateSet.add(cid);
     }
+    if (this.M_ref <= SMALL_VAULT_LIMIT) this.addTrigramFallbackCandidates(candidateSet, tokens);
 
     return [...candidateSet];
   }
@@ -313,12 +347,94 @@ export class SQLiteContextEngine {
   queryWeights(queryText) {
     const weights = new Map();
     for (const [w, q] of countTokens(tokenize(queryText))) {
-      const [N_i] = this.vocabStats(w);
-      weights.set(w,
-        Math.log(1.0 + (Math.max(this.M_ref, 1) - N_i + 0.5) / (N_i + 0.5)) * Math.max(q, 1));
+      if (!isSubstantiveToken(w)) continue;
+      weights.set(w, this.informationWeight(w) * Math.max(q, 1));
     }
 
     return weights;
+  }
+
+  informationWeight(word) {
+    const M = Math.max(this.M_ref, 1);
+    if (!this.N_i.has(word)) return Math.log1p(M / 2);
+
+    return positiveRsjIdf(M, this.N_i.get(word));
+  }
+
+  termMatch(word, counts, headerCounts = new Map()) {
+    const exactCount = counts.get(word) || 0;
+    if (exactCount > 0) {
+      const multiplier = headerCounts.has(word) ? HEADER_MATCH_MULTIPLIER : 1;
+      return { count: exactCount * multiplier, exact: true };
+    }
+    let relatedCount = 0;
+    let isHeaderMatch = false;
+    let trigramCount = 0;
+    const usesTrigramFallback = this.M_ref <= SMALL_VAULT_LIMIT;
+    for (const [candidate, count] of counts) {
+      if (areRelatedTokens(word, candidate) && count > relatedCount) {
+        relatedCount = count;
+        isHeaderMatch = headerCounts.has(candidate);
+      }
+      if (!usesTrigramFallback) continue;
+      const similarity = trigramJaccard(word, candidate);
+      if (similarity >= TRIGRAM_ABSTENTION_THRESHOLD) {
+        trigramCount = Math.max(trigramCount, count * similarity);
+      }
+    }
+    if (relatedCount === 0 && trigramCount > 0) {
+      return { count: trigramCount, exact: false };
+    }
+    const headerMultiplier = isHeaderMatch ? HEADER_MATCH_MULTIPLIER : 1;
+
+    return { count: relatedCount * RELATED_TOKEN_DISCOUNT * headerMultiplier, exact: false };
+  }
+
+  cachedTermMatch(chunkId, word, counts, cache) {
+    if (!cache) return this.termMatch(word, counts, this.chunkHeaderTokenCounts(chunkId));
+    const key = `${chunkId}\0${word}`;
+    if (!cache.has(key)) {
+      cache.set(key, this.termMatch(word, counts, this.chunkHeaderTokenCounts(chunkId)));
+    }
+
+    return cache.get(key);
+  }
+
+  passesCoverageGate(chunkId, queryWeights, minCoverage, matchCache) {
+    const totalWeight = sumWeights(queryWeights);
+    if (totalWeight <= 0) return false;
+    const counts = this.chunkTokenCounts(chunkId);
+    let coveredWeight = 0;
+    let hasRareIdentifier = false;
+    for (const [word, weight] of queryWeights) {
+      const match = this.cachedTermMatch(chunkId, word, counts, matchCache);
+      if (match.count <= 0) continue;
+      coveredWeight += weight;
+      if (this.isRareIdentifier(word)) hasRareIdentifier = true;
+    }
+
+    return coveredWeight / totalWeight >= minCoverage || hasRareIdentifier;
+  }
+
+  isRareIdentifier(word) {
+    if (!/[_\d]/.test(word) || !this.N_i.has(word)) return false;
+    const threshold = Math.max(
+      RARE_IDENTIFIER_MAX_DOCS,
+      Math.floor(this.M_ref * RARE_IDENTIFIER_MAX_DOC_FRACTION),
+    );
+
+    return this.N_i.get(word) <= threshold;
+  }
+
+  addTrigramFallbackCandidates(candidateSet, queryTokens) {
+    const substantive = [...new Set(queryTokens.filter(isSubstantiveToken))];
+    if (substantive.length === 0) return;
+    for (const [chunkId] of this.docStats) {
+      if (chunkId.endsWith("_full") || candidateSet.has(chunkId)) continue;
+      const chunkTokens = [...this.chunkTokenCounts(chunkId).keys()].filter(isSubstantiveToken);
+      const bestSimilarity = maxTokenSimilarity(substantive, chunkTokens);
+      if (bestSimilarity >= TRIGRAM_ABSTENTION_THRESHOLD) candidateSet.add(chunkId);
+    }
   }
 
   termPotential(word, count) {
@@ -330,21 +446,21 @@ export class SQLiteContextEngine {
       (1.0 - Math.exp(-beta_i + 1e-9));
   }
 
-  residualGain(chunkId, weights) {
+  residualGain(chunkId, weights, matchCache) {
     const counts = this.chunkTokenCounts(chunkId);
     let gain = 0.0;
     for (const [w, weight] of weights) {
-      const count = counts.get(w) || 0;
+      const count = this.cachedTermMatch(chunkId, w, counts, matchCache).count;
       if (count > 0) gain += weight * this.termPotential(w, count);
     }
 
     return gain;
   }
 
-  decayResidualWeights(chunkId, weights, decay) {
+  decayResidualWeights(chunkId, weights, decay, matchCache) {
     const counts = this.chunkTokenCounts(chunkId);
     for (const [w, weight] of weights) {
-      const count = counts.get(w) || 0;
+      const count = this.cachedTermMatch(chunkId, w, counts, matchCache).count;
       if (count <= 0) continue;
       weights.set(w, weight * Math.exp(-decay * this.termPotential(w, count)));
     }
@@ -353,23 +469,27 @@ export class SQLiteContextEngine {
   bestContextCandidate(candidates, state, settings) {
     const remRatio = sumWeights(state.rWeights) / state.initRSum;
     let bestCid = null;
-    let bestMarginal = -1.0;
+    let bestMarginal = 0.0;
     for (const cid of candidates) {
       if (state.selectedSet.has(cid)) continue;
       const meta = this.docStats.get(cid);
       if (!meta || meta.L === 0 || state.totalL + meta.L > settings.budget) continue;
+      const isBridge = state.selected.length > 0 && settings.bridgeBoostMap.has(cid);
+      if (!isBridge && !this.passesCoverageGate(
+        cid, state.queryWeights, settings.min_coverage, state.matchCache,
+      )) continue;
       const gain = this.contextMarginalGain(cid, state, settings, remRatio);
       if (!(gain > bestMarginal)) continue;
       bestMarginal = gain;
       bestCid = cid;
     }
 
-    return bestCid;
+    return bestCid ? { cid: bestCid, gain: bestMarginal } : null;
   }
 
   contextMarginalGain(cid, state, settings, remRatio) {
     const meta = this.docStats.get(cid);
-    const marginalSum = this.residualGain(cid, state.rWeights);
+    const marginalSum = this.residualGain(cid, state.rWeights, state.matchCache);
     const costEff = Math.max(
       Math.pow(meta.L + 10, 0.35) * Math.pow(meta.L / Math.max(meta.U, 1), 0.15), 0.1);
     const parentDoc = this.parentDocument(cid);
@@ -472,6 +592,8 @@ export class SQLiteContextEngine {
       alpha_l = 0.2,
       alpha_u = 0.05,
       w_bridge = 10.0,
+      min_coverage = 0.315,
+      rel_dropoff = 0.26,
       reinforce_access = false,
     } = options;
 
@@ -483,6 +605,8 @@ export class SQLiteContextEngine {
       w_bridge: 0.0,
       temporal_mode: false,
       reinforce_access: false,
+      min_coverage,
+      rel_dropoff,
     });
 
     const bridges = this.contextBridges(queryText, baseSelected, use_bridges);
@@ -497,6 +621,8 @@ export class SQLiteContextEngine {
       w_bridge,
       temporal_mode,
       reinforce_access,
+      min_coverage,
+      rel_dropoff,
     });
   }
 
@@ -563,6 +689,7 @@ export class SQLiteContextEngine {
       this.T_i.set(term, (this.T_i.get(term) || 0) + c);
     }
     this.M_ref += 1;
+    this.meanChunkLength = ((this.meanChunkLength * (this.M_ref - 1)) + L) / this.M_ref;
 
     // True corpus information density (mean IDF per unique token, length-invariant!)
     const intrinsic = this.computeCorpusSurprisal(counts);
@@ -591,6 +718,7 @@ export class SQLiteContextEngine {
     this.chunkDocId.set(cid, String(docId));
     this.chunkContent.set(cid, content);
     this.chunkCounts.set(cid, counts);
+    this.chunkHeaderCounts.delete(cid);
 
     return {
       chunk_id: cid,
@@ -614,6 +742,8 @@ function packingOptions(options) {
     w_bridge: 1.0,
     temporal_mode: false,
     reinforce_access: false,
+    min_coverage: 0.315,
+    rel_dropoff: 0.26,
   };
   const settings = { ...options };
   for (const [key, value] of Object.entries(defaults)) {
@@ -628,4 +758,57 @@ function sumWeights(weights) {
   for (const value of weights.values()) sum += value;
 
   return sum;
+}
+
+function positiveRsjIdf(corpusSize, documentFrequency) {
+  const M = Math.max(corpusSize, 1);
+  const N = Math.min(Math.max(documentFrequency, 0), M);
+
+  return Math.log1p((M - N + 0.5) / (N + 0.5));
+}
+
+function areRelatedTokens(left, right) {
+  if (left.length < 4 || right.length < 4) return false;
+  if (left.startsWith(right) || right.startsWith(left)) return true;
+  if (left.includes(right) || right.includes(left)) return true;
+  const leftParts = left.split("_");
+  const rightParts = right.split("_");
+  if (leftParts.includes(right) || rightParts.includes(left)) return true;
+
+  return tokenStem(left) === tokenStem(right);
+}
+
+function tokenStem(token) {
+  return token.replace(/(?:heden|ingen|eren|lijk|baar|isch|ing|ers|en|es|s)$/u, "");
+}
+
+function maxTokenSimilarity(leftTokens, rightTokens) {
+  let best = 0;
+  for (const left of leftTokens) {
+    for (const right of rightTokens) {
+      best = Math.max(best, trigramJaccard(left, right));
+    }
+  }
+
+  return best;
+}
+
+function trigramJaccard(left, right) {
+  const leftTrigrams = trigrams(left);
+  const rightTrigrams = trigrams(right);
+  let intersection = 0;
+  for (const trigram of leftTrigrams) {
+    if (rightTrigrams.has(trigram)) intersection++;
+  }
+  const union = leftTrigrams.size + rightTrigrams.size - intersection;
+
+  return union > 0 ? intersection / union : 0;
+}
+
+function trigrams(value) {
+  if (value.length < 3) return new Set([value]);
+  const result = new Set();
+  for (let i = 0; i <= value.length - 3; i++) result.add(value.slice(i, i + 3));
+
+  return result;
 }

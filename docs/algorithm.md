@@ -1,5 +1,23 @@
 # Algorithm notes and reported benchmarks
 
+## SubConPack 2.0 retrieval rules
+
+The JavaScript engine uses positive RSJ IDF and includes every substantive query
+token in its information-demand denominator. Unknown tokens receive the fixed
+prior `log1p(M / 2)`. English and Dutch stopwords do not contribute demand.
+
+Chunk normalization uses the live corpus mean length. Exact header matches receive
+a 1.4 multiplier; prefix, stem, and compound matches receive a 0.85 multiplier.
+Candidate pooling uses `max(floor(0.4M), 25)`. Vaults of at most 100 chunks add a
+trigram-Jaccard fallback at 0.45 and abstain below it.
+
+Packing first requires weighted query coverage (default `min_coverage = 0.315`).
+A shaped rare identifier may bypass that gate only when it contains `_` or a digit
+and occurs in at most `max(2, floor(0.02M))` documents. Packing stops below 8%
+residual demand, never admits a zero-gain candidate, and uses a first-marginal
+relative dropoff of `0.26`. Both coverage and dropoff are exposed as snake-case
+options for development-only tuning.
+
 These notes and measurements were recorded before the repository reorganization.
 The benchmark tables have not been rerun or independently verified during the
 cleanup. They describe the reported SciFact experiment, not a performance

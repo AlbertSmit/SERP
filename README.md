@@ -85,11 +85,16 @@ try {
 }
 ```
 
-Candidate pooling filters terms appearing in more than roughly 15% of the corpus,
-so a tiny corpus can return no matches even for words it contains. Library callers
-can provide explicit `bridgeCandidates` to `packContext` when needed. Use
+Candidate pooling filters terms above `max(floor(0.4 × corpus size), 25)` documents.
+Small vaults also use an abstaining trigram fallback for close lexical variants.
+Library callers can provide explicit `bridgeCandidates` to `packContext` when needed. Use
 `fullPipeline(query, options)` for bridge expansion and temporal weighting;
 these default to on for the library's full pipeline.
+
+Development evaluations can pass `min_coverage` and `rel_dropoff` to either
+`packContext` or `fullPipeline`. Their frozen defaults are `0.315` and `0.26`.
+The rare-identifier exception only applies to tokens containing `_` or a digit
+that occur in at most `max(2, floor(0.02 × corpus size))` documents.
 
 Tokenization helpers are exported from `src/engine/tokenize.js`. The legacy
 `mcp_server.js` entry point also re-exports the engine and tokenization helpers.
