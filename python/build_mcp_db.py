@@ -7,7 +7,7 @@ Populates chunks_fts, chunks_vocab, chunks_meta.
 import sqlite3, json, re, math, random, os, time
 
 DB_PATH = os.path.join(os.path.dirname(__file__), '..', 'mcp_memory.sqlite')
-DATASET_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'datasets', 'scifact')
+DATASET_DIR = os.path.join(os.path.dirname(__file__), '..', 'datasets', 'scifact')
 TOKEN_RE = re.compile(r"\b[a-z0-9]{2,}\b")
 
 def tokenize(text):

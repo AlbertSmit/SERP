@@ -130,11 +130,15 @@ def load(name: str, confirm_split: str | None = None):
     split = confirm_split or split
     cache = ROOT / ".cache" / f"{name}.pkl"
     if cache.exists():
-        ix = pickle.loads(cache.read_bytes())
+        with cache.open("rb") as fh:
+            ix = pickle.load(fh)
     else:
         ix = Index(_read_corpus(folder / "corpus.jsonl"))
         cache.parent.mkdir(exist_ok=True)
-        cache.write_bytes(pickle.dumps(ix, protocol=pickle.HIGHEST_PROTOCOL))
+        # Stream the cache: dumps()/read_bytes() hold a second full copy of the index in memory,
+        # which is several GB for a corpus the size of touche.
+        with cache.open("wb") as fh:
+            pickle.dump(ix, fh, protocol=pickle.HIGHEST_PROTOCOL)
     qrels = _read_qrels(folder / "qrels" / f"{split}.tsv")
     queries = {}
     with (folder / "queries.jsonl").open(encoding="utf-8") as f:

@@ -20,6 +20,28 @@ export function tokenize(text) {
   return normalized.toLowerCase().match(TOKEN_RE) || [];
 }
 
+// In-word character 4-grams with word-boundary markers. The markers are
+// alphanumeric, so FTS5 unicode61 keeps each gram as a single token.
+const GRAM_SIZE = 4;
+const WORD_START = "1";
+const WORD_END = "2";
+
+export function wordGrams(word) {
+  const marked = `${WORD_START}${word}${WORD_END}`;
+  if (marked.length <= GRAM_SIZE) return [marked];
+
+  const grams = [];
+  for (let i = 0; i + GRAM_SIZE <= marked.length; i++) {
+    grams.push(marked.slice(i, i + GRAM_SIZE));
+  }
+
+  return grams;
+}
+
+export function gramTokens(text) {
+  return tokenize(text).flatMap(wordGrams);
+}
+
 export function countTokens(tokens) {
   const counts = new Map();
   for (const t of tokens) {

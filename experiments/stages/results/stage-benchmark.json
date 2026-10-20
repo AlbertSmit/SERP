@@ -1,0 +1,384 @@
+{
+ "database": "/Users/asmit/Personal/algo-serp-stages/mcp_memory.sqlite",
+ "budgets": {
+  "120": {
+   "word_truncate": {
+    "chunkRecall": 0.20093630443630467,
+    "docRecall": 0.553888888888889,
+    "chunkPrecision": 0.30532539682539683,
+    "docPrecision": 0.2693095238095237,
+    "coverage": 0.5885059808912516,
+    "tokens": 87.06666666666666,
+    "selected": 3.4466666666666668,
+    "ms": 9.079588646666279,
+    "queries": 300
+   },
+   "word_truncate_nogate": {
+    "chunkRecall": 0.22812519332519363,
+    "docRecall": 0.5990000000000001,
+    "chunkPrecision": 0.22953968253968274,
+    "docPrecision": 0.17427777777777803,
+    "coverage": 0.7180751391784599,
+    "tokens": 117.69333333333333,
+    "selected": 5.333333333333333,
+    "ms": 8.857360033333432,
+    "queries": 300
+   },
+   "hybrid_truncate": {
+    "chunkRecall": 0.21011579161579194,
+    "docRecall": 0.5633333333333335,
+    "chunkPrecision": 0.31206746031746024,
+    "docPrecision": 0.27337301587301566,
+    "coverage": 0.5877257403665566,
+    "tokens": 90.78666666666666,
+    "selected": 3.526666666666667,
+    "ms": 112.25482321333398,
+    "queries": 300
+   },
+   "hybrid_truncate_nogate": {
+    "chunkRecall": 0.234581603581604,
+    "docRecall": 0.6244444444444444,
+    "chunkPrecision": 0.24269576719576738,
+    "docPrecision": 0.18938888888888913,
+    "coverage": 0.6942923514869731,
+    "tokens": 117.71,
+    "selected": 5.213333333333333,
+    "ms": 112.26466081666571,
+    "queries": 300
+   },
+   "hybrid_greedy": {
+    "chunkRecall": 0.12226658526658518,
+    "docRecall": 0.48361111111111105,
+    "chunkPrecision": 0.2642222222222222,
+    "docPrecision": 0.2537222222222221,
+    "coverage": 0.6113797048039774,
+    "tokens": 60.22666666666667,
+    "selected": 2.5866666666666664,
+    "ms": 112.50183804999959,
+    "queries": 300
+   },
+   "hybrid_residual": {
+    "chunkRecall": 0.10645461945461923,
+    "docRecall": 0.48555555555555563,
+    "chunkPrecision": 0.34277777777777774,
+    "docPrecision": 0.33944444444444444,
+    "coverage": 0.557378205083007,
+    "tokens": 46.66,
+    "selected": 1.8233333333333333,
+    "ms": 118.58453053333426,
+    "queries": 300
+   },
+   "hybrid_p4": {
+    "chunkRecall": 0.18506593406593425,
+    "docRecall": 0.5302777777777778,
+    "chunkPrecision": 0.2923412698412699,
+    "docPrecision": 0.25944444444444437,
+    "coverage": 0.5968398368359129,
+    "tokens": 90.76333333333334,
+    "selected": 3.34,
+    "ms": 112.35597987333317,
+    "queries": 300
+   },
+   "p4_current": {
+    "chunkRecall": 0.10586487586487564,
+    "docRecall": 0.49111111111111116,
+    "chunkPrecision": 0.376111111111111,
+    "docPrecision": 0.37444444444444436,
+    "coverage": 0.5411343901789519,
+    "tokens": 45.3,
+    "selected": 1.6766666666666667,
+    "ms": 9.700630130000853,
+    "queries": 300
+   },
+   "hybrid_truncate_matched_residual": {
+    "chunkRecall": 0.12406573056573052,
+    "docRecall": 0.48333333333333334,
+    "chunkPrecision": 0.38199999999999995,
+    "docPrecision": 0.3767777777777777,
+    "coverage": 0.5077632066954149,
+    "tokens": 43.83,
+    "selected": 1.7766666666666666,
+    "ms": 112.24597459999937,
+    "queries": 300
+   },
+   "hybrid_truncate_matched_p4_current": {
+    "chunkRecall": 0.12378795278795271,
+    "docRecall": 0.501388888888889,
+    "chunkPrecision": 0.4004999999999999,
+    "docPrecision": 0.3927777777777776,
+    "coverage": 0.49957329791861005,
+    "tokens": 42.88666666666666,
+    "selected": 1.7333333333333334,
+    "ms": 112.16230220999915,
+    "queries": 300
+   }
+  },
+  "250": {
+   "word_truncate": {
+    "chunkRecall": 0.24870858770858792,
+    "docRecall": 0.5897222222222221,
+    "chunkPrecision": 0.2628250730750732,
+    "docPrecision": 0.21339959114959128,
+    "coverage": 0.6374706314040375,
+    "tokens": 156.1,
+    "selected": 5.826666666666667,
+    "ms": 12.138949060001371,
+    "queries": 300
+   },
+   "word_truncate_nogate": {
+    "chunkRecall": 0.28870858770858815,
+    "docRecall": 0.6697222222222222,
+    "chunkPrecision": 0.15004943204943227,
+    "docPrecision": 0.09600049487549489,
+    "coverage": 0.8305480858527159,
+    "tokens": 247.67666666666668,
+    "selected": 10.33,
+    "ms": 11.579217689999593,
+    "queries": 300
+   },
+   "hybrid_truncate": {
+    "chunkRecall": 0.2566316646316649,
+    "docRecall": 0.6013888888888889,
+    "chunkPrecision": 0.25619543419543434,
+    "docPrecision": 0.20558204758204765,
+    "coverage": 0.6421602421373017,
+    "tokens": 165.71333333333334,
+    "selected": 6.036666666666667,
+    "ms": 134.87140458000124,
+    "queries": 300
+   },
+   "hybrid_truncate_nogate": {
+    "chunkRecall": 0.30070858770858816,
+    "docRecall": 0.6880555555555555,
+    "chunkPrecision": 0.15931365393865402,
+    "docPrecision": 0.10143882968882965,
+    "coverage": 0.7990135908200717,
+    "tokens": 247.69666666666666,
+    "selected": 10.13,
+    "ms": 135.24714469999842,
+    "queries": 300
+   },
+   "hybrid_greedy": {
+    "chunkRecall": 0.12393325193325185,
+    "docRecall": 0.4869444444444444,
+    "chunkPrecision": 0.2623095238095238,
+    "docPrecision": 0.25103174603174605,
+    "coverage": 0.6200576716958223,
+    "tokens": 64.99666666666667,
+    "selected": 2.68,
+    "ms": 136.8182808633371,
+    "queries": 300
+   },
+   "hybrid_residual": {
+    "chunkRecall": 0.10645461945461923,
+    "docRecall": 0.48555555555555563,
+    "chunkPrecision": 0.3416666666666666,
+    "docPrecision": 0.33833333333333326,
+    "coverage": 0.5595321648487313,
+    "tokens": 47.81666666666667,
+    "selected": 1.8333333333333333,
+    "ms": 149.11009665666828,
+    "queries": 300
+   },
+   "hybrid_p4": {
+    "chunkRecall": 0.2343697598697602,
+    "docRecall": 0.5897222222222221,
+    "chunkPrecision": 0.24698641173641186,
+    "docPrecision": 0.20280414955414972,
+    "coverage": 0.6506832615092342,
+    "tokens": 165.75666666666666,
+    "selected": 5.82,
+    "ms": 135.56855737667047,
+    "queries": 300
+   },
+   "p4_current": {
+    "chunkRecall": 0.10586487586487564,
+    "docRecall": 0.49111111111111116,
+    "chunkPrecision": 0.37444444444444436,
+    "docPrecision": 0.3722222222222221,
+    "coverage": 0.544121827578154,
+    "tokens": 46.50333333333333,
+    "selected": 1.6833333333333333,
+    "ms": 13.277379456667889,
+    "queries": 300
+   },
+   "hybrid_truncate_matched_residual": {
+    "chunkRecall": 0.12606573056573053,
+    "docRecall": 0.48333333333333334,
+    "chunkPrecision": 0.38088888888888883,
+    "docPrecision": 0.37511111111111106,
+    "coverage": 0.5087228705609612,
+    "tokens": 44.67666666666667,
+    "selected": 1.8,
+    "ms": 135.24531584000002,
+    "queries": 300
+   },
+   "hybrid_truncate_matched_p4_current": {
+    "chunkRecall": 0.12578795278795274,
+    "docRecall": 0.501388888888889,
+    "chunkPrecision": 0.39799999999999996,
+    "docPrecision": 0.39027777777777767,
+    "coverage": 0.5006377236889181,
+    "tokens": 43.833333333333336,
+    "selected": 1.7666666666666666,
+    "ms": 134.93867737666693,
+    "queries": 300
+   }
+  },
+  "500": {
+   "word_truncate": {
+    "chunkRecall": 0.2683642653642657,
+    "docRecall": 0.6141666666666666,
+    "chunkPrecision": 0.24203126322189566,
+    "docPrecision": 0.19796125816907573,
+    "coverage": 0.6648440833735896,
+    "tokens": 237.23,
+    "selected": 8.59,
+    "ms": 13.433545123336758,
+    "queries": 300
+   },
+   "word_truncate_nogate": {
+    "chunkRecall": 0.35257452177452203,
+    "docRecall": 0.734,
+    "chunkPrecision": 0.09504717792965255,
+    "docPrecision": 0.05356007591517218,
+    "coverage": 0.9068574312243446,
+    "tokens": 497.36,
+    "selected": 20.2,
+    "ms": 12.70616084000057,
+    "queries": 300
+   },
+   "hybrid_truncate": {
+    "chunkRecall": 0.2783428978428983,
+    "docRecall": 0.6319444444444445,
+    "chunkPrecision": 0.2294140170640845,
+    "docPrecision": 0.18352237950960887,
+    "coverage": 0.6731693173988236,
+    "tokens": 256.91333333333336,
+    "selected": 9.066666666666666,
+    "ms": 153.4133053000027,
+    "queries": 300
+   },
+   "hybrid_truncate_nogate": {
+    "chunkRecall": 0.3619078551078551,
+    "docRecall": 0.7423333333333333,
+    "chunkPrecision": 0.10072674358391281,
+    "docPrecision": 0.05621076379930752,
+    "coverage": 0.8797117191963095,
+    "tokens": 497.4,
+    "selected": 19.54,
+    "ms": 151.1429802833358,
+    "queries": 300
+   },
+   "hybrid_greedy": {
+    "chunkRecall": 0.12393325193325185,
+    "docRecall": 0.4869444444444444,
+    "chunkPrecision": 0.2600873015873016,
+    "docPrecision": 0.2476984126984127,
+    "coverage": 0.6212664629046134,
+    "tokens": 66.89,
+    "selected": 2.69,
+    "ms": 151.55821029333086,
+    "queries": 300
+   },
+   "hybrid_residual": {
+    "chunkRecall": 0.10645461945461923,
+    "docRecall": 0.48555555555555563,
+    "chunkPrecision": 0.3416666666666666,
+    "docPrecision": 0.33833333333333326,
+    "coverage": 0.5595321648487313,
+    "tokens": 47.81666666666667,
+    "selected": 1.8333333333333333,
+    "ms": 169.3909519399951,
+    "queries": 300
+   },
+   "hybrid_p4": {
+    "chunkRecall": 0.2710809930809936,
+    "docRecall": 0.6319444444444445,
+    "chunkPrecision": 0.22840637366452432,
+    "docPrecision": 0.18338697704371099,
+    "coverage": 0.6749890162185225,
+    "tokens": 256.68666666666667,
+    "selected": 8.966666666666667,
+    "ms": 152.40082944666347,
+    "queries": 300
+   },
+   "p4_current": {
+    "chunkRecall": 0.10586487586487564,
+    "docRecall": 0.49111111111111116,
+    "chunkPrecision": 0.37444444444444436,
+    "docPrecision": 0.3722222222222221,
+    "coverage": 0.544121827578154,
+    "tokens": 46.50333333333333,
+    "selected": 1.6833333333333333,
+    "ms": 14.625104013334106,
+    "queries": 300
+   },
+   "hybrid_truncate_matched_residual": {
+    "chunkRecall": 0.12606573056573053,
+    "docRecall": 0.48333333333333334,
+    "chunkPrecision": 0.38088888888888883,
+    "docPrecision": 0.37511111111111106,
+    "coverage": 0.5087228705609612,
+    "tokens": 44.67666666666667,
+    "selected": 1.8,
+    "ms": 153.50302303666558,
+    "queries": 300
+   },
+   "hybrid_truncate_matched_p4_current": {
+    "chunkRecall": 0.12578795278795274,
+    "docRecall": 0.501388888888889,
+    "chunkPrecision": 0.39799999999999996,
+    "docPrecision": 0.39027777777777767,
+    "coverage": 0.5006377236889181,
+    "tokens": 43.833333333333336,
+    "selected": 1.7666666666666666,
+    "ms": 151.92095984999906,
+    "queries": 300
+   }
+  }
+ },
+ "exactIdentifiers": {
+  "positives": 100,
+  "exactFound": 1,
+  "exactTop1": 1,
+  "exactTop10": 1,
+  "misses": 0,
+  "meanExactRank": 1,
+  "nearMissAbove": 0,
+  "nearMissPositives": 56,
+  "nearMissEvaluated": 56,
+  "negatives": {
+   "known_term": "hba1c",
+   "prose_terms": [
+    "figure_1",
+    "table_2",
+    "stage_1",
+    "type_2",
+    "phase_2",
+    "factor_1",
+    "day_1"
+   ],
+   "single": {
+    "queries": 25,
+    "activation": 0,
+    "non_empty": 0
+   },
+   "underscore": {
+    "queries": 25,
+    "activation": 0,
+    "non_empty": 0
+   },
+   "mixed": {
+    "queries": 25,
+    "activation": 0,
+    "non_empty": 1
+   },
+   "prose": {
+    "queries": 7,
+    "activation": 0,
+    "non_empty": 0
+   }
+  }
+ }
+}

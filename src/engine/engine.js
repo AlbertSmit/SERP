@@ -1,6 +1,6 @@
 import Database from 'better-sqlite3';
 import { fileURLToPath } from 'node:url';
-import { tokenize, countTokens, isSubstantiveToken } from './tokenize.js';
+import { tokenize, gramTokens, wordGrams, countTokens, isSubstantiveToken } from './tokenize.js';
 
 const RELATED_TOKEN_DISCOUNT = 0.85;
 const HEADER_MATCH_MULTIPLIER = 1.4;
@@ -26,6 +26,11 @@ export class SQLiteContextEngine {
     if (!hasFts) {
       this.db.exec("CREATE VIRTUAL TABLE chunks_fts USING fts5(chunk_id UNINDEXED, doc_id UNINDEXED, content, tokenize='unicode61'); CREATE VIRTUAL TABLE chunks_vocab USING fts5vocab(chunks_fts, 'row'); CREATE TABLE chunks_meta (rowid INTEGER PRIMARY KEY, chunk_id TEXT UNIQUE NOT NULL, doc_id TEXT, L INTEGER, U INTEGER, l_over_u REAL, intrinsic_surprisal REAL, age_days REAL, access_count INTEGER);");
     }
+    this.db.exec("CREATE VIRTUAL TABLE IF NOT EXISTS chunks_grams USING fts5(chunk_id UNINDEXED, doc_id UNINDEXED, content, tokenize='unicode61'); CREATE VIRTUAL TABLE IF NOT EXISTS chunks_grams_vocab USING fts5vocab(chunks_grams, 'row');");
+    // Exact tokens as produced by tokenize() (underscores preserved). unicode61
+    // splits "figure_1" into "figure" + "1", so a phrase query cannot tell an
+    // indexed identifier from prose co-occurrence. This table can.
+    this.db.exec("CREATE TABLE IF NOT EXISTS chunks_exact_terms (term TEXT NOT NULL, chunk_id TEXT NOT NULL, PRIMARY KEY(term, chunk_id)) WITHOUT ROWID; CREATE INDEX IF NOT EXISTS chunks_exact_terms_chunk ON chunks_exact_terms(chunk_id);");
   }
 
   // ------------------------------------------------------------------
@@ -82,6 +87,29 @@ export class SQLiteContextEngine {
     this.stmtMatchCandidates = this.db.prepare(
       "SELECT chunk_id FROM chunks_fts WHERE chunks_fts MATCH ? ORDER BY rank LIMIT ?"
     );
+    this.stmtMatchRanked = this.db.prepare(
+      "SELECT chunk_id, rank FROM chunks_fts WHERE chunks_fts MATCH ? AND substr(chunk_id, -5) <> '_full' ORDER BY rank LIMIT ?"
+    );
+    this.stmtGramRanked = this.db.prepare(
+      "SELECT chunk_id, rank FROM chunks_grams WHERE chunks_grams MATCH ? AND substr(chunk_id, -5) <> '_full' ORDER BY rank LIMIT ?"
+    );
+    this.stmtGramCount = this.db.prepare("SELECT COUNT(*) AS cnt FROM chunks_grams");
+    this.stmtContentBatch = this.db.prepare(
+      "SELECT rowid, chunk_id, doc_id, content FROM chunks_fts WHERE rowid > ? ORDER BY rowid LIMIT ?"
+    );
+    this.stmtExactTermHit = this.db.prepare(
+      "SELECT 1 AS hit FROM chunks_exact_terms WHERE term = ? LIMIT 1"
+    );
+    this.stmtExactTermCount = this.db.prepare("SELECT COUNT(*) AS cnt FROM chunks_exact_terms");
+    this.stmtExactTermBatch = this.db.prepare(
+      "SELECT term, COUNT(*) AS df FROM chunks_exact_terms GROUP BY term HAVING COUNT(*) <= ? ORDER BY df ASC, term ASC"
+    );
+    this.stmtExactTermBatchRetrievable = this.db.prepare(
+      "SELECT term, COUNT(*) AS df FROM chunks_exact_terms WHERE substr(chunk_id, -5) <> '_full' GROUP BY term HAVING COUNT(*) <= ? ORDER BY df ASC, term ASC"
+    );
+    this.stmtInsertExactTerm = this.db.prepare(
+      "INSERT OR IGNORE INTO chunks_exact_terms(term, chunk_id) VALUES (?, ?)"
+    );
     this.stmtGetContentByRowid = this.db.prepare(
       "SELECT content FROM chunks_fts WHERE rowid = ?"
     );
@@ -93,6 +121,9 @@ export class SQLiteContextEngine {
     );
     this.stmtInsertFts = this.db.prepare(
       "INSERT INTO chunks_fts(chunk_id, doc_id, content) VALUES (?, ?, ?)"
+    );
+    this.stmtInsertGrams = this.db.prepare(
+      "INSERT INTO chunks_grams(chunk_id, doc_id, content) VALUES (?, ?, ?)"
     );
     this.stmtInsertMeta = this.db.prepare(`
       INSERT OR REPLACE INTO chunks_meta
@@ -111,6 +142,60 @@ export class SQLiteContextEngine {
     const row = this.stmtVocabLookup.get(term);
 
     return row ? [Number(row.doc), Number(row.cnt)] : [Math.max(this.M_ref, 1), 1];
+  }
+
+  buildGramIndex({ batchSize = 500 } = {}) {
+    if (Number(this.stmtGramCount.get().cnt) > 0) return 0;
+    let lastRowid = 0;
+    let indexed = 0;
+    const insertBatch = this.db.transaction((rows) => {
+      for (const row of rows) {
+        this.stmtInsertGrams.run(
+          row.chunk_id, row.doc_id, gramTokens(row.content).join(" "),
+        );
+        indexed += 1;
+      }
+    });
+    while (true) {
+      const rows = this.stmtContentBatch.all(lastRowid, batchSize);
+      if (rows.length === 0) break;
+      insertBatch(rows);
+      lastRowid = Number(rows[rows.length - 1].rowid);
+    }
+
+    return indexed;
+  }
+
+  buildExactIndex({ batchSize = 500 } = {}) {
+    if (Number(this.stmtExactTermCount.get().cnt) > 0) return 0;
+    let lastRowid = 0;
+    let indexed = 0;
+    const insertBatch = this.db.transaction((rows) => {
+      for (const row of rows) {
+        for (const term of new Set(tokenize(row.content))) {
+          this.stmtInsertExactTerm.run(term, row.chunk_id);
+        }
+        indexed += 1;
+      }
+    });
+    while (true) {
+      const rows = this.stmtContentBatch.all(lastRowid, batchSize);
+      if (rows.length === 0) break;
+      insertBatch(rows);
+      lastRowid = Number(rows[rows.length - 1].rowid);
+    }
+
+    return indexed;
+  }
+
+  exactIdentifierTerms({ maxDf = 20, minLength = 4, retrievableOnly = false } = {}) {
+    const rows = retrievableOnly
+      ? this.stmtExactTermBatchRetrievable.all(maxDf)
+      : this.stmtExactTermBatch.all(maxDf);
+
+    return rows
+      .filter(({ term }) => term.length >= minLength && isIdentifierToken(term))
+      .map(({ term, df }) => ({ term, df: Number(df) }));
   }
 
   getContent(chunkId) {
@@ -302,6 +387,275 @@ export class SQLiteContextEngine {
     }
 
     return state.selected;
+  }
+
+  // ------------------------------------------------------------------
+  // 2b. Explicit stages: retrieve -> fuse -> pack
+  // ------------------------------------------------------------------
+  rankWordBm25(queryText, { depth = 100 } = {}) {
+    // FTS5 unicode61 splits "figure_1" into "figure" + "1", so an unknown
+    // identifier would match prose. Drop unknown identifiers per token; a mixed
+    // query ("zzq_42 p53") still retrieves through its known tokens.
+    const terms = [...new Set(tokenize(queryText))]
+      .filter((token) => isSubstantiveToken(token) && !this.isUnknownIdentifier(token));
+    if (terms.length === 0) return [];
+
+    return this.stmtMatchRanked.all(ftsOrExpression(terms), depth)
+      .map(({ chunk_id: chunkId, rank }) => ({ chunk_id: chunkId, score: -Number(rank) }));
+  }
+
+  rankGramBm25(queryText, { depth = 100 } = {}) {
+    // Unknown identifiers must not activate gram variants, but a query may mix
+    // them with known tokens ("zzq_42 p53"): drop the unknown tokens only.
+    const tokens = [...new Set(tokenize(queryText))]
+      .filter((token) => !this.isUnknownIdentifier(token));
+    if (tokens.length === 0) return [];
+    const grams = [...new Set(tokens.flatMap(wordGrams))];
+    if (grams.length === 0) return [];
+
+    return this.stmtGramRanked.all(ftsOrExpression(grams), depth)
+      .map(({ chunk_id: chunkId, rank }) => ({ chunk_id: chunkId, score: -Number(rank) }));
+  }
+
+  isUnknownIdentifier(token) {
+    return /[_\d]/.test(token) && !this.identifierHasExactMatch(token);
+  }
+
+  identifierHasExactMatch(token) {
+    return Boolean(this.stmtExactTermHit.get(token));
+  }
+
+  fuseRrf(lists, options = {}) {
+    const { k = 60, depth = 100 } = options;
+    const exactTokens = this.exactQueryTokens(options);
+    const scores = new Map();
+    for (const list of lists) {
+      const limit = Math.min(list.length, depth);
+      for (let index = 0; index < limit; index++) {
+        const chunkId = list[index].chunk_id;
+        scores.set(chunkId, (scores.get(chunkId) || 0) + 1 / (k + index + 1));
+      }
+    }
+
+    return [...scores]
+      .map(([chunkId, score]) => ({
+        chunk_id: chunkId,
+        score,
+        exact: this.isExactChunkMatch(chunkId, exactTokens),
+      }))
+      .sort(compareFused);
+  }
+
+  exactQueryTokens({ queryTokens, queryText } = {}) {
+    const tokens = [...(queryTokens || tokenize(queryText || ''))];
+
+    return new Set(tokens.filter(
+      (token) => isIdentifierToken(token) && this.identifierHasExactMatch(token),
+    ));
+  }
+
+  isExactChunkMatch(chunkId, exactTokens) {
+    if (exactTokens.size === 0 || !this.docStats.has(chunkId)) return false;
+    const counts = this.chunkTokenCounts(chunkId);
+    for (const token of exactTokens) {
+      if ((counts.get(token) || 0) > 0) return true;
+    }
+
+    return false;
+  }
+
+  retrieveRanked(queryText, { channels = ["word", "gram"], depth = 100 } = {}) {
+    const word = channels.includes("word") ? this.rankWordBm25(queryText, { depth }) : [];
+    const gram = channels.includes("gram") ? this.rankGramBm25(queryText, { depth }) : [];
+    const fused = this.fuseRrf([word, gram], { depth, queryText });
+
+    return { word, gram, fused };
+  }
+
+  packRanked(queryText, fused, options = {}) {
+    return this.packRankedDetailed(queryText, fused, options).chunkIds;
+  }
+
+  packRankedDetailed(queryText, fused, options = {}) {
+    const settings = rankedPackingOptions(options);
+    // Every packer sees the same candidate pool so ranking quality is comparable.
+    const limit = Math.min(fused.length, settings.poolDepth);
+    const candidates = fused.slice(0, limit).map((entry) => entry.chunk_id);
+    const gated = this.gatedRankedCandidates(queryText, candidates, settings);
+    const selection = this.runRankedPacker(queryText, gated, settings);
+
+    return {
+      chunkIds: selection.chunkIds,
+      skippedCoverage: gated.skippedCoverage,
+      usedTokens: selection.usedTokens,
+      budget: settings.budget,
+      packer: settings.packer,
+    };
+  }
+
+  packHybrid(queryText, options = {}) {
+    const { channels, depth, ...packOptions } = options;
+    const { fused } = this.retrieveRanked(queryText, { channels, depth });
+
+    return this.packRanked(queryText, fused, packOptions);
+  }
+
+  gatedRankedCandidates(queryText, candidates, settings) {
+    const queryWeights = this.queryWeights(queryText);
+    const seen = new Set();
+    const kept = [];
+    const skippedCoverage = [];
+    for (const chunkId of candidates) {
+      if (seen.has(chunkId)) continue;
+      seen.add(chunkId);
+      const meta = this.docStats.get(chunkId);
+      if (!meta || meta.L === 0) continue;
+      if (!this.passesCoverageGate(
+        chunkId, queryWeights, settings.min_coverage, settings.matchCache,
+      )) {
+        skippedCoverage.push(chunkId);
+        continue;
+      }
+      kept.push(chunkId);
+    }
+
+    return { queryWeights, candidates: kept, skippedCoverage };
+  }
+
+  runRankedPacker(queryText, gated, settings) {
+    if (settings.packer === "greedy") return this.packRankedGreedy(gated, settings);
+    if (settings.packer === "residual") return this.packRankedResidual(gated, settings);
+    if (settings.packer === "p4") return this.packRankedP4(queryText, gated, settings);
+
+    return this.packRankedTruncate(gated, settings);
+  }
+
+  packRankedTruncate({ candidates }, settings) {
+    const chunkIds = [];
+    let usedTokens = 0;
+    for (const chunkId of candidates) {
+      const L = this.docStats.get(chunkId).L;
+      if (usedTokens + L > settings.budget) continue;
+      chunkIds.push(chunkId);
+      usedTokens += L;
+    }
+
+    return { chunkIds, usedTokens };
+  }
+
+  packRankedGreedy({ candidates, queryWeights }, settings) {
+    const remaining = new Map(queryWeights);
+    const state = {
+      selectedSet: new Set(),
+      remaining,
+      usedTokens: 0,
+      budget: settings.budget,
+    };
+    while (state.selectedSet.size < candidates.length) {
+      const pick = this.bestGreedyCandidate(candidates, state, settings.matchCache);
+      if (!pick) break;
+      state.selectedSet.add(pick.chunkId);
+      state.usedTokens += this.docStats.get(pick.chunkId).L;
+      this.coverQueryWords(pick.chunkId, remaining, settings.matchCache);
+    }
+
+    return { chunkIds: [...state.selectedSet], usedTokens: state.usedTokens };
+  }
+
+  bestGreedyCandidate(candidates, state, matchCache) {
+    let best = null;
+    for (const chunkId of candidates) {
+      if (state.selectedSet.has(chunkId)) continue;
+      const meta = this.docStats.get(chunkId);
+      if (!meta || state.usedTokens + meta.L > state.budget) continue;
+      const gain = this.greedyGain(chunkId, state.remaining, matchCache);
+      if (gain <= 0) continue;
+      const score = gain / Math.max(meta.L, 1);
+      if (isBetterScored(score, chunkId, best)) best = { chunkId, score };
+    }
+
+    return best;
+  }
+
+  greedyGain(chunkId, weights, matchCache) {
+    const counts = this.chunkTokenCounts(chunkId);
+    let gain = 0;
+    for (const [word, weight] of weights) {
+      if (weight <= 0) continue;
+      if (this.cachedTermMatch(chunkId, word, counts, matchCache).count > 0) gain += weight;
+    }
+
+    return gain;
+  }
+
+  coverQueryWords(chunkId, weights, matchCache) {
+    const counts = this.chunkTokenCounts(chunkId);
+    for (const [word, weight] of weights) {
+      if (weight <= 0) continue;
+      if (this.cachedTermMatch(chunkId, word, counts, matchCache).count > 0) {
+        weights.set(word, 0);
+      }
+    }
+  }
+
+  packRankedResidual({ candidates, queryWeights }, settings) {
+    const remaining = new Map(queryWeights);
+    const initDemand = Math.max(sumWeights(remaining), 1e-6);
+    const state = {
+      selectedSet: new Set(),
+      remaining,
+      usedTokens: 0,
+      budget: settings.budget,
+      matchCache: settings.matchCache,
+    };
+    let firstGain = null;
+    while (state.selectedSet.size < candidates.length) {
+      if (sumWeights(remaining) / initDemand < 0.08) break;
+      const pick = this.bestResidualCandidate(candidates, state);
+      if (!pick) break;
+      if (firstGain === null) firstGain = pick.score;
+      else if (pick.score / firstGain < settings.rel_dropoff) break;
+      state.selectedSet.add(pick.chunkId);
+      state.usedTokens += this.docStats.get(pick.chunkId).L;
+      this.decayResidualWeights(pick.chunkId, remaining, settings.lambda_decay, settings.matchCache);
+    }
+
+    return { chunkIds: [...state.selectedSet], usedTokens: state.usedTokens };
+  }
+
+  bestResidualCandidate(candidates, state) {
+    let best = null;
+    for (const chunkId of candidates) {
+      if (state.selectedSet.has(chunkId)) continue;
+      const meta = this.docStats.get(chunkId);
+      if (!meta || state.usedTokens + meta.L > state.budget) continue;
+      const gain = this.residualGain(chunkId, state.remaining, state.matchCache);
+      if (gain <= 0) continue;
+      const score = gain / effectiveTokenCost(meta);
+      if (isBetterScored(score, chunkId, best)) best = { chunkId, score };
+    }
+
+    return best;
+  }
+
+  packRankedP4(queryText, { candidates }, settings) {
+    const ranked = candidates
+      .map((chunkId) => ({
+        chunkId,
+        score: this.scoreChunkP4(chunkId, queryText, { matchCache: settings.matchCache }),
+      }))
+      .filter((entry) => entry.score > 0)
+      .sort(compareScoredCandidates);
+    const chunkIds = [];
+    let usedTokens = 0;
+    for (const { chunkId } of ranked) {
+      const L = this.docStats.get(chunkId).L;
+      if (usedTokens + L > settings.budget) continue;
+      chunkIds.push(chunkId);
+      usedTokens += L;
+    }
+
+    return { chunkIds, usedTokens };
   }
 
   reinforceSelected(selected) {
@@ -698,6 +1052,8 @@ export class SQLiteContextEngine {
     const insertTx = this.db.transaction(() => {
       const info = this.stmtInsertFts.run(cid, docId, content);
       const rowid = Number(info.lastInsertRowid);
+      this.stmtInsertGrams.run(cid, docId, gramTokens(content).join(" "));
+      for (const term of counts.keys()) this.stmtInsertExactTerm.run(term, cid);
       this.stmtInsertMeta.run(rowid, cid, docId, L, U, lOverU, intrinsic, ageDays, 1);
 
       return rowid;
@@ -751,6 +1107,65 @@ function packingOptions(options) {
   }
 
   return settings;
+}
+
+function rankedPackingOptions(options = {}) {
+  const defaults = {
+    budget: 250,
+    packer: "truncate",
+    min_coverage: 0.315,
+    rel_dropoff: 0.26,
+    lambda_decay: 2.2,
+    poolDepth: 100,
+  };
+  const settings = { ...options };
+  for (const [key, value] of Object.entries(defaults)) {
+    if (settings[key] === undefined) settings[key] = value;
+  }
+  settings.matchCache = new Map();
+
+  return settings;
+}
+
+function ftsOrExpression(terms) {
+  return terms.map((term) => `"${term.replaceAll('"', '""')}"`).join(" OR ");
+}
+
+function isIdentifierToken(token) {
+  return /[a-z]/.test(token) && /[_\d]/.test(token);
+}
+
+function compareFused(left, right) {
+  if (left.exact !== right.exact) return left.exact ? -1 : 1;
+  if (right.score !== left.score) return right.score - left.score;
+
+  return compareChunkIds(left.chunk_id, right.chunk_id);
+}
+
+function compareScoredCandidates(left, right) {
+  if (right.score !== left.score) return right.score - left.score;
+
+  return compareChunkIds(left.chunkId, right.chunkId);
+}
+
+function isBetterScored(score, chunkId, best) {
+  if (!best) return true;
+  if (score !== best.score) return score > best.score;
+
+  return chunkId < best.chunkId;
+}
+
+function compareChunkIds(left, right) {
+  if (left === right) return 0;
+
+  return left < right ? -1 : 1;
+}
+
+function effectiveTokenCost(meta) {
+  return Math.max(
+    Math.pow(meta.L + 10, 0.35) * Math.pow(meta.L / Math.max(meta.U, 1), 0.15),
+    0.1,
+  );
 }
 
 function sumWeights(weights) {
