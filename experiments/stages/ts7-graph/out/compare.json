@@ -1,0 +1,182 @@
+{
+ "meta": {
+  "ts7": {
+   "generator": "graph_ts7.mjs",
+   "typescript": "7.0.2",
+   "api": "typescript/unstable/sync + typescript/unstable/ast (native tsgo)",
+   "repo": "/Users/asmit/Personal/algo-serp-stages",
+   "files": 14,
+   "checker_used": true,
+   "checker_calls": 2213,
+   "checker_failures": 0,
+   "call_sites": 2099,
+   "calls_resolved_to_declaration": 461,
+   "nodes_walked": 26140,
+   "transport": {
+    "enabled": true,
+    "requests": 2245,
+    "round_trip_ms": 270.6,
+    "server_time_ms": 196.1,
+    "transport_overhead_ms": 74.6,
+    "nodes_materialized": 30647,
+    "bytes_received": 12070212
+   },
+   "timings": {
+    "spawn_and_snapshot_ms": 76.9,
+    "fetch_and_parse_ms": 7,
+    "walk_and_resolve_ms": 258.2,
+    "resolve_ms": 224.2,
+    "total_build_ms": 342.4
+   }
+  },
+  "regex": {
+   "generator": "graph_regex.mjs",
+   "engine": "regex + brace counting (node 26)",
+   "repo": "/Users/asmit/Personal/algo-serp-stages",
+   "files": 14,
+   "bytes_read": 147257,
+   "checker_used": false,
+   "call_sites": 2353,
+   "nodes_walked": null,
+   "timings": {
+    "total_build_ms": 22.4
+   }
+  },
+  "compared_at": "2026-10-20T09:49:09.409Z"
+ },
+ "chunks": {
+  "counts": {
+   "ts7": 165,
+   "regex": 204,
+   "matched_by_file_and_name": 154,
+   "ts7_only": 0,
+   "regex_only": 3
+  },
+  "by_kind": {
+   "ts7": {
+    "body": 25,
+    "function": 78,
+    "class": 1,
+    "method": 61
+   },
+   "regex": {
+    "body": 14,
+    "function": 78,
+    "class": 1,
+    "method": 111
+   }
+  },
+  "range_accuracy_on_matched": {
+   "chunks_considered": 140,
+   "exact_start_and_end": 120,
+   "start_line_match": 140,
+   "regex_ends_early": 19,
+   "mean_line_iou": 0.871
+  },
+  "kind_mismatch": [],
+  "kind_mismatch_count": 0,
+  "ts7_only_sample": [],
+  "regex_only_sample": [
+   "src/engine/engine.js|SQLiteContextEngine.if",
+   "src/engine/engine.js|SQLiteContextEngine.for",
+   "src/engine/engine.js|SQLiteContextEngine.while"
+  ]
+ },
+ "calls": {
+  "edges": {
+   "ts7": 2099,
+   "regex": 2353
+  },
+  "distinct_callee_names": {
+   "ts7": 233,
+   "regex": 297
+  },
+  "qualified_callee_names": {
+   "ts7_with_receiver": 1712,
+   "regex_with_receiver": 0
+  },
+  "caller_callee_pairs": {
+   "ts7": 727,
+   "regex": 962,
+   "shared": 570
+  },
+  "sites_by_file_line_callee": {
+   "ts7": 1969,
+   "regex": 2218,
+   "shared": 1964,
+   "ts7_only": 5,
+   "regex_only": 254
+  },
+  "resolution": {
+   "ts7_to_declaration": 461,
+   "ts7_symbol_only": 1003,
+   "ts7_unresolved": 635,
+   "regex": "none (syntactic only)"
+  },
+  "regex_only_sample": [
+   "scripts/benchmark-bm25-vs-serp.js|6|bm25",
+   "scripts/benchmark-bm25-vs-serp.js|7|packContext",
+   "scripts/benchmark-bm25-vs-serp.js|8|fullPipeline",
+   "scripts/benchmark-bm25-vs-serp.js|10|chunks",
+   "scripts/benchmark-bm25-vs-serp.js|15|questions",
+   "scripts/benchmark-bm25-vs-serp.js|16|ratio",
+   "scripts/benchmark-bm25-vs-serp.js|37|dualTokenize",
+   "scripts/benchmark-bm25-vs-serp.js|44|chunkFile",
+   "scripts/benchmark-bm25-vs-serp.js|81|walkRepo",
+   "scripts/benchmark-bm25-vs-serp.js|97|buildDb",
+   "scripts/benchmark-bm25-vs-serp.js|104|fts5",
+   "scripts/benchmark-bm25-vs-serp.js|105|fts5vocab",
+   "scripts/benchmark-bm25-vs-serp.js|106|chunks_meta",
+   "scripts/benchmark-bm25-vs-serp.js|111|chunks_fts",
+   "scripts/benchmark-bm25-vs-serp.js|111|VALUES",
+   "scripts/benchmark-bm25-vs-serp.js|112|chunks_meta",
+   "scripts/benchmark-bm25-vs-serp.js|112|VALUES",
+   "scripts/benchmark-bm25-vs-serp.js|159|bm25Packer",
+   "scripts/benchmark-bm25-vs-serp.js|164|bm25",
+   "scripts/benchmark-bm25-vs-serp.js|184|tokens"
+  ],
+  "ts7_only_sample": [
+   "src/engine/engine.js|213|delete",
+   "src/engine/engine.js|214|delete",
+   "src/engine/engine.js|215|delete",
+   "src/engine/engine.js|1077|delete",
+   "test/engine.test.js|34|engine"
+  ],
+  "ts7_qualified_sites": 2026,
+  "regex_only_classification": {
+   "comment": 46,
+   "string_literal": 68,
+   "declaration": 137,
+   "non_call_expression": 1,
+   "other": 2
+  },
+  "ts7_only_classification": {
+   "comment": 0,
+   "string_literal": 0,
+   "declaration": 0,
+   "non_call_expression": 1,
+   "other": 4
+  }
+ },
+ "imports": {
+  "edges": {
+   "ts7": 63,
+   "regex": 60
+  },
+  "distinct_file_module": {
+   "ts7": 63,
+   "regex": 60,
+   "shared": 60
+  },
+  "ts7_only": [
+   "scripts/stress-test-compact.js|../src/engine/engine.js",
+   "scripts/stress-test-compact.js|node:path",
+   "scripts/stress-test-compact.js|node:url"
+  ],
+  "regex_only": [],
+  "named_binding_exact": {
+   "ts7": 63,
+   "regex": 60
+  }
+ }
+}

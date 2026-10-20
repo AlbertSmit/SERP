@@ -1,0 +1,1083 @@
+{
+ "meta": {
+  "generator": "make_queries.py",
+  "source_graph": "out/graph_ts7.json",
+  "kind": "graph-derived capability test, not human relevance",
+  "seed": 20261020,
+  "queries": 97,
+  "qrels_per_query": 2
+ },
+ "queries": {
+  "q000": "stages test build exact index",
+  "q001": "stages test store memory",
+  "q002": "benchmark bm 25 vs serp score chunk",
+  "q003": "sq lite context engine term potential",
+  "q004": "sq lite context engine is exact chunk match",
+  "q005": "sq lite context engine tokenize",
+  "q006": "sq lite context engine add trigram fallback candidates",
+  "q007": "full pipeline context bridges",
+  "q008": "sq lite context engine count tokens",
+  "q009": "best context candidate sum weights",
+  "q010": "stages test retrieve ranked",
+  "q011": "score chunk vocab stats",
+  "q012": "mcp test store memory",
+  "q013": "demonstrative react codebase walk repo",
+  "q014": "build corpus sq lite context engine",
+  "q015": "score chunk information weight",
+  "q016": "rank word bm 25 is substantive token",
+  "q018": "sq lite context engine identifier has exact match",
+  "q019": "build db chunk file",
+  "q020": "main read jsonl",
+  "q021": "pack ranked detailed run packer",
+  "q022": "sq lite context engine pack ranked",
+  "q023": "engine test full pipeline",
+  "q024": "cover query words chunk token counts",
+  "q025": "fixture engine sq lite context",
+  "q026": "build corpus sq lite context engine",
+  "q027": "sq lite context engine pack ranked detailed",
+  "q028": "benchmark react corpus rag pack",
+  "q029": "main build gram index",
+  "q030": "build corpus store memory",
+  "q031": "selection stats collect covered tokens",
+  "q032": "index codebase walk repo",
+  "q033": "rank word bm 25 tokenize",
+  "q034": "sq lite context engine parent document",
+  "q035": "sq lite context engine ensure schema",
+  "q036": "stress test compact tokenize",
+  "q037": "max token similarity trigram jaccard",
+  "q038": "benchmark react corpus sq lite context engine",
+  "q039": "build corpus walk repo",
+  "q040": "gated ranked candidates query weights",
+  "q041": "sq lite context engine collect covered words",
+  "q042": "engine test score chunk",
+  "q043": "benchmark bm 25 vs serp store memory",
+  "q044": "sq lite context engine sum weights",
+  "q045": "context marginal gain residual",
+  "q046": "pack context query weights",
+  "q047": "sq lite context engine pack",
+  "q048": "sq lite context engine pack ranked greedy",
+  "q049": "stages test fuse rrf",
+  "q050": "pack ranked detailed packing options",
+  "q051": "stress test compact pack context",
+  "q052": "engine test store memory",
+  "q053": "sq lite context engine information weight",
+  "q054": "trigram jaccard trigrams",
+  "q055": "term match trigram jaccard",
+  "q056": "benchmark bm 25 vs serp make ground truth",
+  "q057": "flush store memory",
+  "q058": "demonstrative react codebase fmt content",
+  "q059": "context candidates is substantive token",
+  "q060": "sq lite context engine cached term match",
+  "q061": "main print budget",
+  "q062": "exact identifier suite rate",
+  "q063": "context bridges count tokens",
+  "q064": "demonstrative react codebase pack context",
+  "q065": "negative suite group activation",
+  "q066": "pack ranked detailed gated candidates",
+  "q067": "sq lite context engine load stats",
+  "q068": "best residual candidate gain",
+  "q069": "residual gain cached term match",
+  "q070": "group activation rate",
+  "q071": "temporal factor chunk token counts",
+  "q072": "stress test compact score chunk",
+  "q073": "score chunk count tokens",
+  "q074": "stages test sq lite context engine",
+  "q075": "sq lite context engine pack ranked residual",
+  "q076": "sq lite context engine collect bridge evidence",
+  "q077": "stage benchmark main",
+  "q078": "index codebase chunk source file",
+  "q079": "context bridges tokenize",
+  "q080": "main read qrels",
+  "q081": "fuse rrf exact query tokens",
+  "q082": "sq lite context engine term match",
+  "q083": "build corpus store memory",
+  "q084": "pack ranked residual sum weights",
+  "q085": "mcp test sq lite context engine",
+  "q086": "pack context sum weights",
+  "q087": "rag pack compute cosine similarity",
+  "q088": "benchmark bm 25 vs serp full pipeline",
+  "q089": "engine test verify score",
+  "q090": "sq lite context engine pack ranked truncate",
+  "q091": "start mcp server sq lite context engine",
+  "q092": "main exact identifier suite",
+  "q093": "sq lite context engine build exact index",
+  "q094": "store memory gram tokens",
+  "q095": "benchmark react corpus pack context",
+  "q098": "sq lite context engine is rare identifier",
+  "q099": "benchmark react corpus full pipeline"
+ },
+ "qrels": {
+  "q000": {
+   "test/stages.test.js#body:<module>@1": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.buildExactIndex@169": 1
+  },
+  "q001": {
+   "test/stages.test.js#body:<module>@1": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.storeMemory@1032": 1
+  },
+  "q002": {
+   "scripts/benchmark-bm25-vs-serp.js#body:<module>@254": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.scoreChunkP4@266": 1
+  },
+  "q003": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.termPotential@794": 1
+  },
+  "q004": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.isExactChunkMatch@457": 1
+  },
+  "q005": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/tokenize.js#function:tokenize@12": 1
+  },
+  "q006": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.addTrigramFallbackCandidates@783": 1
+  },
+  "q007": {
+   "src/engine/engine.js#method:SQLiteContextEngine.fullPipeline@940": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.contextBridges@983": 1
+  },
+  "q008": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/tokenize.js#function:countTokens@45": 1
+  },
+  "q009": {
+   "src/engine/engine.js#method:SQLiteContextEngine.bestContextCandidate@823": 1,
+   "src/engine/engine.js#function:sumWeights@1171": 1
+  },
+  "q010": {
+   "test/stages.test.js#body:<module>@1": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.retrieveRanked@467": 1
+  },
+  "q011": {
+   "src/engine/engine.js#method:SQLiteContextEngine.scoreChunkP4@266": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.vocabStats@138": 1
+  },
+  "q012": {
+   "test/mcp.test.js#body:<module>@1": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.storeMemory@1032": 1
+  },
+  "q013": {
+   "scripts/demonstrative-react-codebase.js#body:<module>@19": 1,
+   "scripts/demonstrative-react-codebase.js#function:walkRepo@11": 1
+  },
+  "q014": {
+   "scripts/benchmark-react-corpus.js#function:buildCorpus@27": 1,
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1
+  },
+  "q015": {
+   "src/engine/engine.js#method:SQLiteContextEngine.scoreChunkP4@266": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.informationWeight@711": 1
+  },
+  "q016": {
+   "src/engine/engine.js#method:SQLiteContextEngine.rankWordBm25@395": 1,
+   "src/engine/tokenize.js#function:isSubstantiveToken@54": 1
+  },
+  "q018": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.identifierHasExactMatch@424": 1
+  },
+  "q019": {
+   "scripts/benchmark-bm25-vs-serp.js#function:buildDb@97": 1,
+   "scripts/benchmark-bm25-vs-serp.js#function:chunkFile@44": 1
+  },
+  "q020": {
+   "scripts/stage-benchmark.js#function:main@374": 1,
+   "scripts/stage-benchmark.js#function:readJsonl@48": 1
+  },
+  "q021": {
+   "src/engine/engine.js#method:SQLiteContextEngine.packRankedDetailed@479": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.runRankedPacker@525": 1
+  },
+  "q022": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.packRanked@475": 1
+  },
+  "q023": {
+   "test/engine.test.js#body:<module>@46": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.fullPipeline@940": 1
+  },
+  "q024": {
+   "src/engine/engine.js#method:SQLiteContextEngine.coverQueryWords@591": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.chunkTokenCounts@222": 1
+  },
+  "q025": {
+   "test/engine.test.js#function:fixtureEngine@24": 1,
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1
+  },
+  "q026": {
+   "scripts/benchmark-serp-vs-rag.js#function:buildCorpus@116": 1,
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1
+  },
+  "q027": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.packRankedDetailed@479": 1
+  },
+  "q028": {
+   "scripts/benchmark-react-corpus.js#body:<module>@129": 1,
+   "scripts/benchmark-react-corpus.js#function:ragPack@94": 1
+  },
+  "q029": {
+   "scripts/stage-benchmark.js#function:main@374": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.buildGramIndex@147": 1
+  },
+  "q030": {
+   "scripts/benchmark-serp-vs-rag.js#function:buildCorpus@116": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.storeMemory@1032": 1
+  },
+  "q031": {
+   "scripts/stage-benchmark.js#function:selectionStats@156": 1,
+   "scripts/stage-benchmark.js#function:collectCoveredTokens@174": 1
+  },
+  "q032": {
+   "scripts/index-codebase.js#body:<module>@87": 1,
+   "scripts/index-codebase.js#function:walkRepo@70": 1
+  },
+  "q033": {
+   "src/engine/engine.js#method:SQLiteContextEngine.rankWordBm25@395": 1,
+   "src/engine/tokenize.js#function:tokenize@12": 1
+  },
+  "q034": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.parentDocument@665": 1
+  },
+  "q035": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.ensureSchema@24": 1
+  },
+  "q036": {
+   "scripts/stress-test-compact.js#body:<module>@1": 1,
+   "src/engine/tokenize.js#function:tokenize@12": 1
+  },
+  "q037": {
+   "src/engine/engine.js#function:maxTokenSimilarity@1200": 1,
+   "src/engine/engine.js#function:trigramJaccard@1211": 1
+  },
+  "q038": {
+   "scripts/benchmark-react-corpus.js#body:<module>@129": 1,
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1
+  },
+  "q039": {
+   "scripts/benchmark-react-corpus.js#function:buildCorpus@27": 1,
+   "scripts/benchmark-react-corpus.js#function:walkRepo@17": 1
+  },
+  "q040": {
+   "src/engine/engine.js#method:SQLiteContextEngine.gatedRankedCandidates@503": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.queryWeights@701": 1
+  },
+  "q041": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.collectCoveredWords@1002": 1
+  },
+  "q042": {
+   "test/engine.test.js#body:<module>@46": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.scoreChunkP4@266": 1
+  },
+  "q043": {
+   "scripts/benchmark-bm25-vs-serp.js#body:<module>@254": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.storeMemory@1032": 1
+  },
+  "q044": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/engine.js#function:sumWeights@1171": 1
+  },
+  "q045": {
+   "src/engine/engine.js#method:SQLiteContextEngine.contextMarginalGain@844": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.residualGain@803": 1
+  },
+  "q046": {
+   "src/engine/engine.js#method:SQLiteContextEngine.packContext@339": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.queryWeights@701": 1
+  },
+  "q047": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.packContext@339": 1
+  },
+  "q048": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.packRankedGreedy@546": 1
+  },
+  "q049": {
+   "test/stages.test.js#body:<module>@1": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.fuseRrf@428": 1
+  },
+  "q050": {
+   "src/engine/engine.js#method:SQLiteContextEngine.packRankedDetailed@479": 1,
+   "src/engine/engine.js#function:rankedPackingOptions@1112": 1
+  },
+  "q051": {
+   "scripts/stress-test-compact.js#body:<module>@1": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.packContext@339": 1
+  },
+  "q052": {
+   "test/engine.test.js#body:<module>@46": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.storeMemory@1032": 1
+  },
+  "q053": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.informationWeight@711": 1
+  },
+  "q054": {
+   "src/engine/engine.js#function:trigramJaccard@1211": 1,
+   "src/engine/engine.js#function:trigrams@1223": 1
+  },
+  "q055": {
+   "src/engine/engine.js#method:SQLiteContextEngine.termMatch@718": 1,
+   "src/engine/engine.js#function:trigramJaccard@1211": 1
+  },
+  "q056": {
+   "scripts/benchmark-bm25-vs-serp.js#body:<module>@254": 1,
+   "scripts/benchmark-bm25-vs-serp.js#function:makeGroundTruth@185": 1
+  },
+  "q057": {
+   "scripts/benchmark-serp-vs-rag.js#function:flush@158": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.storeMemory@1032": 1
+  },
+  "q058": {
+   "scripts/demonstrative-react-codebase.js#body:<module>@50": 1,
+   "scripts/demonstrative-react-codebase.js#function:fmtContent@44": 1
+  },
+  "q059": {
+   "src/engine/engine.js#method:SQLiteContextEngine.contextCandidates@669": 1,
+   "src/engine/tokenize.js#function:isSubstantiveToken@54": 1
+  },
+  "q060": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.cachedTermMatch@747": 1
+  },
+  "q061": {
+   "scripts/stage-benchmark.js#function:main@374": 1,
+   "scripts/stage-benchmark.js#function:printBudget@356": 1
+  },
+  "q062": {
+   "scripts/stage-benchmark.js#function:exactIdentifierSuite@184": 1,
+   "scripts/stage-benchmark.js#function:rate@342": 1
+  },
+  "q063": {
+   "src/engine/engine.js#method:SQLiteContextEngine.contextBridges@983": 1,
+   "src/engine/tokenize.js#function:countTokens@45": 1
+  },
+  "q064": {
+   "scripts/demonstrative-react-codebase.js#body:<module>@50": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.packContext@339": 1
+  },
+  "q065": {
+   "scripts/stage-benchmark.js#function:negativeSuite@237": 1,
+   "scripts/stage-benchmark.js#function:groupActivation@255": 1
+  },
+  "q066": {
+   "src/engine/engine.js#method:SQLiteContextEngine.packRankedDetailed@479": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.gatedRankedCandidates@503": 1
+  },
+  "q067": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.loadStats@39": 1
+  },
+  "q068": {
+   "src/engine/engine.js#method:SQLiteContextEngine.bestResidualCandidate@626": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.residualGain@803": 1
+  },
+  "q069": {
+   "src/engine/engine.js#method:SQLiteContextEngine.residualGain@803": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.cachedTermMatch@747": 1
+  },
+  "q070": {
+   "scripts/stage-benchmark.js#function:groupActivation@255": 1,
+   "scripts/stage-benchmark.js#function:rate@342": 1
+  },
+  "q071": {
+   "src/engine/engine.js#method:SQLiteContextEngine.temporalFactor@924": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.chunkTokenCounts@222": 1
+  },
+  "q072": {
+   "scripts/stress-test-compact.js#body:<module>@1": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.scoreChunkP4@266": 1
+  },
+  "q073": {
+   "src/engine/engine.js#method:SQLiteContextEngine.scoreChunkP4@266": 1,
+   "src/engine/tokenize.js#function:countTokens@45": 1
+  },
+  "q074": {
+   "test/stages.test.js#body:<module>@1": 1,
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1
+  },
+  "q075": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.packRankedResidual@601": 1
+  },
+  "q076": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.collectBridgeEvidence@900": 1
+  },
+  "q077": {
+   "scripts/stage-benchmark.js#body:<module>@407": 1,
+   "scripts/stage-benchmark.js#function:main@374": 1
+  },
+  "q078": {
+   "scripts/index-codebase.js#body:<module>@87": 1,
+   "scripts/index-codebase.js#function:chunkSourceFile@26": 1
+  },
+  "q079": {
+   "src/engine/engine.js#method:SQLiteContextEngine.contextBridges@983": 1,
+   "src/engine/tokenize.js#function:tokenize@12": 1
+  },
+  "q080": {
+   "scripts/stage-benchmark.js#function:main@374": 1,
+   "scripts/stage-benchmark.js#function:readQrels@52": 1
+  },
+  "q081": {
+   "src/engine/engine.js#method:SQLiteContextEngine.fuseRrf@428": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.exactQueryTokens@449": 1
+  },
+  "q082": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.termMatch@718": 1
+  },
+  "q083": {
+   "scripts/benchmark-react-corpus.js#function:buildCorpus@27": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.storeMemory@1032": 1
+  },
+  "q084": {
+   "src/engine/engine.js#method:SQLiteContextEngine.packRankedResidual@601": 1,
+   "src/engine/engine.js#function:sumWeights@1171": 1
+  },
+  "q085": {
+   "test/mcp.test.js#body:<module>@1": 1,
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1
+  },
+  "q086": {
+   "src/engine/engine.js#method:SQLiteContextEngine.packContext@339": 1,
+   "src/engine/engine.js#function:sumWeights@1171": 1
+  },
+  "q087": {
+   "scripts/benchmark-react-corpus.js#function:ragPack@94": 1,
+   "scripts/benchmark-react-corpus.js#function:computeCosineSimilarity@73": 1
+  },
+  "q088": {
+   "scripts/benchmark-bm25-vs-serp.js#body:<module>@254": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.fullPipeline@940": 1
+  },
+  "q089": {
+   "test/engine.test.js#body:<module>@1": 1,
+   "test/engine.test.js#function:verifyScore@41": 1
+  },
+  "q090": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.packRankedTruncate@533": 1
+  },
+  "q091": {
+   "src/mcp/server.js#function:startMcpServer@94": 1,
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1
+  },
+  "q092": {
+   "scripts/stage-benchmark.js#function:main@374": 1,
+   "scripts/stage-benchmark.js#function:exactIdentifierSuite@184": 1
+  },
+  "q093": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.buildExactIndex@169": 1
+  },
+  "q094": {
+   "src/engine/engine.js#method:SQLiteContextEngine.storeMemory@1032": 1,
+   "src/engine/tokenize.js#function:gramTokens@41": 1
+  },
+  "q095": {
+   "scripts/benchmark-react-corpus.js#body:<module>@129": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.packContext@339": 1
+  },
+  "q098": {
+   "src/engine/engine.js#class:SQLiteContextEngine@14": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.isRareIdentifier@773": 1
+  },
+  "q099": {
+   "scripts/benchmark-react-corpus.js#body:<module>@129": 1,
+   "src/engine/engine.js#method:SQLiteContextEngine.fullPipeline@940": 1
+  }
+ },
+ "provenance": {
+  "q000": {
+   "edge": "CALLS",
+   "caller": "test/stages.test.js#body:<module>@1",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.buildExactIndex@169",
+   "site": "test/stages.test.js:166"
+  },
+  "q001": {
+   "edge": "CALLS",
+   "caller": "test/stages.test.js#body:<module>@1",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.storeMemory@1032",
+   "site": "test/stages.test.js:254"
+  },
+  "q002": {
+   "edge": "CALLS",
+   "caller": "scripts/benchmark-bm25-vs-serp.js#body:<module>@254",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.scoreChunkP4@266",
+   "site": "scripts/benchmark-bm25-vs-serp.js:348"
+  },
+  "q003": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.termPotential@794",
+   "site": "src/engine/engine.js:808"
+  },
+  "q004": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.isExactChunkMatch@457",
+   "site": "src/engine/engine.js:444"
+  },
+  "q005": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/tokenize.js#function:tokenize@12",
+   "site": "src/engine/engine.js:703"
+  },
+  "q006": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.addTrigramFallbackCandidates@783",
+   "site": "src/engine/engine.js:690"
+  },
+  "q007": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.fullPipeline@940",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.contextBridges@983",
+   "site": "src/engine/engine.js:966"
+  },
+  "q008": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/tokenize.js#function:countTokens@45",
+   "site": "src/engine/engine.js:703"
+  },
+  "q009": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.bestContextCandidate@823",
+   "callee": "src/engine/engine.js#function:sumWeights@1171",
+   "site": "src/engine/engine.js:824"
+  },
+  "q010": {
+   "edge": "CALLS",
+   "caller": "test/stages.test.js#body:<module>@1",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.retrieveRanked@467",
+   "site": "test/stages.test.js:218"
+  },
+  "q011": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.scoreChunkP4@266",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.vocabStats@138",
+   "site": "src/engine/engine.js:303"
+  },
+  "q012": {
+   "edge": "CALLS",
+   "caller": "test/mcp.test.js#body:<module>@1",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.storeMemory@1032",
+   "site": "test/mcp.test.js:21"
+  },
+  "q013": {
+   "edge": "CALLS",
+   "caller": "scripts/demonstrative-react-codebase.js#body:<module>@19",
+   "callee": "scripts/demonstrative-react-codebase.js#function:walkRepo@11",
+   "site": "scripts/demonstrative-react-codebase.js:26"
+  },
+  "q014": {
+   "edge": "CALLS",
+   "caller": "scripts/benchmark-react-corpus.js#function:buildCorpus@27",
+   "callee": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "site": "scripts/benchmark-react-corpus.js:29"
+  },
+  "q015": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.scoreChunkP4@266",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.informationWeight@711",
+   "site": "src/engine/engine.js:297"
+  },
+  "q016": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.rankWordBm25@395",
+   "callee": "src/engine/tokenize.js#function:isSubstantiveToken@54",
+   "site": "src/engine/engine.js:400"
+  },
+  "q018": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.identifierHasExactMatch@424",
+   "site": "src/engine/engine.js:421"
+  },
+  "q019": {
+   "edge": "CALLS",
+   "caller": "scripts/benchmark-bm25-vs-serp.js#function:buildDb@97",
+   "callee": "scripts/benchmark-bm25-vs-serp.js#function:chunkFile@44",
+   "site": "scripts/benchmark-bm25-vs-serp.js:116"
+  },
+  "q020": {
+   "edge": "CALLS",
+   "caller": "scripts/stage-benchmark.js#function:main@374",
+   "callee": "scripts/stage-benchmark.js#function:readJsonl@48",
+   "site": "scripts/stage-benchmark.js:384"
+  },
+  "q021": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.packRankedDetailed@479",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.runRankedPacker@525",
+   "site": "src/engine/engine.js:485"
+  },
+  "q022": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.packRanked@475",
+   "site": "src/engine/engine.js:500"
+  },
+  "q023": {
+   "edge": "CALLS",
+   "caller": "test/engine.test.js#body:<module>@46",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.fullPipeline@940",
+   "site": "test/engine.test.js:50"
+  },
+  "q024": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.coverQueryWords@591",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.chunkTokenCounts@222",
+   "site": "src/engine/engine.js:592"
+  },
+  "q025": {
+   "edge": "CALLS",
+   "caller": "test/engine.test.js#function:fixtureEngine@24",
+   "callee": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "site": "test/engine.test.js:25"
+  },
+  "q026": {
+   "edge": "CALLS",
+   "caller": "scripts/benchmark-serp-vs-rag.js#function:buildCorpus@116",
+   "callee": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "site": "scripts/benchmark-serp-vs-rag.js:146"
+  },
+  "q027": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.packRankedDetailed@479",
+   "site": "src/engine/engine.js:476"
+  },
+  "q028": {
+   "edge": "CALLS",
+   "caller": "scripts/benchmark-react-corpus.js#body:<module>@129",
+   "callee": "scripts/benchmark-react-corpus.js#function:ragPack@94",
+   "site": "scripts/benchmark-react-corpus.js:162"
+  },
+  "q029": {
+   "edge": "CALLS",
+   "caller": "scripts/stage-benchmark.js#function:main@374",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.buildGramIndex@147",
+   "site": "scripts/stage-benchmark.js:379"
+  },
+  "q030": {
+   "edge": "CALLS",
+   "caller": "scripts/benchmark-serp-vs-rag.js#function:buildCorpus@116",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.storeMemory@1032",
+   "site": "scripts/benchmark-serp-vs-rag.js:183"
+  },
+  "q031": {
+   "edge": "CALLS",
+   "caller": "scripts/stage-benchmark.js#function:selectionStats@156",
+   "callee": "scripts/stage-benchmark.js#function:collectCoveredTokens@174",
+   "site": "scripts/stage-benchmark.js:168"
+  },
+  "q032": {
+   "edge": "CALLS",
+   "caller": "scripts/index-codebase.js#body:<module>@87",
+   "callee": "scripts/index-codebase.js#function:walkRepo@70",
+   "site": "scripts/index-codebase.js:94"
+  },
+  "q033": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.rankWordBm25@395",
+   "callee": "src/engine/tokenize.js#function:tokenize@12",
+   "site": "src/engine/engine.js:399"
+  },
+  "q034": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.parentDocument@665",
+   "site": "src/engine/engine.js:383"
+  },
+  "q035": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.ensureSchema@24",
+   "site": "src/engine/engine.js:20"
+  },
+  "q036": {
+   "edge": "CALLS",
+   "caller": "scripts/stress-test-compact.js#body:<module>@1",
+   "callee": "src/engine/tokenize.js#function:tokenize@12",
+   "site": "scripts/stress-test-compact.js:2"
+  },
+  "q037": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#function:maxTokenSimilarity@1200",
+   "callee": "src/engine/engine.js#function:trigramJaccard@1211",
+   "site": "src/engine/engine.js:1204"
+  },
+  "q038": {
+   "edge": "CALLS",
+   "caller": "scripts/benchmark-react-corpus.js#body:<module>@129",
+   "callee": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "site": "scripts/benchmark-react-corpus.js:139"
+  },
+  "q039": {
+   "edge": "CALLS",
+   "caller": "scripts/benchmark-react-corpus.js#function:buildCorpus@27",
+   "callee": "scripts/benchmark-react-corpus.js#function:walkRepo@17",
+   "site": "scripts/benchmark-react-corpus.js:30"
+  },
+  "q040": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.gatedRankedCandidates@503",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.queryWeights@701",
+   "site": "src/engine/engine.js:504"
+  },
+  "q041": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.collectCoveredWords@1002",
+   "site": "src/engine/engine.js:989"
+  },
+  "q042": {
+   "edge": "CALLS",
+   "caller": "test/engine.test.js#body:<module>@46",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.scoreChunkP4@266",
+   "site": "test/engine.test.js:85"
+  },
+  "q043": {
+   "edge": "CALLS",
+   "caller": "scripts/benchmark-bm25-vs-serp.js#body:<module>@254",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.storeMemory@1032",
+   "site": "scripts/benchmark-bm25-vs-serp.js:342"
+  },
+  "q044": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/engine.js#function:sumWeights@1171",
+   "site": "src/engine/engine.js:370"
+  },
+  "q045": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.contextMarginalGain@844",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.residualGain@803",
+   "site": "src/engine/engine.js:846"
+  },
+  "q046": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.packContext@339",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.queryWeights@701",
+   "site": "src/engine/engine.js:342"
+  },
+  "q047": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.packContext@339",
+   "site": "src/engine/engine.js:968"
+  },
+  "q048": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.packRankedGreedy@546",
+   "site": "src/engine/engine.js:526"
+  },
+  "q049": {
+   "edge": "CALLS",
+   "caller": "test/stages.test.js#body:<module>@1",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.fuseRrf@428",
+   "site": "test/stages.test.js:241"
+  },
+  "q050": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.packRankedDetailed@479",
+   "callee": "src/engine/engine.js#function:rankedPackingOptions@1112",
+   "site": "src/engine/engine.js:480"
+  },
+  "q051": {
+   "edge": "CALLS",
+   "caller": "scripts/stress-test-compact.js#body:<module>@1",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.packContext@339",
+   "site": "scripts/stress-test-compact.js:2"
+  },
+  "q052": {
+   "edge": "CALLS",
+   "caller": "test/engine.test.js#body:<module>@46",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.storeMemory@1032",
+   "site": "test/engine.test.js:150"
+  },
+  "q053": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.informationWeight@711",
+   "site": "src/engine/engine.js:705"
+  },
+  "q054": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#function:trigramJaccard@1211",
+   "callee": "src/engine/engine.js#function:trigrams@1223",
+   "site": "src/engine/engine.js:1212"
+  },
+  "q055": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.termMatch@718",
+   "callee": "src/engine/engine.js#function:trigramJaccard@1211",
+   "site": "src/engine/engine.js:734"
+  },
+  "q056": {
+   "edge": "CALLS",
+   "caller": "scripts/benchmark-bm25-vs-serp.js#body:<module>@254",
+   "callee": "scripts/benchmark-bm25-vs-serp.js#function:makeGroundTruth@185",
+   "site": "scripts/benchmark-bm25-vs-serp.js:269"
+  },
+  "q057": {
+   "edge": "CALLS",
+   "caller": "scripts/benchmark-serp-vs-rag.js#function:flush@158",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.storeMemory@1032",
+   "site": "scripts/benchmark-serp-vs-rag.js:163"
+  },
+  "q058": {
+   "edge": "CALLS",
+   "caller": "scripts/demonstrative-react-codebase.js#body:<module>@50",
+   "callee": "scripts/demonstrative-react-codebase.js#function:fmtContent@44",
+   "site": "scripts/demonstrative-react-codebase.js:74"
+  },
+  "q059": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.contextCandidates@669",
+   "callee": "src/engine/tokenize.js#function:isSubstantiveToken@54",
+   "site": "src/engine/engine.js:672"
+  },
+  "q060": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.cachedTermMatch@747",
+   "site": "src/engine/engine.js:585"
+  },
+  "q061": {
+   "edge": "CALLS",
+   "caller": "scripts/stage-benchmark.js#function:main@374",
+   "callee": "scripts/stage-benchmark.js#function:printBudget@356",
+   "site": "scripts/stage-benchmark.js:392"
+  },
+  "q062": {
+   "edge": "CALLS",
+   "caller": "scripts/stage-benchmark.js#function:exactIdentifierSuite@184",
+   "callee": "scripts/stage-benchmark.js#function:rate@342",
+   "site": "scripts/stage-benchmark.js:225"
+  },
+  "q063": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.contextBridges@983",
+   "callee": "src/engine/tokenize.js#function:countTokens@45",
+   "site": "src/engine/engine.js:984"
+  },
+  "q064": {
+   "edge": "CALLS",
+   "caller": "scripts/demonstrative-react-codebase.js#body:<module>@50",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.packContext@339",
+   "site": "scripts/demonstrative-react-codebase.js:101"
+  },
+  "q065": {
+   "edge": "CALLS",
+   "caller": "scripts/stage-benchmark.js#function:negativeSuite@237",
+   "callee": "scripts/stage-benchmark.js#function:groupActivation@255",
+   "site": "scripts/stage-benchmark.js:249"
+  },
+  "q066": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.packRankedDetailed@479",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.gatedRankedCandidates@503",
+   "site": "src/engine/engine.js:484"
+  },
+  "q067": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.loadStats@39",
+   "site": "src/engine/engine.js:21"
+  },
+  "q068": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.bestResidualCandidate@626",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.residualGain@803",
+   "site": "src/engine/engine.js:632"
+  },
+  "q069": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.residualGain@803",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.cachedTermMatch@747",
+   "site": "src/engine/engine.js:807"
+  },
+  "q070": {
+   "edge": "CALLS",
+   "caller": "scripts/stage-benchmark.js#function:groupActivation@255",
+   "callee": "scripts/stage-benchmark.js#function:rate@342",
+   "site": "scripts/stage-benchmark.js:266"
+  },
+  "q071": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.temporalFactor@924",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.chunkTokenCounts@222",
+   "site": "src/engine/engine.js:928"
+  },
+  "q072": {
+   "edge": "CALLS",
+   "caller": "scripts/stress-test-compact.js#body:<module>@1",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.scoreChunkP4@266",
+   "site": "scripts/stress-test-compact.js:2"
+  },
+  "q073": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.scoreChunkP4@266",
+   "callee": "src/engine/tokenize.js#function:countTokens@45",
+   "site": "src/engine/engine.js:287"
+  },
+  "q074": {
+   "edge": "CALLS",
+   "caller": "test/stages.test.js#body:<module>@1",
+   "callee": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "site": "test/stages.test.js:250"
+  },
+  "q075": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.packRankedResidual@601",
+   "site": "src/engine/engine.js:527"
+  },
+  "q076": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.collectBridgeEvidence@900",
+   "site": "src/engine/engine.js:886"
+  },
+  "q077": {
+   "edge": "CALLS",
+   "caller": "scripts/stage-benchmark.js#body:<module>@407",
+   "callee": "scripts/stage-benchmark.js#function:main@374",
+   "site": "scripts/stage-benchmark.js:407"
+  },
+  "q078": {
+   "edge": "CALLS",
+   "caller": "scripts/index-codebase.js#body:<module>@87",
+   "callee": "scripts/index-codebase.js#function:chunkSourceFile@26",
+   "site": "scripts/index-codebase.js:98"
+  },
+  "q079": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.contextBridges@983",
+   "callee": "src/engine/tokenize.js#function:tokenize@12",
+   "site": "src/engine/engine.js:984"
+  },
+  "q080": {
+   "edge": "CALLS",
+   "caller": "scripts/stage-benchmark.js#function:main@374",
+   "callee": "scripts/stage-benchmark.js#function:readQrels@52",
+   "site": "scripts/stage-benchmark.js:385"
+  },
+  "q081": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.fuseRrf@428",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.exactQueryTokens@449",
+   "site": "src/engine/engine.js:430"
+  },
+  "q082": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.termMatch@718",
+   "site": "src/engine/engine.js:748"
+  },
+  "q083": {
+   "edge": "CALLS",
+   "caller": "scripts/benchmark-react-corpus.js#function:buildCorpus@27",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.storeMemory@1032",
+   "site": "scripts/benchmark-react-corpus.js:40"
+  },
+  "q084": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.packRankedResidual@601",
+   "callee": "src/engine/engine.js#function:sumWeights@1171",
+   "site": "src/engine/engine.js:603"
+  },
+  "q085": {
+   "edge": "CALLS",
+   "caller": "test/mcp.test.js#body:<module>@1",
+   "callee": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "site": "test/mcp.test.js:19"
+  },
+  "q086": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.packContext@339",
+   "callee": "src/engine/engine.js#function:sumWeights@1171",
+   "site": "src/engine/engine.js:365"
+  },
+  "q087": {
+   "edge": "CALLS",
+   "caller": "scripts/benchmark-react-corpus.js#function:ragPack@94",
+   "callee": "scripts/benchmark-react-corpus.js#function:computeCosineSimilarity@73",
+   "site": "scripts/benchmark-react-corpus.js:102"
+  },
+  "q088": {
+   "edge": "CALLS",
+   "caller": "scripts/benchmark-bm25-vs-serp.js#body:<module>@254",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.fullPipeline@940",
+   "site": "scripts/benchmark-bm25-vs-serp.js:288"
+  },
+  "q089": {
+   "edge": "CALLS",
+   "caller": "test/engine.test.js#body:<module>@1",
+   "callee": "test/engine.test.js#function:verifyScore@41",
+   "site": "test/engine.test.js:18"
+  },
+  "q090": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.packRankedTruncate@533",
+   "site": "src/engine/engine.js:530"
+  },
+  "q091": {
+   "edge": "CALLS",
+   "caller": "src/mcp/server.js#function:startMcpServer@94",
+   "callee": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "site": "src/mcp/server.js:95"
+  },
+  "q092": {
+   "edge": "CALLS",
+   "caller": "scripts/stage-benchmark.js#function:main@374",
+   "callee": "scripts/stage-benchmark.js#function:exactIdentifierSuite@184",
+   "site": "scripts/stage-benchmark.js:395"
+  },
+  "q093": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.buildExactIndex@169",
+   "site": "src/engine/engine.js:184"
+  },
+  "q094": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#method:SQLiteContextEngine.storeMemory@1032",
+   "callee": "src/engine/tokenize.js#function:gramTokens@41",
+   "site": "src/engine/engine.js:1055"
+  },
+  "q095": {
+   "edge": "CALLS",
+   "caller": "scripts/benchmark-react-corpus.js#body:<module>@129",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.packContext@339",
+   "site": "scripts/benchmark-react-corpus.js:166"
+  },
+  "q098": {
+   "edge": "CALLS",
+   "caller": "src/engine/engine.js#class:SQLiteContextEngine@14",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.isRareIdentifier@773",
+   "site": "src/engine/engine.js:767"
+  },
+  "q099": {
+   "edge": "CALLS",
+   "caller": "scripts/benchmark-react-corpus.js#body:<module>@129",
+   "callee": "src/engine/engine.js#method:SQLiteContextEngine.fullPipeline@940",
+   "site": "scripts/benchmark-react-corpus.js:170"
+  }
+ }
+}

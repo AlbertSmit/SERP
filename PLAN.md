@@ -148,4 +148,4 @@ something BM25 structurally cannot: retrieve both supporting facts.
 | Does code-graph EBR transfer to SERP's domain? | synthetic: +0.320 both@10 upper bound; +0.20 on the clean two-hop slice; +0.10 at 20% edge loss | keep as a relational channel, not a global ranker |
 | Does EBR hurt single-hop retrieval? | not yet tested | next gate: SciFact/Touche regression + router |
 | Is EBR field-novel? | no; entity-based multi-hop IR is prior art | claim a measured project result, not novelty |
-| Is TS 7's AST graph worth it? | running | compare edge completeness/precision against regex |
+| Is TS 7's AST graph worth it? | yes for correctness, not retrieval: TS7 20/20 call precision vs regex 18/20; fused both@10 0.606 vs 0.608 | use TS7 AST behind `unstable/*` with a version pin; checker opt-in |

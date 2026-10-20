@@ -1,0 +1,2987 @@
+{
+ "meta": {
+  "experiment": "TS7 native-compiler code graph vs regex code graph",
+  "repo": "/Users/asmit/Personal/algo-serp-stages",
+  "corpus": {
+   "files": 14,
+   "lines": 3656,
+   "language": "JavaScript (JSDoc types), ESM"
+  },
+  "pinned": {
+   "typescript": "7.0.2",
+   "node": "v26.8.2",
+   "snowballstemmer": "porter"
+  },
+  "reproduce": [
+   "cd experiments/stages/ts7-graph",
+   "node graph_ts7.mjs && node graph_regex.mjs",
+   "node bench.mjs",
+   "node compare.mjs",
+   "/Users/asmit/Personal/algo-serp-stages/.venv/bin/python make_queries.py",
+   "/Users/asmit/Personal/algo-serp-stages/.venv/bin/python run_retrieval.py",
+   "/Users/asmit/Personal/algo-serp-stages/.venv/bin/python run_shared_queries.py",
+   "/Users/asmit/Personal/algo-serp-stages/.venv/bin/python finalize.py"
+  ]
+ },
+ "api": {
+  "package": "typescript",
+  "version": "7.0.2",
+  "why_this_package": "The published typescript@7.0.2 ships the same dist/api/* and dist/ast/* tree as @typescript/native-preview, and exports the same './unstable/sync' and './unstable/ast' subpaths. So the probe did not need the dev preview package: the stable tarball has the API, behind unstable/* exports.",
+  "entry_points": [
+   "typescript/unstable/sync -> API, Snapshot, Project, Program, Checker, Symbol, NodeHandle, SymbolFlags",
+   "typescript/unstable/ast  -> SyntaxKind, is* type guards, node.forEachChild, createScanner"
+  ],
+  "usable": true,
+  "stable_enough_for_production": false,
+  "verdict": "Usable today for a build-time code graph. It is one child-process round trip per checker query with no batch API, the whole surface is namespaced unstable/*, and several node kinds differ from what a JS dev expects (constructor, new). Fine as a batch extractor; not fine as a per-keystroke service.",
+  "worked": [
+   "new API({collectTiming:true}) + updateSnapshot({openProjects:[tsconfig]}) loads a real tsconfig, honouring allowJs.",
+   "project.rootFiles gives the tsconfig include set (14 files); program.getSourceFileNames() also lists 193 lib/node_modules files.",
+   "program.getSourceFile(path) returns a full SourceFile with .text, .statements, getLineStarts(), getLineAndCharacterOfPosition().",
+   "node.forEachChild(cb) walks the tree; SyntaxKind + is.FunctionDeclaration/isCallExpression/... are exported.",
+   "checker.getSymbolAtLocation(node) resolves call targets, including cross-file; sym.valueDeclaration / sym.declarations give NodeHandles.",
+   "NodeHandle.resolve(project) turns a handle back into a node with .path and .getStart(), which is enough to map back to a chunk.",
+   "api.getTimingInfo().totals reports requestCount, roundTripMs, serverTimeMs, nodesMaterialized, bytesReceived."
+  ],
+  "friction": [
+   "No batch checker API: 2,031 getSymbolAtLocation calls cost 2,245 IPC requests and ~220 ms of round trips. This dominates the build.",
+   "symbol.declarations are NodeHandles, not nodes; each one needs .resolve(project), another round trip.",
+   "symbol.flags & SymbolFlags.Alias is required before the target resolves across an import; getAliasedSymbol is a second round trip.",
+   "Class constructors are ConstructorDeclaration, not MethodDeclaration: isMethodDeclaration silently skips them (one chunk was missing until the regex diff caught it).",
+   "`new X()` is NewExpression, not CallExpression: a CALLS walker sees nothing unless it adds that kind explicitly.",
+   "CallExpression.getStart() is the start of the whole chain, so `a\\n  .b()\\n  .c()` reports the line of `a`. Site lines need the callee name token.",
+   "include globs are resolved relative to the tsconfig's own directory; a wrong ../ depth gives a silently empty project, not an error.",
+   "updateSnapshot({openProject}) is deprecated in favour of openProjects; the deprecated shim still works.",
+   "There is no forEachChild free function; traversal is a method on each node. Minor, but differs from the TypeScript 5/6 API.",
+   "The API spawns the native tsgo binary: ~50 ms per API instance, and api.close() must be called or the child stays alive."
+  ]
+ },
+ "graph": {
+  "ts7": {
+   "chunks": 165,
+   "symbols": 165,
+   "chunks_by_kind": {
+    "body": 25,
+    "function": 78,
+    "class": 1,
+    "method": 61
+   },
+   "relations": {
+    "DEFINES": 165,
+    "CALLS": 2099,
+    "IMPORTS": 63,
+    "CONTAINS": 165
+   },
+   "calls_resolved_to_declaration": 461,
+   "calls_symbol_only": 1003,
+   "calls_unresolved": 635,
+   "call_sites": 2099,
+   "nodes_walked": 26140,
+   "checker_calls": 2213,
+   "checker_failures": 0,
+   "exported_chunks": 9,
+   "imports_with_named_bindings": 63
+  },
+  "regex": {
+   "chunks": 204,
+   "symbols": 204,
+   "chunks_by_kind": {
+    "body": 14,
+    "function": 78,
+    "class": 1,
+    "method": 111
+   },
+   "relations": {
+    "DEFINES": 204,
+    "CALLS": 2353,
+    "IMPORTS": 60,
+    "CONTAINS": 204
+   },
+   "calls_resolved_to_declaration": 0
+  }
+ },
+ "timing": {
+  "note": "Process wall time includes ~65 ms of node startup for both extractors, so compare the in-process build times; process time is what a CLI pays.",
+  "process_wall_median_ms": {
+   "regex": 100.6,
+   "ts7_ast_only": 219.1,
+   "ts7_with_checker": 414.6
+  },
+  "process_wall_runs_ms": {
+   "regex": [
+    86.4,
+    106.5,
+    89.9,
+    96.5,
+    100.6,
+    109.3,
+    107.1
+   ],
+   "ts7_ast_only": [
+    322.3,
+    205.7,
+    219.1,
+    212.3,
+    213.3,
+    230.6,
+    229
+   ],
+   "ts7_with_checker": [
+    404.7,
+    402.2,
+    431,
+    416.7,
+    414.6,
+    402.4,
+    445.1
+   ]
+  },
+  "in_process_build_ms": {
+   "regex": 22.4,
+   "ts7_ast_only": 108,
+   "ts7_with_checker": 342.4
+  },
+  "ts7_breakdown_ast_only": {
+   "spawn_and_snapshot_ms": 66.4,
+   "fetch_and_parse_ms": 6.6,
+   "walk_and_resolve_ms": 34.8,
+   "resolve_ms": 0.6,
+   "total_build_ms": 108
+  },
+  "ts7_breakdown_with_checker": {
+   "spawn_and_snapshot_ms": 76.9,
+   "fetch_and_parse_ms": 7,
+   "walk_and_resolve_ms": 258.2,
+   "resolve_ms": 224.2,
+   "total_build_ms": 342.4
+  },
+  "ts7_transport": {
+   "enabled": true,
+   "requests": 2245,
+   "round_trip_ms": 270.6,
+   "server_time_ms": 196.1,
+   "transport_overhead_ms": 74.6,
+   "nodes_materialized": 30647,
+   "bytes_received": 12070212
+  },
+  "ts7_transport_ast_only": {
+   "enabled": true,
+   "requests": 16,
+   "round_trip_ms": 64.2,
+   "server_time_ms": 52.6,
+   "transport_overhead_ms": 11.7,
+   "nodes_materialized": 30523,
+   "bytes_received": 1134175
+  }
+ },
+ "comparison": {
+  "chunks": {
+   "counts": {
+    "ts7": 165,
+    "regex": 204,
+    "matched_by_file_and_name": 154,
+    "ts7_only": 0,
+    "regex_only": 3
+   },
+   "by_kind": {
+    "ts7": {
+     "body": 25,
+     "function": 78,
+     "class": 1,
+     "method": 61
+    },
+    "regex": {
+     "body": 14,
+     "function": 78,
+     "class": 1,
+     "method": 111
+    }
+   },
+   "range_accuracy_on_matched": {
+    "chunks_considered": 140,
+    "exact_start_and_end": 120,
+    "start_line_match": 140,
+    "regex_ends_early": 19,
+    "mean_line_iou": 0.871
+   },
+   "kind_mismatch": [],
+   "kind_mismatch_count": 0,
+   "ts7_only_sample": [],
+   "regex_only_sample": [
+    "src/engine/engine.js|SQLiteContextEngine.if",
+    "src/engine/engine.js|SQLiteContextEngine.for",
+    "src/engine/engine.js|SQLiteContextEngine.while"
+   ]
+  },
+  "calls": {
+   "edges": {
+    "ts7": 2099,
+    "regex": 2353
+   },
+   "distinct_callee_names": {
+    "ts7": 233,
+    "regex": 297
+   },
+   "qualified_callee_names": {
+    "ts7_with_receiver": 1712,
+    "regex_with_receiver": 0
+   },
+   "caller_callee_pairs": {
+    "ts7": 727,
+    "regex": 962,
+    "shared": 570
+   },
+   "sites_by_file_line_callee": {
+    "ts7": 1969,
+    "regex": 2218,
+    "shared": 1964,
+    "ts7_only": 5,
+    "regex_only": 254
+   },
+   "resolution": {
+    "ts7_to_declaration": 461,
+    "ts7_symbol_only": 1003,
+    "ts7_unresolved": 635,
+    "regex": "none (syntactic only)"
+   },
+   "regex_only_sample": [
+    "scripts/benchmark-bm25-vs-serp.js|6|bm25",
+    "scripts/benchmark-bm25-vs-serp.js|7|packContext",
+    "scripts/benchmark-bm25-vs-serp.js|8|fullPipeline",
+    "scripts/benchmark-bm25-vs-serp.js|10|chunks",
+    "scripts/benchmark-bm25-vs-serp.js|15|questions",
+    "scripts/benchmark-bm25-vs-serp.js|16|ratio",
+    "scripts/benchmark-bm25-vs-serp.js|37|dualTokenize",
+    "scripts/benchmark-bm25-vs-serp.js|44|chunkFile",
+    "scripts/benchmark-bm25-vs-serp.js|81|walkRepo",
+    "scripts/benchmark-bm25-vs-serp.js|97|buildDb",
+    "scripts/benchmark-bm25-vs-serp.js|104|fts5",
+    "scripts/benchmark-bm25-vs-serp.js|105|fts5vocab",
+    "scripts/benchmark-bm25-vs-serp.js|106|chunks_meta",
+    "scripts/benchmark-bm25-vs-serp.js|111|chunks_fts",
+    "scripts/benchmark-bm25-vs-serp.js|111|VALUES",
+    "scripts/benchmark-bm25-vs-serp.js|112|chunks_meta",
+    "scripts/benchmark-bm25-vs-serp.js|112|VALUES",
+    "scripts/benchmark-bm25-vs-serp.js|159|bm25Packer",
+    "scripts/benchmark-bm25-vs-serp.js|164|bm25",
+    "scripts/benchmark-bm25-vs-serp.js|184|tokens"
+   ],
+   "ts7_only_sample": [
+    "src/engine/engine.js|213|delete",
+    "src/engine/engine.js|214|delete",
+    "src/engine/engine.js|215|delete",
+    "src/engine/engine.js|1077|delete",
+    "test/engine.test.js|34|engine"
+   ],
+   "ts7_qualified_sites": 2026,
+   "regex_only_classification": {
+    "comment": 46,
+    "string_literal": 68,
+    "declaration": 137,
+    "non_call_expression": 1,
+    "other": 2
+   },
+   "ts7_only_classification": {
+    "comment": 0,
+    "string_literal": 0,
+    "declaration": 0,
+    "non_call_expression": 1,
+    "other": 4
+   }
+  },
+  "imports": {
+   "edges": {
+    "ts7": 63,
+    "regex": 60
+   },
+   "distinct_file_module": {
+    "ts7": 63,
+    "regex": 60,
+    "shared": 60
+   },
+   "ts7_only": [
+    "scripts/stress-test-compact.js|../src/engine/engine.js",
+    "scripts/stress-test-compact.js|node:path",
+    "scripts/stress-test-compact.js|node:url"
+   ],
+   "regex_only": [],
+   "named_binding_exact": {
+    "ts7": 63,
+    "regex": 60
+   }
+  }
+ },
+ "precision_sample": {
+  "method": "Deterministic stride sampling over sorted edges (every n/20th). Verdicts were assigned by reading each source line.",
+  "ts7": {
+   "calls_correct": 20,
+   "calls_total": 20,
+   "calls": [
+    {
+     "file": "scripts/benchmark-bm25-vs-serp.js",
+     "line": 145,
+     "callee": "dualTokenize",
+     "source": "const toksStr = dualTokenize(content);",
+     "verdict": "correct"
+    },
+    {
+     "file": "scripts/benchmark-bm25-vs-serp.js",
+     "line": 347,
+     "callee": "console.log",
+     "source": "console.log(`  Repetitive spam (L/U=${spamRep.l_over_u.toFixed(2)}): ${engine.scoreChunkP4(\"spam_rep_12x\", \"crispr cas9 repair\").toFixed(2)}`);",
+     "verdict": "correct"
+    },
+    {
+     "file": "scripts/benchmark-react-corpus.js",
+     "line": 97,
+     "callee": "<CallExpression>.map",
+     "source": "const candidates = db.prepare(\"SELECT chunk_id FROM chunks_fts WHERE chunks_fts MATCH ? ORDER BY rank LIMIT 200\").all(ftsQuery).map(r => r.chunk_id);",
+     "verdict": "correct (callee is a call result, so the name is unqualified: <CallExpression>.map)"
+    },
+    {
+     "file": "scripts/benchmark-react-corpus.js",
+     "line": 216,
+     "callee": "results.reduce",
+     "source": "const avgBS = results.reduce((s, r) => s + r.bSpam, 0) / results.length;",
+     "verdict": "correct"
+    },
+    {
+     "file": "scripts/benchmark-serp-vs-rag.js",
+     "line": 259,
+     "callee": "<ParenthesizedExpression>.toLowerCase",
+     "source": "const ftsQuery = (query || \"none\").toLowerCase().match(/[a-z0-9_]+/g)?.map(t => `\"${t}\"`).join(\" OR \") || \"none\";",
+     "verdict": "correct (callee is a parenthesised expression)"
+    },
+    {
+     "file": "scripts/benchmark-serp-vs-rag.js",
+     "line": 410,
+     "callee": "Number",
+     "source": "const avgB = results.reduce((s, r) => s + Number(r.bm25Recall), 0) / results.length;",
+     "verdict": "correct"
+    },
+    {
+     "file": "scripts/demonstrative-react-codebase.js",
+     "line": 88,
+     "callee": "engine.scoreChunkP4",
+     "source": "const cleanScore = engine.scoreChunkP4(\"demo_clean_0\", \"useValidatedQuery queryClient queryFn cacheTime staleTime\");",
+     "verdict": "correct"
+    },
+    {
+     "file": "scripts/stage-benchmark.js",
+     "line": 54,
+     "callee": "fs.readFileSync",
+     "source": "for (const line of fs.readFileSync(file, 'utf8').split('\\n')) {",
+     "verdict": "correct"
+    },
+    {
+     "file": "scripts/stage-benchmark.js",
+     "line": 291,
+     "callee": "byPrefix.set",
+     "source": "if (!byPrefix.has(prefix)) byPrefix.set(prefix, []);",
+     "verdict": "correct"
+    },
+    {
+     "file": "scripts/stress-test-compact.js",
+     "line": 2,
+     "callee": "lats.reduce",
+     "source": "import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';import {SQLiteContextEngine} from '../src/engine/engine.js';const __dirname=path.resolve(path.dirname(fileURLToPath(import.meta.url)), \"..\");const SRC=path.join(__dirname,'mcp_memory.sqlite');const TMP=path.join(__dirname,'stress_temp.sqlite');fs.copyFileSync(SRC,TMP);console.log('=== RED-TEAM & STRESS-TEST SUITE ===');const m0=process.memoryUsage().heapUsed,t0=performance.now();const eng=new SQLiteContextEngine(TMP);const boot=(performance.now()-t0).toFixed(1),ram=((process.memoryUsage().heapUsed-m0)/1048576).toFixed(1);console.log('\\n[TEST 1: COLD-START & RAM]\\n  Boot:',boot,'ms | Heap:',ram,'MB | 1M rows proj:',((ram/eng.M_ref)*1e6).toFixed(0),'MB');const qs=['ADAR1 binds to Dicer to cleave pre-miRNA. AIRE is expressed in some skin tumors.','myeloid-derived suppressor cells MDSC expansion S100A9 CD33','CRISPR Cas9 genome editing electroporation rat zygotes','chronic lymphocytic leukemia subclonal driver mutations SF3B1 TP53'];const lats=[];for(let i=0;i<200;i++){const s=performance.now();eng.packContext(qs[i%4],{budget:200});lats.push(performance.now()-s);}lats.sort((a,b)=>a-b);console.log('\\n[TEST 2: 200-QUERY THROUGHPUT]\\n  P50:',lats[100].toFixed(2),'ms | P95:',lats[190].toFixed(2),'ms | QPS:',(1000/(lats.reduce((a,b)=>a+b,0)/200)).toFixed(0));eng.storeMemory('CRISPR and Cas9 ribonucleoproteins enable precise homology-directed repair in human T cells.','t_doc','t_s0');const s1=eng.storeMemory(Array(15).fill('crispr cas9').join(' ')+' repair human cells','s1_doc','s1_s0');const junk='alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima mike november oscar papa quebec romeo sierra tango uniform victor whiskey xray yankee zulu amber bronze cobalt crimson emerald ivory jade onyx topaz';const s2=eng.storeMemory(Array(5).fill('crispr cas9').join(' ')+' '+junk,'s2_doc','s2_s0');console.log('\\n[TEST 3: SPAM EXPLOIT]\\n  Clean Fact Score:',eng.scoreChunkP4('t_s0','crispr cas9 repair').toFixed(3),'\\n  Naive Spam (L/U='+s1.l_over_u+'):',eng.scoreChunkP4('s1_s0','crispr cas9 repair').toFixed(3),'\\n  Word-Salad Spam (L/U='+s2.l_over_u+'):',eng.scoreChunkP4('s2_s0','crispr cas9 repair').toFixed(3));for(let i=0;i<105;i++)eng.storeMemory('quantumentanglement2026 superconductor decoherence run '+i,'d_'+i,'ds_'+i);eng.storeMemory('Critical threshold for raretargetbeta99 stability is 4.2 Kelvin.','pb','pb_s0');const trap=eng.packContext('quantumentanglement2026 superconductor decoherence raretargetbeta99',{budget:150});console.log('\\n[TEST 4: FTS5 LIMIT-100 STARVATION]\\n  Found Part-B behind 105 Part-A decoys?:',trap.includes('pb_s0'));eng.storeMemory('Patients exhibited acute myocardial infarction following coronary occlusion.','syn','syn_s0');console.log('\\n[TEST 5: SYNONYM WALL]\\n  Query \"heart attack\" found \"myocardial infarction\"?:',eng.packContext('heart attack blocked vessel',{budget:120}).includes('syn_s0'));console.log('\\n[TEST 6: CODE TOKENIZER]\\n  \"How to fix C++ segfault in .env for R?\" ->',JSON.stringify(tokenize('How to fix C++ segfault in .env for R?')));const c1=eng.storeMemory('ok sounds good thanks bro','c1','c1_s0',200);const c2=eng.storeMemory('Architectural Decision: Enforce mutual TLS authentication using rotating X509 certificates and validate JWT claims at ingress gateway.','c2','c2_s0',200);console.log('\\n[TEST 7: TEMPORAL SURPRISAL BIAS (Age=200d)]\\n  5-word chat tf:',eng.temporalFactor('c1_s0').toFixed(4),'(intr='+c1.intrinsic_surprisal+')\\n  18-word spec tf:',eng.temporalFactor('c2_s0').toFixed(4),'(intr='+c2.intrinsic_surprisal+')');fs.unlinkSync(TMP);",
+     "verdict": "correct (minified line, second statement)"
+    },
+    {
+     "file": "scripts/stress-test.js",
+     "line": 86,
+     "callee": "console.log",
+     "source": "console.log(`  Tokens: ${JSON.stringify(tokenize(codeQ))}`);",
+     "verdict": "correct"
+    },
+    {
+     "file": "src/engine/engine.js",
+     "line": 198,
+     "callee": "<CallExpression>.map",
+     "source": ".map(({ term, df }) => ({ term, df: Number(df) }));",
+     "verdict": "correct (chained off a call)"
+    },
+    {
+     "file": "src/engine/engine.js",
+     "line": 413,
+     "callee": "tokens.flatMap",
+     "source": "const grams = [...new Set(tokens.flatMap(wordGrams))];",
+     "verdict": "correct"
+    },
+    {
+     "file": "src/engine/engine.js",
+     "line": 681,
+     "callee": "<ArrayLiteralExpression>.sort",
+     "source": ".sort((a, b) => (this.N_i.get(a) || 1) - (this.N_i.get(b) || 1))",
+     "verdict": "correct (chained off an array literal)"
+    },
+    {
+     "file": "src/engine/engine.js",
+     "line": 895,
+     "callee": "bridgeCandidates.has",
+     "source": "if (qWords.has(w) || w.length < 2 || bridgeCandidates.has(w)) continue;",
+     "verdict": "correct"
+    },
+    {
+     "file": "src/engine/engine.js",
+     "line": 1180,
+     "callee": "Math.max",
+     "source": "const N = Math.min(Math.max(documentFrequency, 0), M);",
+     "verdict": "correct"
+    },
+    {
+     "file": "test/engine.test.js",
+     "line": 36,
+     "callee": "actual.map",
+     "source": "assert.deepEqual(actual.map(x => engine.docStats.get(x).access_count), entry.accesses);",
+     "verdict": "correct"
+    },
+    {
+     "file": "test/engine.test.js",
+     "line": 154,
+     "callee": "assert.equal",
+     "source": "assert.equal(engine.packContext('alpha', {",
+     "verdict": "correct"
+    },
+    {
+     "file": "test/stages.test.js",
+     "line": 72,
+     "callee": "fused.map",
+     "source": "assert.deepEqual(fused.map((x) => [x.chunk_id, x.exact]), [",
+     "verdict": "correct"
+    },
+    {
+     "file": "test/stages.test.js",
+     "line": 197,
+     "callee": "assert.equal",
+     "source": "assert.equal(engine.identifierHasExactMatch('figure_1'), false);",
+     "verdict": "correct"
+    }
+   ],
+   "imports_correct": 20,
+   "imports_total": 20,
+   "imports": [
+    {
+     "file": "scripts/benchmark-bm25-vs-serp.js",
+     "line": 23,
+     "module": "node:path",
+     "names": [
+      "path"
+     ],
+     "source": "import path from \"node:path\";"
+    },
+    {
+     "file": "scripts/benchmark-bm25-vs-serp.js",
+     "line": 26,
+     "module": "../src/engine/engine.js",
+     "names": [
+      "SQLiteContextEngine"
+     ],
+     "source": "import { SQLiteContextEngine } from \"../src/engine/engine.js\";"
+    },
+    {
+     "file": "scripts/benchmark-react-corpus.js",
+     "line": 8,
+     "module": "node:path",
+     "names": [
+      "path"
+     ],
+     "source": "import path from \"node:path\";"
+    },
+    {
+     "file": "scripts/benchmark-serp-vs-rag.js",
+     "line": 25,
+     "module": "node:fs",
+     "names": [
+      "fs"
+     ],
+     "source": "import fs from \"node:fs\";"
+    },
+    {
+     "file": "scripts/benchmark-serp-vs-rag.js",
+     "line": 28,
+     "module": "../src/engine/engine.js",
+     "names": [
+      "SQLiteContextEngine"
+     ],
+     "source": "import { SQLiteContextEngine } from \"../src/engine/engine.js\";"
+    },
+    {
+     "file": "scripts/demonstrative-react-codebase.js",
+     "line": 5,
+     "module": "node:path",
+     "names": [
+      "path"
+     ],
+     "source": "import path from \"node:path\";"
+    },
+    {
+     "file": "scripts/index-codebase.js",
+     "line": 11,
+     "module": "node:path",
+     "names": [
+      "path"
+     ],
+     "source": "import path from \"node:path\";"
+    },
+    {
+     "file": "scripts/stage-benchmark.js",
+     "line": 20,
+     "module": "node:path",
+     "names": [
+      "path"
+     ],
+     "source": "import path from 'node:path';"
+    },
+    {
+     "file": "scripts/stage-benchmark.js",
+     "line": 23,
+     "module": "../src/engine/tokenize.js",
+     "names": [
+      "tokenize"
+     ],
+     "source": "import { tokenize } from '../src/engine/tokenize.js';"
+    },
+    {
+     "file": "scripts/stress-test-compact.js",
+     "line": 2,
+     "module": "node:fs",
+     "names": [
+      "fs"
+     ],
+     "source": "import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';import {SQLiteContextEngine} from '../src/engine/engine.js';const __dirname=path.resolve(path.dirname(fileURLToPath(import.meta.url)), \"..\");const SRC=path.join(__dirname,'mcp_memory.sqlite');const TMP=path.join(__dirname,'stress_temp.sqlite');fs.copyFileSync(SRC,TMP);console.log('=== RED-TEAM & STRESS-TEST SUITE ===');const m0=process.memoryUsage().heapUsed,t0=performance.now();const eng=new SQLiteContextEngine(TMP);const boot=(performance.now()-t0).toFixed(1),ram=((process.memoryUsage().heapUsed-m0)/1048576).toFixed(1);console.log('\\n[TEST 1: COLD-START & RAM]\\n  Boot:',boot,'ms | Heap:',ram,'MB | 1M rows proj:',((ram/eng.M_ref)*1e6).toFixed(0),'MB');const qs=['ADAR1 binds to Dicer to cleave pre-miRNA. AIRE is expressed in some skin tumors.','myeloid-derived suppressor cells MDSC expansion S100A9 CD33','CRISPR Cas9 genome editing electroporation rat zygotes','chronic lymphocytic leukemia subclonal driver mutations SF3B1 TP53'];const lats=[];for(let i=0;i<200;i++){const s=performance.now();eng.packContext(qs[i%4],{budget:200});lats.push(performance.now()-s);}lats.sort((a,b)=>a-b);console.log('\\n[TEST 2: 200-QUERY THROUGHPUT]\\n  P50:',lats[100].toFixed(2),'ms | P95:',lats[190].toFixed(2),'ms | QPS:',(1000/(lats.reduce((a,b)=>a+b,0)/200)).toFixed(0));eng.storeMemory('CRISPR and Cas9 ribonucleoproteins enable precise homology-directed repair in human T cells.','t_doc','t_s0');const s1=eng.storeMemory(Array(15).fill('crispr cas9').join(' ')+' repair human cells','s1_doc','s1_s0');const junk='alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima mike november oscar papa quebec romeo sierra tango uniform victor whiskey xray yankee zulu amber bronze cobalt crimson emerald ivory jade onyx topaz';const s2=eng.storeMemory(Array(5).fill('crispr cas9').join(' ')+' '+junk,'s2_doc','s2_s0');console.log('\\n[TEST 3: SPAM EXPLOIT]\\n  Clean Fact Score:',eng.scoreChunkP4('t_s0','crispr cas9 repair').toFixed(3),'\\n  Naive Spam (L/U='+s1.l_over_u+'):',eng.scoreChunkP4('s1_s0','crispr cas9 repair').toFixed(3),'\\n  Word-Salad Spam (L/U='+s2.l_over_u+'):',eng.scoreChunkP4('s2_s0','crispr cas9 repair').toFixed(3));for(let i=0;i<105;i++)eng.storeMemory('quantumentanglement2026 superconductor decoherence run '+i,'d_'+i,'ds_'+i);eng.storeMemory('Critical threshold for raretargetbeta99 stability is 4.2 Kelvin.','pb','pb_s0');const trap=eng.packContext('quantumentanglement2026 superconductor decoherence raretargetbeta99',{budget:150});console.log('\\n[TEST 4: FTS5 LIMIT-100 STARVATION]\\n  Found Part-B behind 105 Part-A decoys?:',trap.includes('pb_s0'));eng.storeMemory('Patients exhibited acute myocardial infarction following coronary occlusion.','syn','syn_s0');console.log('\\n[TEST 5: SYNONYM WALL]\\n  Query \"heart attack\" found \"myocardial infarction\"?:',eng.packContext('heart attack blocked vessel',{budget:120}).includes('syn_s0'));console.log('\\n[TEST 6: CODE TOKENIZER]\\n  \"How to fix C++ segfault in .env for R?\" ->',JSON.stringify(tokenize('How to fix C++ segfault in .env for R?')));const c1=eng.storeMemory('ok sounds good thanks bro','c1','c1_s0',200);const c2=eng.storeMemory('Architectural Decision: Enforce mutual TLS authentication using rotating X509 certificates and validate JWT claims at ingress gateway.','c2','c2_s0',200);console.log('\\n[TEST 7: TEMPORAL SURPRISAL BIAS (Age=200d)]\\n  5-word chat tf:',eng.temporalFactor('c1_s0').toFixed(4),'(intr='+c1.intrinsic_surprisal+')\\n  18-word spec tf:',eng.temporalFactor('c2_s0').toFixed(4),'(intr='+c2.intrinsic_surprisal+')');fs.unlinkSync(TMP);"
+    },
+    {
+     "file": "scripts/stress-test.js",
+     "line": 2,
+     "module": "node:fs",
+     "names": [
+      "fs"
+     ],
+     "source": "import fs from \"node:fs\";"
+    },
+    {
+     "file": "scripts/stress-test.js",
+     "line": 5,
+     "module": "../src/engine/engine.js",
+     "names": [
+      "SQLiteContextEngine"
+     ],
+     "source": "import { SQLiteContextEngine } from \"../src/engine/engine.js\";"
+    },
+    {
+     "file": "src/engine/engine.js",
+     "line": 3,
+     "module": "./tokenize.js",
+     "names": [
+      "tokenize",
+      "gramTokens",
+      "wordGrams",
+      "countTokens",
+      "isSubstantiveToken"
+     ],
+     "source": "import { tokenize, gramTokens, wordGrams, countTokens, isSubstantiveToken } from './tokenize.js';"
+    },
+    {
+     "file": "src/mcp/server.js",
+     "line": 3,
+     "module": "@modelcontextprotocol/sdk/server/stdio.js",
+     "names": [
+      "StdioServerTransport"
+     ],
+     "source": "import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';"
+    },
+    {
+     "file": "test/engine.test.js",
+     "line": 1,
+     "module": "node:assert/strict",
+     "names": [
+      "assert"
+     ],
+     "source": "import assert from 'node:assert/strict';"
+    },
+    {
+     "file": "test/engine.test.js",
+     "line": 4,
+     "module": "../src/engine/engine.js",
+     "names": [
+      "SQLiteContextEngine"
+     ],
+     "source": "import { SQLiteContextEngine } from '../src/engine/engine.js';"
+    },
+    {
+     "file": "test/mcp.test.js",
+     "line": 2,
+     "module": "node:test",
+     "names": [
+      "test"
+     ],
+     "source": "import test from 'node:test';"
+    },
+    {
+     "file": "test/mcp.test.js",
+     "line": 6,
+     "module": "../src/engine/tokenize.js",
+     "names": [
+      "tokenize",
+      "countTokens"
+     ],
+     "source": "import { tokenize, countTokens } from '../src/engine/tokenize.js';"
+    },
+    {
+     "file": "test/mcp.test.js",
+     "line": 9,
+     "module": "node:url",
+     "names": [
+      "fileURLToPath"
+     ],
+     "source": "import { fileURLToPath } from 'node:url';"
+    },
+    {
+     "file": "test/stages.test.js",
+     "line": 3,
+     "module": "../src/engine/engine.js",
+     "names": [
+      "SQLiteContextEngine"
+     ],
+     "source": "import { SQLiteContextEngine } from '../src/engine/engine.js';"
+    }
+   ]
+  },
+  "regex": {
+   "calls_correct": 18,
+   "calls_total": 20,
+   "calls": [
+    {
+     "file": "scripts/benchmark-bm25-vs-serp.js",
+     "line": 126,
+     "callee": "match",
+     "source": "const tokens = toksStr.toLowerCase().match(/[a-z0-9_]+/g) || [];",
+     "verdict": "correct"
+    },
+    {
+     "file": "scripts/benchmark-bm25-vs-serp.js",
+     "line": 343,
+     "callee": "Array",
+     "source": "Array(12).fill(\"crispr cas9 crispr cas9 crispr cas9\").join(\" \") + \" repair\",",
+     "verdict": "correct"
+    },
+    {
+     "file": "scripts/benchmark-react-corpus.js",
+     "line": 96,
+     "callee": "join",
+     "source": "const ftsQuery = (query || \"none\").toLowerCase().match(/[a-z0-9_]+/g)?.map(t => `\"${t}\"`).join(\" OR \") || \"none\";",
+     "verdict": "correct"
+    },
+    {
+     "file": "scripts/benchmark-react-corpus.js",
+     "line": 223,
+     "callee": "toFixed",
+     "source": "console.log(\"  Avg Recall@B:     BM25=\" + avgB.toFixed(3) + \" | RAG=\" + avgR.toFixed(3) + \" | SERP=\" + avgS.toFixed(3) + \" | Full=\" + avgF.toFixed(3));",
+     "verdict": "correct"
+    },
+    {
+     "file": "scripts/benchmark-serp-vs-rag.js",
+     "line": 258,
+     "callee": "Database",
+     "source": "const db = new Database(dbPath);",
+     "verdict": "correct"
+    },
+    {
+     "file": "scripts/benchmark-serp-vs-rag.js",
+     "line": 411,
+     "callee": "Number",
+     "source": "const avgR = results.reduce((s, r) => s + Number(r.ragRecall), 0) / results.length;",
+     "verdict": "correct"
+    },
+    {
+     "file": "scripts/demonstrative-react-codebase.js",
+     "line": 92,
+     "callee": "comparison",
+     "source": "console.log(`\\nScore comparison (same target query):`);",
+     "verdict": "correct but under-qualified: reports 'log' for 'console.log'"
+    },
+    {
+     "file": "scripts/stage-benchmark.js",
+     "line": 48,
+     "callee": "readJsonl",
+     "source": "function readJsonl(file) {",
+     "verdict": "correct"
+    },
+    {
+     "file": "scripts/stage-benchmark.js",
+     "line": 280,
+     "callee": "map",
+     "source": ".fused.map((entry) => entry.chunk_id),",
+     "verdict": "correct"
+    },
+    {
+     "file": "scripts/stress-test-compact.js",
+     "line": 2,
+     "callee": "sort",
+     "source": "import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';import {SQLiteContextEngine} from '../src/engine/engine.js';const __dirname=path.resolve(path.dirname(fileURLToPath(import.meta.url)), \"..\");const SRC=path.join(__dirname,'mcp_memory.sqlite');const TMP=path.join(__dirname,'stress_temp.sqlite');fs.copyFileSync(SRC,TMP);console.log('=== RED-TEAM & STRESS-TEST SUITE ===');const m0=process.memoryUsage().heapUsed,t0=performance.now();const eng=new SQLiteContextEngine(TMP);const boot=(performance.now()-t0).toFixed(1),ram=((process.memoryUsage().heapUsed-m0)/1048576).toFixed(1);console.log('\\n[TEST 1: COLD-START & RAM]\\n  Boot:',boot,'ms | Heap:',ram,'MB | 1M rows proj:',((ram/eng.M_ref)*1e6).toFixed(0),'MB');const qs=['ADAR1 binds to Dicer to cleave pre-miRNA. AIRE is expressed in some skin tumors.','myeloid-derived suppressor cells MDSC expansion S100A9 CD33','CRISPR Cas9 genome editing electroporation rat zygotes','chronic lymphocytic leukemia subclonal driver mutations SF3B1 TP53'];const lats=[];for(let i=0;i<200;i++){const s=performance.now();eng.packContext(qs[i%4],{budget:200});lats.push(performance.now()-s);}lats.sort((a,b)=>a-b);console.log('\\n[TEST 2: 200-QUERY THROUGHPUT]\\n  P50:',lats[100].toFixed(2),'ms | P95:',lats[190].toFixed(2),'ms | QPS:',(1000/(lats.reduce((a,b)=>a+b,0)/200)).toFixed(0));eng.storeMemory('CRISPR and Cas9 ribonucleoproteins enable precise homology-directed repair in human T cells.','t_doc','t_s0');const s1=eng.storeMemory(Array(15).fill('crispr cas9').join(' ')+' repair human cells','s1_doc','s1_s0');const junk='alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima mike november oscar papa quebec romeo sierra tango uniform victor whiskey xray yankee zulu amber bronze cobalt crimson emerald ivory jade onyx topaz';const s2=eng.storeMemory(Array(5).fill('crispr cas9').join(' ')+' '+junk,'s2_doc','s2_s0');console.log('\\n[TEST 3: SPAM EXPLOIT]\\n  Clean Fact Score:',eng.scoreChunkP4('t_s0','crispr cas9 repair').toFixed(3),'\\n  Naive Spam (L/U='+s1.l_over_u+'):',eng.scoreChunkP4('s1_s0','crispr cas9 repair').toFixed(3),'\\n  Word-Salad Spam (L/U='+s2.l_over_u+'):',eng.scoreChunkP4('s2_s0','crispr cas9 repair').toFixed(3));for(let i=0;i<105;i++)eng.storeMemory('quantumentanglement2026 superconductor decoherence run '+i,'d_'+i,'ds_'+i);eng.storeMemory('Critical threshold for raretargetbeta99 stability is 4.2 Kelvin.','pb','pb_s0');const trap=eng.packContext('quantumentanglement2026 superconductor decoherence raretargetbeta99',{budget:150});console.log('\\n[TEST 4: FTS5 LIMIT-100 STARVATION]\\n  Found Part-B behind 105 Part-A decoys?:',trap.includes('pb_s0'));eng.storeMemory('Patients exhibited acute myocardial infarction following coronary occlusion.','syn','syn_s0');console.log('\\n[TEST 5: SYNONYM WALL]\\n  Query \"heart attack\" found \"myocardial infarction\"?:',eng.packContext('heart attack blocked vessel',{budget:120}).includes('syn_s0'));console.log('\\n[TEST 6: CODE TOKENIZER]\\n  \"How to fix C++ segfault in .env for R?\" ->',JSON.stringify(tokenize('How to fix C++ segfault in .env for R?')));const c1=eng.storeMemory('ok sounds good thanks bro','c1','c1_s0',200);const c2=eng.storeMemory('Architectural Decision: Enforce mutual TLS authentication using rotating X509 certificates and validate JWT claims at ingress gateway.','c2','c2_s0',200);console.log('\\n[TEST 7: TEMPORAL SURPRISAL BIAS (Age=200d)]\\n  5-word chat tf:',eng.temporalFactor('c1_s0').toFixed(4),'(intr='+c1.intrinsic_surprisal+')\\n  18-word spec tf:',eng.temporalFactor('c2_s0').toFixed(4),'(intr='+c2.intrinsic_surprisal+')');fs.unlinkSync(TMP);",
+     "verdict": "correct"
+    },
+    {
+     "file": "scripts/stress-test.js",
+     "line": 86,
+     "callee": "stringify",
+     "source": "console.log(`  Tokens: ${JSON.stringify(tokenize(codeQ))}`);",
+     "verdict": "correct"
+    },
+    {
+     "file": "src/engine/engine.js",
+     "line": 151,
+     "callee": "transaction",
+     "source": "const insertBatch = this.db.transaction((rows) => {",
+     "verdict": "correct"
+    },
+    {
+     "file": "src/engine/engine.js",
+     "line": 386,
+     "callee": "reinforceSelected",
+     "source": "this.reinforceSelected(state.selected);",
+     "verdict": "FALSE POSITIVE: the match is inside a // comment"
+    },
+    {
+     "file": "src/engine/engine.js",
+     "line": 634,
+     "callee": "effectiveTokenCost",
+     "source": "const score = gain / effectiveTokenCost(meta);",
+     "verdict": "FALSE POSITIVE: method definition, not a call"
+    },
+    {
+     "file": "src/engine/engine.js",
+     "line": 845,
+     "callee": "get",
+     "source": "const meta = this.docStats.get(cid);",
+     "verdict": "correct"
+    },
+    {
+     "file": "src/engine/engine.js",
+     "line": 1066,
+     "callee": "String",
+     "source": "doc_id: String(docId),",
+     "verdict": "correct"
+    },
+    {
+     "file": "src/mcp/server.js",
+     "line": 50,
+     "callee": "stringify",
+     "source": "text: JSON.stringify(",
+     "verdict": "correct"
+    },
+    {
+     "file": "test/engine.test.js",
+     "line": 113,
+     "callee": "termMatch",
+     "source": "assert.equal(engine.termMatch('authorization', counts, headers).count, 1.4);",
+     "verdict": "correct"
+    },
+    {
+     "file": "test/stages.test.js",
+     "line": 50,
+     "callee": "rankGramBm25",
+     "source": "assert.deepEqual(engine.rankGramBm25('zzq_42'), []);",
+     "verdict": "correct"
+    },
+    {
+     "file": "test/stages.test.js",
+     "line": 187,
+     "callee": "deepEqual",
+     "source": "assert.deepEqual(engine.rankGramBm25('zzq_42 zzq_43x'), []);",
+     "verdict": "correct"
+    }
+   ],
+   "imports_correct": 20,
+   "imports_total": 20,
+   "imports": [
+    {
+     "file": "scripts/benchmark-bm25-vs-serp.js",
+     "line": 23,
+     "module": "node:path",
+     "names": [
+      "path"
+     ],
+     "source": "import path from \"node:path\";"
+    },
+    {
+     "file": "scripts/benchmark-bm25-vs-serp.js",
+     "line": 26,
+     "module": "../src/engine/engine.js",
+     "names": [
+      "SQLiteContextEngine"
+     ],
+     "source": "import { SQLiteContextEngine } from \"../src/engine/engine.js\";"
+    },
+    {
+     "file": "scripts/benchmark-react-corpus.js",
+     "line": 8,
+     "module": "node:path",
+     "names": [
+      "path"
+     ],
+     "source": "import path from \"node:path\";"
+    },
+    {
+     "file": "scripts/benchmark-serp-vs-rag.js",
+     "line": 24,
+     "module": "better-sqlite3",
+     "names": [
+      "Database"
+     ],
+     "source": "import Database from \"better-sqlite3\";"
+    },
+    {
+     "file": "scripts/benchmark-serp-vs-rag.js",
+     "line": 27,
+     "module": "node:url",
+     "names": [
+      "fileURLToPath"
+     ],
+     "source": "import { fileURLToPath } from \"node:url\";"
+    },
+    {
+     "file": "scripts/demonstrative-react-codebase.js",
+     "line": 4,
+     "module": "node:fs",
+     "names": [
+      "fs"
+     ],
+     "source": "import fs from \"node:fs\";"
+    },
+    {
+     "file": "scripts/index-codebase.js",
+     "line": 10,
+     "module": "node:fs",
+     "names": [
+      "fs"
+     ],
+     "source": "import fs from \"node:fs\";"
+    },
+    {
+     "file": "scripts/stage-benchmark.js",
+     "line": 19,
+     "module": "node:fs",
+     "names": [
+      "fs"
+     ],
+     "source": "import fs from 'node:fs';"
+    },
+    {
+     "file": "scripts/stage-benchmark.js",
+     "line": 22,
+     "module": "../src/engine/engine.js",
+     "names": [
+      "SQLiteContextEngine"
+     ],
+     "source": "import { SQLiteContextEngine } from '../src/engine/engine.js';"
+    },
+    {
+     "file": "scripts/stress-test-compact.js",
+     "line": 2,
+     "module": "node:fs",
+     "names": [
+      "fs"
+     ],
+     "source": "import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';import {SQLiteContextEngine} from '../src/engine/engine.js';const __dirname=path.resolve(path.dirname(fileURLToPath(import.meta.url)), \"..\");const SRC=path.join(__dirname,'mcp_memory.sqlite');const TMP=path.join(__dirname,'stress_temp.sqlite');fs.copyFileSync(SRC,TMP);console.log('=== RED-TEAM & STRESS-TEST SUITE ===');const m0=process.memoryUsage().heapUsed,t0=performance.now();const eng=new SQLiteContextEngine(TMP);const boot=(performance.now()-t0).toFixed(1),ram=((process.memoryUsage().heapUsed-m0)/1048576).toFixed(1);console.log('\\n[TEST 1: COLD-START & RAM]\\n  Boot:',boot,'ms | Heap:',ram,'MB | 1M rows proj:',((ram/eng.M_ref)*1e6).toFixed(0),'MB');const qs=['ADAR1 binds to Dicer to cleave pre-miRNA. AIRE is expressed in some skin tumors.','myeloid-derived suppressor cells MDSC expansion S100A9 CD33','CRISPR Cas9 genome editing electroporation rat zygotes','chronic lymphocytic leukemia subclonal driver mutations SF3B1 TP53'];const lats=[];for(let i=0;i<200;i++){const s=performance.now();eng.packContext(qs[i%4],{budget:200});lats.push(performance.now()-s);}lats.sort((a,b)=>a-b);console.log('\\n[TEST 2: 200-QUERY THROUGHPUT]\\n  P50:',lats[100].toFixed(2),'ms | P95:',lats[190].toFixed(2),'ms | QPS:',(1000/(lats.reduce((a,b)=>a+b,0)/200)).toFixed(0));eng.storeMemory('CRISPR and Cas9 ribonucleoproteins enable precise homology-directed repair in human T cells.','t_doc','t_s0');const s1=eng.storeMemory(Array(15).fill('crispr cas9').join(' ')+' repair human cells','s1_doc','s1_s0');const junk='alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima mike november oscar papa quebec romeo sierra tango uniform victor whiskey xray yankee zulu amber bronze cobalt crimson emerald ivory jade onyx topaz';const s2=eng.storeMemory(Array(5).fill('crispr cas9').join(' ')+' '+junk,'s2_doc','s2_s0');console.log('\\n[TEST 3: SPAM EXPLOIT]\\n  Clean Fact Score:',eng.scoreChunkP4('t_s0','crispr cas9 repair').toFixed(3),'\\n  Naive Spam (L/U='+s1.l_over_u+'):',eng.scoreChunkP4('s1_s0','crispr cas9 repair').toFixed(3),'\\n  Word-Salad Spam (L/U='+s2.l_over_u+'):',eng.scoreChunkP4('s2_s0','crispr cas9 repair').toFixed(3));for(let i=0;i<105;i++)eng.storeMemory('quantumentanglement2026 superconductor decoherence run '+i,'d_'+i,'ds_'+i);eng.storeMemory('Critical threshold for raretargetbeta99 stability is 4.2 Kelvin.','pb','pb_s0');const trap=eng.packContext('quantumentanglement2026 superconductor decoherence raretargetbeta99',{budget:150});console.log('\\n[TEST 4: FTS5 LIMIT-100 STARVATION]\\n  Found Part-B behind 105 Part-A decoys?:',trap.includes('pb_s0'));eng.storeMemory('Patients exhibited acute myocardial infarction following coronary occlusion.','syn','syn_s0');console.log('\\n[TEST 5: SYNONYM WALL]\\n  Query \"heart attack\" found \"myocardial infarction\"?:',eng.packContext('heart attack blocked vessel',{budget:120}).includes('syn_s0'));console.log('\\n[TEST 6: CODE TOKENIZER]\\n  \"How to fix C++ segfault in .env for R?\" ->',JSON.stringify(tokenize('How to fix C++ segfault in .env for R?')));const c1=eng.storeMemory('ok sounds good thanks bro','c1','c1_s0',200);const c2=eng.storeMemory('Architectural Decision: Enforce mutual TLS authentication using rotating X509 certificates and validate JWT claims at ingress gateway.','c2','c2_s0',200);console.log('\\n[TEST 7: TEMPORAL SURPRISAL BIAS (Age=200d)]\\n  5-word chat tf:',eng.temporalFactor('c1_s0').toFixed(4),'(intr='+c1.intrinsic_surprisal+')\\n  18-word spec tf:',eng.temporalFactor('c2_s0').toFixed(4),'(intr='+c2.intrinsic_surprisal+')');fs.unlinkSync(TMP);"
+    },
+    {
+     "file": "scripts/stress-test.js",
+     "line": 3,
+     "module": "node:path",
+     "names": [
+      "path"
+     ],
+     "source": "import path from \"node:path\";"
+    },
+    {
+     "file": "src/engine/engine.js",
+     "line": 1,
+     "module": "better-sqlite3",
+     "names": [
+      "Database"
+     ],
+     "source": "import Database from 'better-sqlite3';"
+    },
+    {
+     "file": "src/mcp/server.js",
+     "line": 1,
+     "module": "node:url",
+     "names": [
+      "pathToFileURL"
+     ],
+     "source": "import { pathToFileURL } from 'node:url';"
+    },
+    {
+     "file": "src/mcp/server.js",
+     "line": 4,
+     "module": "zod",
+     "names": [
+      "z"
+     ],
+     "source": "import { z } from 'zod';"
+    },
+    {
+     "file": "test/engine.test.js",
+     "line": 2,
+     "module": "node:fs",
+     "names": [
+      "fs"
+     ],
+     "source": "import fs from 'node:fs';"
+    },
+    {
+     "file": "test/engine.test.js",
+     "line": 5,
+     "module": "../src/engine/tokenize.js",
+     "names": [
+      "isSubstantiveToken",
+      "tokenize"
+     ],
+     "source": "import { isSubstantiveToken, tokenize } from '../src/engine/tokenize.js';"
+    },
+    {
+     "file": "test/mcp.test.js",
+     "line": 3,
+     "module": "@modelcontextprotocol/sdk/client/index.js",
+     "names": [
+      "Client"
+     ],
+     "source": "import { Client } from '@modelcontextprotocol/sdk/client/index.js';"
+    },
+    {
+     "file": "test/mcp.test.js",
+     "line": 6,
+     "module": "../src/engine/tokenize.js",
+     "names": [
+      "tokenize",
+      "countTokens"
+     ],
+     "source": "import { tokenize, countTokens } from '../src/engine/tokenize.js';"
+    },
+    {
+     "file": "test/mcp.test.js",
+     "line": 9,
+     "module": "node:url",
+     "names": [
+      "fileURLToPath"
+     ],
+     "source": "import { fileURLToPath } from 'node:url';"
+    },
+    {
+     "file": "test/stages.test.js",
+     "line": 3,
+     "module": "../src/engine/engine.js",
+     "names": [
+      "SQLiteContextEngine"
+     ],
+     "source": "import { SQLiteContextEngine } from '../src/engine/engine.js';"
+    }
+   ]
+  }
+ },
+ "retrieval_shared_queries": {
+  "meta": {
+   "kind": "same queries and qrels, same channel code, two graphs",
+   "queries_regex_graph": 250,
+   "queries_kept_for_ts7": 249,
+   "qrel_mapping": {
+    "exact": 571,
+    "fallback": 0,
+    "queries_dropped": 1
+   },
+   "note": "qrels are graph-derived (circular by construction). The only things that change between runs are the parser behind the graph and, in the ablation, the chunk text it produced.",
+   "ablation": {
+    "name": "ts7_boundaries_regex_text",
+    "chunks_with_regex_text": 260,
+    "purpose": "isolate chunk-boundary fidelity from chunk-text truncation"
+   }
+  },
+  "graphs": {
+   "regex": {
+    "files": 14,
+    "chunks": 289,
+    "symbols": 132,
+    "call_edges": 397,
+    "import_edges": 60,
+    "import_edges_resolved": 19,
+    "export_edges": 11,
+    "contains_edges": 289,
+    "defined_in_edges": 289,
+    "cross_file_call_edges": 236,
+    "multi_definition_symbols": 5,
+    "avg_call_out_degree": 1.3737024221453287,
+    "avg_out_degree_with_imports": 5.536332179930795,
+    "chunks_with_calls": 163,
+    "files_with_imports": 13,
+    "chunk_kinds": {
+     "block": 153,
+     "class": 1,
+     "function": 75,
+     "method": 60
+    }
+   },
+   "ts7": {
+    "files": 14,
+    "chunks": 283,
+    "symbols": 134,
+    "call_edges": 357,
+    "import_edges": 63,
+    "import_edges_resolved": 20,
+    "export_edges": 11,
+    "contains_edges": 283,
+    "defined_in_edges": 283,
+    "cross_file_call_edges": 190,
+    "multi_definition_symbols": 5,
+    "avg_call_out_degree": 1.2614840989399294,
+    "avg_out_degree_with_imports": 5.385159010600707,
+    "chunks_with_calls": 156,
+    "files_with_imports": 13,
+    "chunk_kinds": {
+     "block": 143,
+     "class": 1,
+     "function": 78,
+     "method": 61
+    }
+   }
+  },
+  "systems": {
+   "regex": {
+    "porter": {
+     "both@5": 0.152,
+     "both@10": 0.288,
+     "ndcg@10": 0.41911755118510163,
+     "recall@10": 0.5606666666666666,
+     "mrr@10": 0.46906507936507935,
+     "answer@10": 0.408,
+     "queries": 250,
+     "by_type": {
+      "same_file": {
+       "both@5": 0.3,
+       "both@10": 0.58,
+       "ndcg@10": 0.5484043082522452,
+       "recall@10": 0.77,
+       "mrr@10": 0.5743809523809523,
+       "answer@10": 0.62,
+       "queries": 50,
+       "chain_gap": 2
+      },
+      "import_call": {
+       "both@5": 0.12,
+       "both@10": 0.24,
+       "ndcg@10": 0.2340717999805404,
+       "recall@10": 0.35,
+       "mrr@10": 0.22766666666666666,
+       "answer@10": 0.36,
+       "queries": 50,
+       "chain_gap": 6
+      },
+      "two_hop": {
+       "both@5": 0.0,
+       "both@10": 0.12,
+       "ndcg@10": 0.25862151671729505,
+       "recall@10": 0.43999999999999995,
+       "mrr@10": 0.27969841269841267,
+       "answer@10": 0.14,
+       "queries": 50,
+       "chain_gap": 1
+      },
+      "export_import": {
+       "both@5": 0.0,
+       "both@10": 0.0,
+       "ndcg@10": 0.3372408250939406,
+       "recall@10": 0.45,
+       "mrr@10": 0.43691269841269836,
+       "answer@10": 0.0,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "calls_two": {
+       "both@5": 0.34,
+       "both@10": 0.5,
+       "ndcg@10": 0.7172493058814869,
+       "recall@10": 0.7933333333333333,
+       "mrr@10": 0.8266666666666665,
+       "answer@10": 0.92,
+       "queries": 50,
+       "chain_gap": 21
+      }
+     }
+    },
+    "entity": {
+     "both@5": 0.272,
+     "both@10": 0.344,
+     "ndcg@10": 0.5060051609755815,
+     "recall@10": 0.573,
+     "mrr@10": 0.6085714285714285,
+     "answer@10": 0.428,
+     "queries": 250,
+     "by_type": {
+      "same_file": {
+       "both@5": 0.74,
+       "both@10": 0.8,
+       "ndcg@10": 0.7534272486145832,
+       "recall@10": 0.9,
+       "mrr@10": 0.8133333333333335,
+       "answer@10": 0.8,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "import_call": {
+       "both@5": 0.22,
+       "both@10": 0.36,
+       "ndcg@10": 0.26970006212674663,
+       "recall@10": 0.36,
+       "mrr@10": 0.2625,
+       "answer@10": 0.36,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "two_hop": {
+       "both@5": 0.04,
+       "both@10": 0.04,
+       "ndcg@10": 0.3238692120087763,
+       "recall@10": 0.335,
+       "mrr@10": 0.4946904761904761,
+       "answer@10": 0.04,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "export_import": {
+       "both@5": 0.0,
+       "both@10": 0.0,
+       "ndcg@10": 0.4452813624514518,
+       "recall@10": 0.47,
+       "mrr@10": 0.6516666666666667,
+       "answer@10": 0.0,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "calls_two": {
+       "both@5": 0.36,
+       "both@10": 0.52,
+       "ndcg@10": 0.7377479196763492,
+       "recall@10": 0.8,
+       "mrr@10": 0.8206666666666667,
+       "answer@10": 0.94,
+       "queries": 50,
+       "chain_gap": 21
+      }
+     }
+    },
+    "graph": {
+     "both@5": 0.176,
+     "both@10": 0.336,
+     "ndcg@10": 0.4771858436511379,
+     "recall@10": 0.5936666666666667,
+     "mrr@10": 0.5610968253968254,
+     "answer@10": 0.548,
+     "queries": 250,
+     "by_type": {
+      "same_file": {
+       "both@5": 0.18,
+       "both@10": 0.26,
+       "ndcg@10": 0.46326077087903317,
+       "recall@10": 0.6,
+       "mrr@10": 0.5426031746031746,
+       "answer@10": 0.52,
+       "queries": 50,
+       "chain_gap": 13
+      },
+      "import_call": {
+       "both@5": 0.2,
+       "both@10": 0.28,
+       "ndcg@10": 0.33465554877403325,
+       "recall@10": 0.41,
+       "mrr@10": 0.3872222222222222,
+       "answer@10": 0.48,
+       "queries": 50,
+       "chain_gap": 10
+      },
+      "two_hop": {
+       "both@5": 0.3,
+       "both@10": 0.42,
+       "ndcg@10": 0.43502555226476103,
+       "recall@10": 0.5883333333333333,
+       "mrr@10": 0.4593888888888889,
+       "answer@10": 0.5,
+       "queries": 50,
+       "chain_gap": 4
+      },
+      "export_import": {
+       "both@5": 0.02,
+       "both@10": 0.3,
+       "ndcg@10": 0.47963597260438434,
+       "recall@10": 0.61,
+       "mrr@10": 0.612936507936508,
+       "answer@10": 0.3,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "calls_two": {
+       "both@5": 0.18,
+       "both@10": 0.42,
+       "ndcg@10": 0.6733513737334779,
+       "recall@10": 0.7599999999999999,
+       "mrr@10": 0.8033333333333332,
+       "answer@10": 0.94,
+       "queries": 50,
+       "chain_gap": 26
+      }
+     }
+    },
+    "rrf_porter_graph": {
+     "both@5": 0.336,
+     "both@10": 0.556,
+     "ndcg@10": 0.5551895567964253,
+     "recall@10": 0.7186666666666668,
+     "mrr@10": 0.5949349206349207,
+     "answer@10": 0.716,
+     "queries": 250,
+     "by_type": {
+      "same_file": {
+       "both@5": 0.38,
+       "both@10": 0.8,
+       "ndcg@10": 0.6271576327470113,
+       "recall@10": 0.9,
+       "mrr@10": 0.6085476190476191,
+       "answer@10": 0.88,
+       "queries": 50,
+       "chain_gap": 4
+      },
+      "import_call": {
+       "both@5": 0.26,
+       "both@10": 0.3,
+       "ndcg@10": 0.35053162553364214,
+       "recall@10": 0.42,
+       "mrr@10": 0.3861904761904762,
+       "answer@10": 0.5,
+       "queries": 50,
+       "chain_gap": 10
+      },
+      "two_hop": {
+       "both@5": 0.24,
+       "both@10": 0.34,
+       "ndcg@10": 0.3999261298533296,
+       "recall@10": 0.5733333333333334,
+       "mrr@10": 0.437047619047619,
+       "answer@10": 0.36,
+       "queries": 50,
+       "chain_gap": 1
+      },
+      "export_import": {
+       "both@5": 0.36,
+       "both@10": 0.82,
+       "ndcg@10": 0.6484287409390312,
+       "recall@10": 0.88,
+       "mrr@10": 0.6862222222222222,
+       "answer@10": 0.84,
+       "queries": 50,
+       "chain_gap": 1
+      },
+      "calls_two": {
+       "both@5": 0.44,
+       "both@10": 0.52,
+       "ndcg@10": 0.7499036549091121,
+       "recall@10": 0.82,
+       "mrr@10": 0.8566666666666667,
+       "answer@10": 1.0,
+       "queries": 50,
+       "chain_gap": 24
+      }
+     }
+    },
+    "rrf_porter_entity": {
+     "both@5": 0.272,
+     "both@10": 0.36,
+     "ndcg@10": 0.5281501398787447,
+     "recall@10": 0.6156666666666667,
+     "mrr@10": 0.6331920634920635,
+     "answer@10": 0.48,
+     "queries": 250,
+     "by_type": {
+      "same_file": {
+       "both@5": 0.68,
+       "both@10": 0.8,
+       "ndcg@10": 0.7141603472830795,
+       "recall@10": 0.9,
+       "mrr@10": 0.7511904761904762,
+       "answer@10": 0.8,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "import_call": {
+       "both@5": 0.22,
+       "both@10": 0.36,
+       "ndcg@10": 0.3023355759239353,
+       "recall@10": 0.42,
+       "mrr@10": 0.292,
+       "answer@10": 0.46,
+       "queries": 50,
+       "chain_gap": 5
+      },
+      "two_hop": {
+       "both@5": 0.04,
+       "both@10": 0.12,
+       "ndcg@10": 0.35818129609411126,
+       "recall@10": 0.45166666666666666,
+       "mrr@10": 0.4841031746031746,
+       "answer@10": 0.14,
+       "queries": 50,
+       "chain_gap": 1
+      },
+      "export_import": {
+       "both@5": 0.0,
+       "both@10": 0.0,
+       "ndcg@10": 0.49638298001230013,
+       "recall@10": 0.48,
+       "mrr@10": 0.7586666666666667,
+       "answer@10": 0.0,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "calls_two": {
+       "both@5": 0.42,
+       "both@10": 0.52,
+       "ndcg@10": 0.7696905000802973,
+       "recall@10": 0.8266666666666665,
+       "mrr@10": 0.88,
+       "answer@10": 1.0,
+       "queries": 50,
+       "chain_gap": 24
+      }
+     }
+    },
+    "rrf_porter_entity_graph": {
+     "both@5": 0.364,
+     "both@10": 0.608,
+     "ndcg@10": 0.5812049043833347,
+     "recall@10": 0.745,
+     "mrr@10": 0.6190634920634921,
+     "answer@10": 0.736,
+     "queries": 250,
+     "by_type": {
+      "same_file": {
+       "both@5": 0.48,
+       "both@10": 0.98,
+       "ndcg@10": 0.7355493577226113,
+       "recall@10": 0.99,
+       "mrr@10": 0.7320476190476191,
+       "answer@10": 0.98,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "import_call": {
+       "both@5": 0.26,
+       "both@10": 0.36,
+       "ndcg@10": 0.3498463836104482,
+       "recall@10": 0.45,
+       "mrr@10": 0.3628571428571428,
+       "answer@10": 0.52,
+       "queries": 50,
+       "chain_gap": 8
+      },
+      "two_hop": {
+       "both@5": 0.24,
+       "both@10": 0.32,
+       "ndcg@10": 0.40366442918002216,
+       "recall@10": 0.565,
+       "mrr@10": 0.4548571428571428,
+       "answer@10": 0.34,
+       "queries": 50,
+       "chain_gap": 1
+      },
+      "export_import": {
+       "both@5": 0.36,
+       "both@10": 0.84,
+       "ndcg@10": 0.6726582203128214,
+       "recall@10": 0.9,
+       "mrr@10": 0.7288888888888888,
+       "answer@10": 0.84,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "calls_two": {
+       "both@5": 0.48,
+       "both@10": 0.54,
+       "ndcg@10": 0.74430613109077,
+       "recall@10": 0.82,
+       "mrr@10": 0.8166666666666665,
+       "answer@10": 1.0,
+       "queries": 50,
+       "chain_gap": 23
+      }
+     }
+    }
+   },
+   "ts7": {
+    "porter": {
+     "both@5": 0.17269076305220885,
+     "both@10": 0.3895582329317269,
+     "ndcg@10": 0.4533393814028583,
+     "recall@10": 0.6238286479250333,
+     "mrr@10": 0.48781953209664053,
+     "answer@10": 0.5100401606425703,
+     "queries": 249,
+     "by_type": {
+      "same_file": {
+       "both@5": 0.34,
+       "both@10": 0.72,
+       "ndcg@10": 0.6034921023962605,
+       "recall@10": 0.86,
+       "mrr@10": 0.6138333333333333,
+       "answer@10": 0.76,
+       "queries": 50,
+       "chain_gap": 2
+      },
+      "import_call": {
+       "both@5": 0.1836734693877551,
+       "both@10": 0.30612244897959184,
+       "ndcg@10": 0.2713778475439548,
+       "recall@10": 0.3877551020408163,
+       "mrr@10": 0.26615646258503406,
+       "answer@10": 0.3877551020408163,
+       "queries": 49,
+       "chain_gap": 4
+      },
+      "two_hop": {
+       "both@5": 0.0,
+       "both@10": 0.16,
+       "ndcg@10": 0.28655621293227374,
+       "recall@10": 0.4733333333333333,
+       "mrr@10": 0.31131746031746027,
+       "answer@10": 0.2,
+       "queries": 50,
+       "chain_gap": 2
+      },
+      "export_import": {
+       "both@5": 0.0,
+       "both@10": 0.26,
+       "ndcg@10": 0.3847968635969656,
+       "recall@10": 0.6,
+       "mrr@10": 0.4233571428571429,
+       "answer@10": 0.28,
+       "queries": 50,
+       "chain_gap": 1
+      },
+      "calls_two": {
+       "both@5": 0.34,
+       "both@10": 0.5,
+       "ndcg@10": 0.716834649867659,
+       "recall@10": 0.7933333333333333,
+       "mrr@10": 0.82,
+       "answer@10": 0.92,
+       "queries": 50,
+       "chain_gap": 21
+      }
+     }
+    },
+    "entity": {
+     "both@5": 0.25301204819277107,
+     "both@10": 0.3293172690763052,
+     "ndcg@10": 0.47336915124228257,
+     "recall@10": 0.5692771084337349,
+     "mrr@10": 0.5513578122011857,
+     "answer@10": 0.42168674698795183,
+     "queries": 249,
+     "by_type": {
+      "same_file": {
+       "both@5": 0.68,
+       "both@10": 0.8,
+       "ndcg@10": 0.7259591695456379,
+       "recall@10": 0.9,
+       "mrr@10": 0.7766666666666666,
+       "answer@10": 0.8,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "import_call": {
+       "both@5": 0.22448979591836735,
+       "both@10": 0.3469387755102041,
+       "ndcg@10": 0.2547682744234871,
+       "recall@10": 0.35714285714285715,
+       "mrr@10": 0.23063654033041786,
+       "answer@10": 0.3469387755102041,
+       "queries": 49,
+       "chain_gap": 0
+      },
+      "two_hop": {
+       "both@5": 0.04,
+       "both@10": 0.04,
+       "ndcg@10": 0.33018491304234493,
+       "recall@10": 0.335,
+       "mrr@10": 0.5083571428571428,
+       "answer@10": 0.04,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "export_import": {
+       "both@5": 0.0,
+       "both@10": 0.0,
+       "ndcg@10": 0.36488161392346924,
+       "recall@10": 0.47,
+       "mrr@10": 0.47785714285714287,
+       "answer@10": 0.0,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "calls_two": {
+       "both@5": 0.32,
+       "both@10": 0.46,
+       "ndcg@10": 0.6866797677400978,
+       "recall@10": 0.78,
+       "mrr@10": 0.7568571428571428,
+       "answer@10": 0.92,
+       "queries": 50,
+       "chain_gap": 23
+      }
+     }
+    },
+    "graph": {
+     "both@5": 0.18473895582329317,
+     "both@10": 0.3493975903614458,
+     "ndcg@10": 0.4716598662569437,
+     "recall@10": 0.5856760374832664,
+     "mrr@10": 0.5428874227066999,
+     "answer@10": 0.5381526104417671,
+     "queries": 249,
+     "by_type": {
+      "same_file": {
+       "both@5": 0.2,
+       "both@10": 0.26,
+       "ndcg@10": 0.4676942944897229,
+       "recall@10": 0.6,
+       "mrr@10": 0.551,
+       "answer@10": 0.52,
+       "queries": 50,
+       "chain_gap": 13
+      },
+      "import_call": {
+       "both@5": 0.1836734693877551,
+       "both@10": 0.2857142857142857,
+       "ndcg@10": 0.3053065729211518,
+       "recall@10": 0.3673469387755102,
+       "mrr@10": 0.3375850340136054,
+       "answer@10": 0.3877551020408163,
+       "queries": 49,
+       "chain_gap": 5
+      },
+      "two_hop": {
+       "both@5": 0.28,
+       "both@10": 0.44,
+       "ndcg@10": 0.4519649013609414,
+       "recall@10": 0.5766666666666667,
+       "mrr@10": 0.48041269841269846,
+       "answer@10": 0.48,
+       "queries": 50,
+       "chain_gap": 2
+      },
+      "export_import": {
+       "both@5": 0.06,
+       "both@10": 0.34,
+       "ndcg@10": 0.47397540381076053,
+       "recall@10": 0.62,
+       "mrr@10": 0.573,
+       "answer@10": 0.34,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "calls_two": {
+       "both@5": 0.2,
+       "both@10": 0.42,
+       "ndcg@10": 0.6560310928354263,
+       "recall@10": 0.7599999999999999,
+       "mrr@10": 0.7683333333333333,
+       "answer@10": 0.96,
+       "queries": 50,
+       "chain_gap": 27
+      }
+     }
+    },
+    "rrf_porter_graph": {
+     "both@5": 0.3413654618473896,
+     "both@10": 0.570281124497992,
+     "ndcg@10": 0.5547949434121935,
+     "recall@10": 0.7265729585006694,
+     "mrr@10": 0.5879900554599349,
+     "answer@10": 0.7188755020080321,
+     "queries": 249,
+     "by_type": {
+      "same_file": {
+       "both@5": 0.36,
+       "both@10": 0.78,
+       "ndcg@10": 0.6312090037593365,
+       "recall@10": 0.89,
+       "mrr@10": 0.6207380952380952,
+       "answer@10": 0.84,
+       "queries": 50,
+       "chain_gap": 3
+      },
+      "import_call": {
+       "both@5": 0.2653061224489796,
+       "both@10": 0.32653061224489793,
+       "ndcg@10": 0.3237173654247365,
+       "recall@10": 0.3979591836734694,
+       "mrr@10": 0.3410673793326855,
+       "answer@10": 0.40816326530612246,
+       "queries": 49,
+       "chain_gap": 4
+      },
+      "two_hop": {
+       "both@5": 0.24,
+       "both@10": 0.36,
+       "ndcg@10": 0.4314985167641001,
+       "recall@10": 0.595,
+       "mrr@10": 0.49026984126984124,
+       "answer@10": 0.4,
+       "queries": 50,
+       "chain_gap": 2
+      },
+      "export_import": {
+       "both@5": 0.44,
+       "both@10": 0.88,
+       "ndcg@10": 0.6569840518219765,
+       "recall@10": 0.93,
+       "mrr@10": 0.6596031746031745,
+       "answer@10": 0.94,
+       "queries": 50,
+       "chain_gap": 3
+      },
+      "calls_two": {
+       "both@5": 0.4,
+       "both@10": 0.5,
+       "ndcg@10": 0.7259442277310683,
+       "recall@10": 0.8133333333333335,
+       "mrr@10": 0.8233333333333333,
+       "answer@10": 1.0,
+       "queries": 50,
+       "chain_gap": 25
+      }
+     }
+    },
+    "rrf_porter_entity": {
+     "both@5": 0.2570281124497992,
+     "both@10": 0.42570281124497994,
+     "ndcg@10": 0.5276784853177453,
+     "recall@10": 0.6495983935742972,
+     "mrr@10": 0.6122314655447185,
+     "answer@10": 0.5461847389558233,
+     "queries": 249,
+     "by_type": {
+      "same_file": {
+       "both@5": 0.64,
+       "both@10": 0.84,
+       "ndcg@10": 0.7008134360290676,
+       "recall@10": 0.92,
+       "mrr@10": 0.7140000000000001,
+       "answer@10": 0.84,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "import_call": {
+       "both@5": 0.24489795918367346,
+       "both@10": 0.3469387755102041,
+       "ndcg@10": 0.2897537771944978,
+       "recall@10": 0.40816326530612246,
+       "mrr@10": 0.2697845804988662,
+       "answer@10": 0.42857142857142855,
+       "queries": 49,
+       "chain_gap": 4
+      },
+      "two_hop": {
+       "both@5": 0.04,
+       "both@10": 0.16,
+       "ndcg@10": 0.3793130517284474,
+       "recall@10": 0.4783333333333333,
+       "mrr@10": 0.5106904761904761,
+       "answer@10": 0.2,
+       "queries": 50,
+       "chain_gap": 2
+      },
+      "export_import": {
+       "both@5": 0.0,
+       "both@10": 0.26,
+       "ndcg@10": 0.5193204325384151,
+       "recall@10": 0.61,
+       "mrr@10": 0.7058333333333334,
+       "answer@10": 0.26,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "calls_two": {
+       "both@5": 0.36,
+       "both@10": 0.52,
+       "ndcg@10": 0.7444332349358338,
+       "recall@10": 0.8266666666666665,
+       "mrr@10": 0.8540000000000001,
+       "answer@10": 1.0,
+       "queries": 50,
+       "chain_gap": 24
+      }
+     }
+    },
+    "rrf_porter_entity_graph": {
+     "both@5": 0.36947791164658633,
+     "both@10": 0.606425702811245,
+     "ndcg@10": 0.5794335990767818,
+     "recall@10": 0.7453145917001338,
+     "mrr@10": 0.6214508828966661,
+     "answer@10": 0.7309236947791165,
+     "queries": 249,
+     "by_type": {
+      "same_file": {
+       "both@5": 0.52,
+       "both@10": 0.92,
+       "ndcg@10": 0.7052459741652858,
+       "recall@10": 0.96,
+       "mrr@10": 0.6863809523809524,
+       "answer@10": 0.92,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "import_call": {
+       "both@5": 0.2653061224489796,
+       "both@10": 0.3469387755102041,
+       "ndcg@10": 0.3262151365104597,
+       "recall@10": 0.40816326530612246,
+       "mrr@10": 0.33911564625850343,
+       "answer@10": 0.42857142857142855,
+       "queries": 49,
+       "chain_gap": 4
+      },
+      "two_hop": {
+       "both@5": 0.24,
+       "both@10": 0.32,
+       "ndcg@10": 0.4335297714020211,
+       "recall@10": 0.575,
+       "mrr@10": 0.5182222222222223,
+       "answer@10": 0.36,
+       "queries": 50,
+       "chain_gap": 2
+      },
+      "export_import": {
+       "both@5": 0.4,
+       "both@10": 0.9,
+       "ndcg@10": 0.6797476890498845,
+       "recall@10": 0.95,
+       "mrr@10": 0.7012222222222222,
+       "answer@10": 0.94,
+       "queries": 50,
+       "chain_gap": 2
+      },
+      "calls_two": {
+       "both@5": 0.42,
+       "both@10": 0.54,
+       "ndcg@10": 0.7473650550049322,
+       "recall@10": 0.8266666666666665,
+       "mrr@10": 0.8566666666666666,
+       "answer@10": 1.0,
+       "queries": 50,
+       "chain_gap": 23
+      }
+     }
+    }
+   },
+   "ts7_boundaries_regex_text": {
+    "porter": {
+     "both@5": 0.17269076305220885,
+     "both@10": 0.36947791164658633,
+     "ndcg@10": 0.4479095741628045,
+     "recall@10": 0.6137884872824632,
+     "mrr@10": 0.48470070759227385,
+     "answer@10": 0.4899598393574297,
+     "queries": 249,
+     "by_type": {
+      "same_file": {
+       "both@5": 0.34,
+       "both@10": 0.64,
+       "ndcg@10": 0.5838744455521456,
+       "recall@10": 0.81,
+       "mrr@10": 0.6115555555555555,
+       "answer@10": 0.7,
+       "queries": 50,
+       "chain_gap": 3
+      },
+      "import_call": {
+       "both@5": 0.1836734693877551,
+       "both@10": 0.30612244897959184,
+       "ndcg@10": 0.2747705585896432,
+       "recall@10": 0.3979591836734694,
+       "mrr@10": 0.26683673469387753,
+       "answer@10": 0.3673469387755102,
+       "queries": 49,
+       "chain_gap": 4
+      },
+      "two_hop": {
+       "both@5": 0.0,
+       "both@10": 0.14,
+       "ndcg@10": 0.27479933966198083,
+       "recall@10": 0.46333333333333326,
+       "mrr@10": 0.29767460317460315,
+       "answer@10": 0.18,
+       "queries": 50,
+       "chain_gap": 2
+      },
+      "export_import": {
+       "both@5": 0.0,
+       "both@10": 0.26,
+       "ndcg@10": 0.38270979806900984,
+       "recall@10": 0.6,
+       "mrr@10": 0.41974603174603176,
+       "answer@10": 0.28,
+       "queries": 50,
+       "chain_gap": 1
+      },
+      "calls_two": {
+       "both@5": 0.34,
+       "both@10": 0.5,
+       "ndcg@10": 0.7199309486297796,
+       "recall@10": 0.7933333333333333,
+       "mrr@10": 0.8233333333333333,
+       "answer@10": 0.92,
+       "queries": 50,
+       "chain_gap": 21
+      }
+     }
+    },
+    "entity": {
+     "both@5": 0.25301204819277107,
+     "both@10": 0.3293172690763052,
+     "ndcg@10": 0.47336915124228257,
+     "recall@10": 0.5692771084337349,
+     "mrr@10": 0.5513578122011857,
+     "answer@10": 0.42168674698795183,
+     "queries": 249,
+     "by_type": {
+      "same_file": {
+       "both@5": 0.68,
+       "both@10": 0.8,
+       "ndcg@10": 0.7259591695456379,
+       "recall@10": 0.9,
+       "mrr@10": 0.7766666666666666,
+       "answer@10": 0.8,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "import_call": {
+       "both@5": 0.22448979591836735,
+       "both@10": 0.3469387755102041,
+       "ndcg@10": 0.2547682744234871,
+       "recall@10": 0.35714285714285715,
+       "mrr@10": 0.23063654033041786,
+       "answer@10": 0.3469387755102041,
+       "queries": 49,
+       "chain_gap": 0
+      },
+      "two_hop": {
+       "both@5": 0.04,
+       "both@10": 0.04,
+       "ndcg@10": 0.33018491304234493,
+       "recall@10": 0.335,
+       "mrr@10": 0.5083571428571428,
+       "answer@10": 0.04,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "export_import": {
+       "both@5": 0.0,
+       "both@10": 0.0,
+       "ndcg@10": 0.36488161392346924,
+       "recall@10": 0.47,
+       "mrr@10": 0.47785714285714287,
+       "answer@10": 0.0,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "calls_two": {
+       "both@5": 0.32,
+       "both@10": 0.46,
+       "ndcg@10": 0.6866797677400978,
+       "recall@10": 0.78,
+       "mrr@10": 0.7568571428571428,
+       "answer@10": 0.92,
+       "queries": 50,
+       "chain_gap": 23
+      }
+     }
+    },
+    "graph": {
+     "both@5": 0.18875502008032127,
+     "both@10": 0.357429718875502,
+     "ndcg@10": 0.4716534722479961,
+     "recall@10": 0.5883534136546185,
+     "mrr@10": 0.5411407534901511,
+     "answer@10": 0.5421686746987951,
+     "queries": 249,
+     "by_type": {
+      "same_file": {
+       "both@5": 0.18,
+       "both@10": 0.26,
+       "ndcg@10": 0.4673830229782686,
+       "recall@10": 0.6,
+       "mrr@10": 0.5555,
+       "answer@10": 0.5,
+       "queries": 50,
+       "chain_gap": 12
+      },
+      "import_call": {
+       "both@5": 0.1836734693877551,
+       "both@10": 0.2857142857142857,
+       "ndcg@10": 0.3101417772429509,
+       "recall@10": 0.3877551020408163,
+       "mrr@10": 0.33999028182701657,
+       "answer@10": 0.3877551020408163,
+       "queries": 49,
+       "chain_gap": 5
+      },
+      "two_hop": {
+       "both@5": 0.32,
+       "both@10": 0.46,
+       "ndcg@10": 0.4519398877235163,
+       "recall@10": 0.58,
+       "mrr@10": 0.4720793650793651,
+       "answer@10": 0.5,
+       "queries": 50,
+       "chain_gap": 2
+      },
+      "export_import": {
+       "both@5": 0.06,
+       "both@10": 0.36,
+       "ndcg@10": 0.4682400658992843,
+       "recall@10": 0.61,
+       "mrr@10": 0.5641111111111111,
+       "answer@10": 0.36,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "calls_two": {
+       "both@5": 0.2,
+       "both@10": 0.42,
+       "ndcg@10": 0.6573323734958595,
+       "recall@10": 0.7599999999999999,
+       "mrr@10": 0.77,
+       "answer@10": 0.96,
+       "queries": 50,
+       "chain_gap": 27
+      }
+     }
+    },
+    "rrf_porter_graph": {
+     "both@5": 0.3333333333333333,
+     "both@10": 0.5742971887550201,
+     "ndcg@10": 0.5521580370311395,
+     "recall@10": 0.7248995983935743,
+     "mrr@10": 0.5845062790845923,
+     "answer@10": 0.7228915662650602,
+     "queries": 249,
+     "by_type": {
+      "same_file": {
+       "both@5": 0.36,
+       "both@10": 0.76,
+       "ndcg@10": 0.6276299699529307,
+       "recall@10": 0.88,
+       "mrr@10": 0.6235476190476191,
+       "answer@10": 0.86,
+       "queries": 50,
+       "chain_gap": 5
+      },
+      "import_call": {
+       "both@5": 0.2653061224489796,
+       "both@10": 0.3469387755102041,
+       "ndcg@10": 0.32967452412660775,
+       "recall@10": 0.41836734693877553,
+       "mrr@10": 0.3435374149659864,
+       "answer@10": 0.40816326530612246,
+       "queries": 49,
+       "chain_gap": 4
+      },
+      "two_hop": {
+       "both@5": 0.22,
+       "both@10": 0.4,
+       "ndcg@10": 0.4213760868119426,
+       "recall@10": 0.5866666666666667,
+       "mrr@10": 0.46493650793650787,
+       "answer@10": 0.42,
+       "queries": 50,
+       "chain_gap": 1
+      },
+      "export_import": {
+       "both@5": 0.42,
+       "both@10": 0.86,
+       "ndcg@10": 0.6486630810531833,
+       "recall@10": 0.92,
+       "mrr@10": 0.652357142857143,
+       "answer@10": 0.92,
+       "queries": 50,
+       "chain_gap": 3
+      },
+      "calls_two": {
+       "both@5": 0.4,
+       "both@10": 0.5,
+       "ndcg@10": 0.7289968529529421,
+       "recall@10": 0.8133333333333335,
+       "mrr@10": 0.8333333333333333,
+       "answer@10": 1.0,
+       "queries": 50,
+       "chain_gap": 25
+      }
+     }
+    },
+    "rrf_porter_entity": {
+     "both@5": 0.2570281124497992,
+     "both@10": 0.41767068273092367,
+     "ndcg@10": 0.5241836044353534,
+     "recall@10": 0.6475903614457831,
+     "mrr@10": 0.6070950468540831,
+     "answer@10": 0.5341365461847389,
+     "queries": 249,
+     "by_type": {
+      "same_file": {
+       "both@5": 0.64,
+       "both@10": 0.8,
+       "ndcg@10": 0.687747354935933,
+       "recall@10": 0.9,
+       "mrr@10": 0.7033333333333333,
+       "answer@10": 0.8,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "import_call": {
+       "both@5": 0.24489795918367346,
+       "both@10": 0.3673469387755102,
+       "ndcg@10": 0.2904637982015958,
+       "recall@10": 0.42857142857142855,
+       "mrr@10": 0.2576530612244898,
+       "answer@10": 0.42857142857142855,
+       "queries": 49,
+       "chain_gap": 4
+      },
+      "two_hop": {
+       "both@5": 0.04,
+       "both@10": 0.14,
+       "ndcg@10": 0.3720374969017076,
+       "recall@10": 0.46833333333333327,
+       "mrr@10": 0.5043333333333333,
+       "answer@10": 0.18,
+       "queries": 50,
+       "chain_gap": 2
+      },
+      "export_import": {
+       "both@5": 0.0,
+       "both@10": 0.26,
+       "ndcg@10": 0.5206325603556305,
+       "recall@10": 0.61,
+       "mrr@10": 0.7091666666666667,
+       "answer@10": 0.26,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "calls_two": {
+       "both@5": 0.36,
+       "both@10": 0.52,
+       "ndcg@10": 0.745362415657225,
+       "recall@10": 0.8266666666666665,
+       "mrr@10": 0.8540000000000001,
+       "answer@10": 1.0,
+       "queries": 50,
+       "chain_gap": 24
+      }
+     }
+    },
+    "rrf_porter_entity_graph": {
+     "both@5": 0.36947791164658633,
+     "both@10": 0.6224899598393574,
+     "ndcg@10": 0.5788735015961078,
+     "recall@10": 0.750669344042838,
+     "mrr@10": 0.6155829667877861,
+     "answer@10": 0.7389558232931727,
+     "queries": 249,
+     "by_type": {
+      "same_file": {
+       "both@5": 0.52,
+       "both@10": 0.96,
+       "ndcg@10": 0.7064876248616869,
+       "recall@10": 0.98,
+       "mrr@10": 0.678047619047619,
+       "answer@10": 0.96,
+       "queries": 50,
+       "chain_gap": 0
+      },
+      "import_call": {
+       "both@5": 0.2857142857142857,
+       "both@10": 0.3673469387755102,
+       "ndcg@10": 0.3338601913554473,
+       "recall@10": 0.42857142857142855,
+       "mrr@10": 0.33911564625850343,
+       "answer@10": 0.42857142857142855,
+       "queries": 49,
+       "chain_gap": 4
+      },
+      "two_hop": {
+       "both@5": 0.22,
+       "both@10": 0.36,
+       "ndcg@10": 0.42605420272408884,
+       "recall@10": 0.5716666666666667,
+       "mrr@10": 0.4975555555555556,
+       "answer@10": 0.38,
+       "queries": 50,
+       "chain_gap": 1
+      },
+      "export_import": {
+       "both@5": 0.4,
+       "both@10": 0.88,
+       "ndcg@10": 0.6749220253921736,
+       "recall@10": 0.94,
+       "mrr@10": 0.701,
+       "answer@10": 0.92,
+       "queries": 50,
+       "chain_gap": 2
+      },
+      "calls_two": {
+       "both@5": 0.42,
+       "both@10": 0.54,
+       "ndcg@10": 0.7481431974423294,
+       "recall@10": 0.8266666666666665,
+       "mrr@10": 0.8566666666666666,
+       "answer@10": 1.0,
+       "queries": 50,
+       "chain_gap": 23
+      }
+     }
+    }
+   }
+  },
+  "ts7_minus_regex_same_queries": {
+   "porter": {
+    "both@5": {
+     "delta": 0.020080321285140562,
+     "wtl": [
+      21,
+      212,
+      16
+     ]
+    },
+    "both@10": {
+     "delta": 0.10441767068273092,
+     "wtl": [
+      54,
+      167,
+      28
+     ]
+    },
+    "ndcg@10": {
+     "delta": 0.035210714399473576,
+     "wtl": [
+      125,
+      48,
+      76
+     ]
+    },
+    "recall@10": {
+     "delta": 0.06492637215528782,
+     "wtl": [
+      79,
+      125,
+      45
+     ]
+    }
+   },
+   "entity": {
+    "both@5": {
+     "delta": -0.020080321285140562,
+     "wtl": [
+      23,
+      198,
+      28
+     ]
+    },
+    "both@10": {
+     "delta": -0.012048192771084338,
+     "wtl": [
+      25,
+      196,
+      28
+     ]
+    },
+    "ndcg@10": {
+     "delta": -0.031459879961943646,
+     "wtl": [
+      69,
+      74,
+      106
+     ]
+    },
+    "recall@10": {
+     "delta": -0.002008032128514056,
+     "wtl": [
+      45,
+      156,
+      48
+     ]
+    }
+   },
+   "graph": {
+    "both@5": {
+     "delta": 0.008032128514056224,
+     "wtl": [
+      26,
+      199,
+      24
+     ]
+    },
+    "both@10": {
+     "delta": 0.012048192771084338,
+     "wtl": [
+      46,
+      160,
+      43
+     ]
+    },
+    "ndcg@10": {
+     "delta": -0.005441626334695083,
+     "wtl": [
+      97,
+      62,
+      90
+     ]
+    },
+    "recall@10": {
+     "delta": -0.007697456492637215,
+     "wtl": [
+      59,
+      128,
+      62
+     ]
+    }
+   },
+   "rrf_porter_graph": {
+    "both@5": {
+     "delta": 0.004016064257028112,
+     "wtl": [
+      48,
+      154,
+      47
+     ]
+    },
+    "both@10": {
+     "delta": 0.01606425702811245,
+     "wtl": [
+      48,
+      157,
+      44
+     ]
+    },
+    "ndcg@10": {
+     "delta": 0.00017844754808542525,
+     "wtl": [
+      104,
+      52,
+      93
+     ]
+    },
+    "recall@10": {
+     "delta": 0.009036144578313253,
+     "wtl": [
+      61,
+      133,
+      55
+     ]
+    }
+   },
+   "rrf_porter_entity": {
+    "both@5": {
+     "delta": -0.01606425702811245,
+     "wtl": [
+      24,
+      197,
+      28
+     ]
+    },
+    "both@10": {
+     "delta": 0.06827309236947791,
+     "wtl": [
+      47,
+      172,
+      30
+     ]
+    },
+    "ndcg@10": {
+     "delta": 3.6238449423327886e-05,
+     "wtl": [
+      95,
+      62,
+      92
+     ]
+    },
+    "recall@10": {
+     "delta": 0.035475234270415,
+     "wtl": [
+      65,
+      139,
+      45
+     ]
+    }
+   },
+   "rrf_porter_entity_graph": {
+    "both@5": {
+     "delta": 0.004016064257028112,
+     "wtl": [
+      48,
+      154,
+      47
+     ]
+    },
+    "both@10": {
+     "delta": 0.0,
+     "wtl": [
+      42,
+      165,
+      42
+     ]
+    },
+    "ndcg@10": {
+     "delta": -0.0014333743505315375,
+     "wtl": [
+      104,
+      49,
+      96
+     ]
+    },
+    "recall@10": {
+     "delta": 0.0013386880856760374,
+     "wtl": [
+      56,
+      139,
+      54
+     ]
+    }
+   }
+  },
+  "ts7_minus_regex_text_ablation": {
+   "porter": {
+    "both@5": {
+     "delta": 0.0,
+     "wtl": [
+      0,
+      249,
+      0
+     ]
+    },
+    "both@10": {
+     "delta": 0.020080321285140562,
+     "wtl": [
+      6,
+      242,
+      1
+     ]
+    },
+    "ndcg@10": {
+     "delta": 0.0054298072400538145,
+     "wtl": [
+      38,
+      206,
+      5
+     ]
+    },
+    "recall@10": {
+     "delta": 0.010040160642570281,
+     "wtl": [
+      7,
+      240,
+      2
+     ]
+    }
+   },
+   "entity": {
+    "both@5": {
+     "delta": 0.0,
+     "wtl": [
+      0,
+      249,
+      0
+     ]
+    },
+    "both@10": {
+     "delta": 0.0,
+     "wtl": [
+      0,
+      249,
+      0
+     ]
+    },
+    "ndcg@10": {
+     "delta": 0.0,
+     "wtl": [
+      0,
+      249,
+      0
+     ]
+    },
+    "recall@10": {
+     "delta": 0.0,
+     "wtl": [
+      0,
+      249,
+      0
+     ]
+    }
+   },
+   "graph": {
+    "both@5": {
+     "delta": -0.004016064257028112,
+     "wtl": [
+      1,
+      246,
+      2
+     ]
+    },
+    "both@10": {
+     "delta": -0.008032128514056224,
+     "wtl": [
+      1,
+      245,
+      3
+     ]
+    },
+    "ndcg@10": {
+     "delta": 6.394008947648106e-06,
+     "wtl": [
+      9,
+      227,
+      13
+     ]
+    },
+    "recall@10": {
+     "delta": -0.0026773761713520753,
+     "wtl": [
+      4,
+      240,
+      5
+     ]
+    }
+   },
+   "rrf_porter_graph": {
+    "both@5": {
+     "delta": 0.008032128514056224,
+     "wtl": [
+      2,
+      247,
+      0
+     ]
+    },
+    "both@10": {
+     "delta": -0.004016064257028112,
+     "wtl": [
+      4,
+      240,
+      5
+     ]
+    },
+    "ndcg@10": {
+     "delta": 0.0026369063810539706,
+     "wtl": [
+      30,
+      197,
+      22
+     ]
+    },
+    "recall@10": {
+     "delta": 0.0016733601070950466,
+     "wtl": [
+      7,
+      236,
+      6
+     ]
+    }
+   },
+   "rrf_porter_entity": {
+    "both@5": {
+     "delta": 0.0,
+     "wtl": [
+      0,
+      249,
+      0
+     ]
+    },
+    "both@10": {
+     "delta": 0.008032128514056224,
+     "wtl": [
+      3,
+      245,
+      1
+     ]
+    },
+    "ndcg@10": {
+     "delta": 0.003494880882391909,
+     "wtl": [
+      23,
+      221,
+      5
+     ]
+    },
+    "recall@10": {
+     "delta": 0.002008032128514056,
+     "wtl": [
+      3,
+      244,
+      2
+     ]
+    }
+   },
+   "rrf_porter_entity_graph": {
+    "both@5": {
+     "delta": 0.0,
+     "wtl": [
+      1,
+      247,
+      1
+     ]
+    },
+    "both@10": {
+     "delta": -0.01606425702811245,
+     "wtl": [
+      1,
+      243,
+      5
+     ]
+    },
+    "ndcg@10": {
+     "delta": 0.000560097480674063,
+     "wtl": [
+      21,
+      215,
+      13
+     ]
+    },
+    "recall@10": {
+     "delta": -0.005354752342704151,
+     "wtl": [
+      3,
+      240,
+      6
+     ]
+    }
+   }
+  },
+  "provenance_control": {
+   "meta": {
+    "queries_per_source": {
+     "regex": 250,
+     "ts7": 250
+    },
+    "why": "Each query set is generated from one graph's edges and then id-mapped onto both graphs, so the only asymmetry left is which graph the relations were read off."
+   },
+   "cells": {
+    "queries:regex|graph:regex": {
+     "queries": 250,
+     "qrel_mapping": {
+      "exact": 572,
+      "fallback": 0,
+      "queries_dropped": 0
+     },
+     "porter_both@10": 0.288,
+     "porter_ndcg@10": 0.41911755118510163,
+     "rrf_both@10": 0.608,
+     "rrf_ndcg@10": 0.5812049043833347
+    },
+    "queries:regex|graph:ts7": {
+     "queries": 249,
+     "qrel_mapping": {
+      "exact": 571,
+      "fallback": 0,
+      "queries_dropped": 1
+     },
+     "porter_both@10": 0.3895582329317269,
+     "porter_ndcg@10": 0.4533393814028583,
+     "rrf_both@10": 0.606425702811245,
+     "rrf_ndcg@10": 0.5794335990767818
+    },
+    "queries:ts7|graph:regex": {
+     "queries": 250,
+     "qrel_mapping": {
+      "exact": 556,
+      "fallback": 15,
+      "queries_dropped": 0
+     },
+     "porter_both@10": 0.288,
+     "porter_ndcg@10": 0.4181217596215001,
+     "rrf_both@10": 0.62,
+     "rrf_ndcg@10": 0.5904475132359606
+    },
+    "queries:ts7|graph:ts7": {
+     "queries": 250,
+     "qrel_mapping": {
+      "exact": 571,
+      "fallback": 0,
+      "queries_dropped": 0
+     },
+     "porter_both@10": 0.38,
+     "porter_ndcg@10": 0.4507928158042837,
+     "rrf_both@10": 0.636,
+     "rrf_ndcg@10": 0.5901600538569347
+    }
+   }
+  }
+ },
+ "retrieval_own_queries": {
+  "meta": {
+   "kind": "capability test, graph-derived qrels (not human relevance)",
+   "queries": 97,
+   "docs": 165,
+   "doc_unit": "AST chunk (function/method/class/script body), full node text",
+   "bm25": {
+    "k1": 1.2,
+    "b": 0.75,
+    "stemmer": "porter (snowballstemmer)"
+   },
+   "rrf_k": 60,
+   "graph_seeds": 10,
+   "warning": "The graph channel is evaluated against qrels built from the same CALLS edges it walks. It cannot lose by design on both@k; treat the deltas as an upper bound on channel value, not as evidence of quality."
+  },
+  "systems": {
+   "bm25_porter": {
+    "both@5": 0.08247422680412371,
+    "both@10": 0.17525773195876287,
+    "ndcg10": 0.2938737495016168,
+    "r10": 0.4175257731958763,
+    "mrr": 0.32838733431516937
+   },
+   "symbol": {
+    "both@5": 0.0,
+    "both@10": 0.0,
+    "ndcg10": 0.0884954711207878,
+    "r10": 0.07216494845360824,
+    "mrr": 0.14432989690721648,
+    "vs_bm25_both@5": {
+     "delta": -0.08247422680412371,
+     "ci95": [
+      -0.14432989690721648,
+      -0.030927835051546393
+     ],
+     "wtl": [
+      0,
+      89,
+      8
+     ]
+    },
+    "vs_bm25_both@10": {
+     "delta": -0.17525773195876287,
+     "ci95": [
+      -0.25773195876288657,
+      -0.10309278350515463
+     ],
+     "wtl": [
+      0,
+      80,
+      17
+     ]
+    },
+    "vs_bm25_ndcg10": {
+     "delta": -0.205378278380829,
+     "ci95": [
+      -0.2581539553603195,
+      -0.15130963634029512
+     ],
+     "wtl": [
+      7,
+      34,
+      56
+     ]
+    },
+    "vs_bm25_r10": {
+     "delta": -0.34536082474226804,
+     "ci95": [
+      -0.4175257731958763,
+      -0.27835051546391754
+     ],
+     "wtl": [
+      2,
+      37,
+      58
+     ]
+    },
+    "vs_bm25_mrr": {
+     "delta": -0.18405743740795286,
+     "ci95": [
+      -0.2619906725576829,
+      -0.10101047291768941
+     ],
+     "wtl": [
+      7,
+      38,
+      52
+     ]
+    }
+   },
+   "graph": {
+    "both@5": 0.061855670103092786,
+    "both@10": 0.09278350515463918,
+    "ndcg10": 0.37672907808835265,
+    "r10": 0.4484536082474227,
+    "mrr": 0.505723285877925,
+    "vs_bm25_both@5": {
+     "delta": -0.020618556701030927,
+     "ci95": [
+      -0.09278350515463918,
+      0.05154639175257732
+     ],
+     "wtl": [
+      6,
+      83,
+      8
+     ]
+    },
+    "vs_bm25_both@10": {
+     "delta": -0.08247422680412371,
+     "ci95": [
+      -0.18556701030927836,
+      0.020618556701030927
+     ],
+     "wtl": [
+      9,
+      71,
+      17
+     ]
+    },
+    "vs_bm25_ndcg10": {
+     "delta": 0.0828553285867358,
+     "ci95": [
+      0.004142877320018727,
+      0.16890788153146136
+     ],
+     "wtl": [
+      42,
+      15,
+      40
+     ]
+    },
+    "vs_bm25_r10": {
+     "delta": 0.030927835051546393,
+     "ci95": [
+      -0.061855670103092786,
+      0.12886597938144329
+     ],
+     "wtl": [
+      27,
+      47,
+      23
+     ]
+    },
+    "vs_bm25_mrr": {
+     "delta": 0.1773359515627557,
+     "ci95": [
+      0.06881852397316315,
+      0.2959785632466045
+     ],
+     "wtl": [
+      44,
+      18,
+      35
+     ]
+    }
+   },
+   "rrf_bm25_symbol": {
+    "both@5": 0.10309278350515463,
+    "both@10": 0.1958762886597938,
+    "ndcg10": 0.3289981507255969,
+    "r10": 0.4381443298969072,
+    "mrr": 0.3830265095729013,
+    "vs_bm25_both@5": {
+     "delta": 0.020618556701030927,
+     "ci95": [
+      0.0,
+      0.05154639175257732
+     ],
+     "wtl": [
+      2,
+      95,
+      0
+     ]
+    },
+    "vs_bm25_both@10": {
+     "delta": 0.020618556701030927,
+     "ci95": [
+      0.0,
+      0.05154639175257732
+     ],
+     "wtl": [
+      2,
+      95,
+      0
+     ]
+    },
+    "vs_bm25_ndcg10": {
+     "delta": 0.035124401223980084,
+     "ci95": [
+      0.012204009399183284,
+      0.0625741388665099
+     ],
+     "wtl": [
+      8,
+      89,
+      0
+     ]
+    },
+    "vs_bm25_r10": {
+     "delta": 0.020618556701030927,
+     "ci95": [
+      0.005154639175257732,
+      0.041237113402061855
+     ],
+     "wtl": [
+      4,
+      93,
+      0
+     ]
+    },
+    "vs_bm25_mrr": {
+     "delta": 0.05463917525773196,
+     "ci95": [
+      0.018900343642611683,
+      0.09725085910652921
+     ],
+     "wtl": [
+      7,
+      90,
+      0
+     ]
+    }
+   },
+   "rrf_bm25_graph": {
+    "both@5": 0.14432989690721648,
+    "both@10": 0.27835051546391754,
+    "ndcg10": 0.38294633864621486,
+    "r10": 0.5360824742268041,
+    "mrr": 0.4298641793487154,
+    "vs_bm25_both@5": {
+     "delta": 0.061855670103092786,
+     "ci95": [
+      0.0,
+      0.12371134020618557
+     ],
+     "wtl": [
+      8,
+      87,
+      2
+     ]
+    },
+    "vs_bm25_both@10": {
+     "delta": 0.10309278350515463,
+     "ci95": [
+      0.010309278350515464,
+      0.1958762886597938
+     ],
+     "wtl": [
+      15,
+      77,
+      5
+     ]
+    },
+    "vs_bm25_ndcg10": {
+     "delta": 0.08907258914459804,
+     "ci95": [
+      0.029758136502065078,
+      0.15586403735726231
+     ],
+     "wtl": [
+      50,
+      10,
+      37
+     ]
+    },
+    "vs_bm25_r10": {
+     "delta": 0.11855670103092783,
+     "ci95": [
+      0.03608247422680412,
+      0.20103092783505155
+     ],
+     "wtl": [
+      36,
+      43,
+      18
+     ]
+    },
+    "vs_bm25_mrr": {
+     "delta": 0.10147684503354606,
+     "ci95": [
+      0.012964326624120443,
+      0.19913271150384554
+     ],
+     "wtl": [
+      47,
+      14,
+      36
+     ]
+    }
+   },
+   "rrf_bm25_symbol_graph": {
+    "both@5": 0.17525773195876287,
+    "both@10": 0.28865979381443296,
+    "ndcg10": 0.4154779807463963,
+    "r10": 0.5412371134020618,
+    "mrr": 0.4840615283914253,
+    "vs_bm25_both@5": {
+     "delta": 0.09278350515463918,
+     "ci95": [
+      0.030927835051546393,
+      0.16494845360824742
+     ],
+     "wtl": [
+      11,
+      84,
+      2
+     ]
+    },
+    "vs_bm25_both@10": {
+     "delta": 0.1134020618556701,
+     "ci95": [
+      0.020618556701030927,
+      0.20618556701030927
+     ],
+     "wtl": [
+      16,
+      76,
+      5
+     ]
+    },
+    "vs_bm25_ndcg10": {
+     "delta": 0.1216042312447795,
+     "ci95": [
+      0.05927815955559601,
+      0.18691637752280726
+     ],
+     "wtl": [
+      52,
+      11,
+      34
+     ]
+    },
+    "vs_bm25_r10": {
+     "delta": 0.12371134020618557,
+     "ci95": [
+      0.041237113402061855,
+      0.20618556701030927
+     ],
+     "wtl": [
+      37,
+      42,
+      18
+     ]
+    },
+    "vs_bm25_mrr": {
+     "delta": 0.15567419407625593,
+     "ci95": [
+      0.06842578955981019,
+      0.24971772214040255
+     ],
+     "wtl": [
+      49,
+      17,
+      31
+     ]
+    }
+   }
+  }
+ }
+}

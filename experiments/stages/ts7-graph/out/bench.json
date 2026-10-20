@@ -1,0 +1,91 @@
+{
+ "reps": 7,
+ "node": "v26.8.2",
+ "regex": {
+  "runs_ms": [
+   86.4,
+   106.5,
+   89.9,
+   96.5,
+   100.6,
+   109.3,
+   107.1
+  ],
+  "min": 86.4,
+  "median": 100.6,
+  "max": 109.3
+ },
+ "ts7_no_checker_process": {
+  "runs_ms": [
+   322.3,
+   205.7,
+   219.1,
+   212.3,
+   213.3,
+   230.6,
+   229
+  ],
+  "min": 205.7,
+  "median": 219.1,
+  "max": 322.3
+ },
+ "ts7_total_process": {
+  "runs_ms": [
+   404.7,
+   402.2,
+   431,
+   416.7,
+   414.6,
+   402.4,
+   445.1
+  ],
+  "min": 402.2,
+  "median": 414.6,
+  "max": 445.1
+ },
+ "ts7_breakdown": {
+  "spawn_and_snapshot_ms": 76.9,
+  "fetch_and_parse_ms": 7,
+  "walk_and_resolve_ms": 258.2,
+  "resolve_ms": 224.2,
+  "total_build_ms": 342.4
+ },
+ "ts7_breakdown_no_checker": {
+  "spawn_and_snapshot_ms": 66.4,
+  "fetch_and_parse_ms": 6.6,
+  "walk_and_resolve_ms": 34.8,
+  "resolve_ms": 0.6,
+  "total_build_ms": 108
+ },
+ "ts7_transport": {
+  "enabled": true,
+  "requests": 2245,
+  "round_trip_ms": 270.6,
+  "server_time_ms": 196.1,
+  "transport_overhead_ms": 74.6,
+  "nodes_materialized": 30647,
+  "bytes_received": 12070212
+ },
+ "ts7_transport_no_checker": {
+  "enabled": true,
+  "requests": 16,
+  "round_trip_ms": 64.2,
+  "server_time_ms": 52.6,
+  "transport_overhead_ms": 11.7,
+  "nodes_materialized": 30523,
+  "bytes_received": 1134175
+ },
+ "regex_meta": {
+  "generator": "graph_regex.mjs",
+  "engine": "regex + brace counting (node 26)",
+  "repo": "/Users/asmit/Personal/algo-serp-stages",
+  "files": 14,
+  "bytes_read": 147257,
+  "checker_used": false,
+  "call_sites": 2353,
+  "nodes_walked": null,
+  "timings": {
+   "total_build_ms": 22.4
+  }
+ }
+}

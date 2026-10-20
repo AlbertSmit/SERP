@@ -9,3 +9,5 @@ __pycache__/
 *.db
 *.db-shm
 *.db-wal
+experiments/stages/data/*.parquet
+experiments/stages/ts7-probe/

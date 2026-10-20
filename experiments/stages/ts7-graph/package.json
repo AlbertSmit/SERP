@@ -1,0 +1,10 @@
+{
+  "name": "ts7-graph",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "TS7 native-preview AST code graph experiment (read-only over ../.. source)",
+  "dependencies": {
+    "typescript": "7.0.2"
+  }
+}
