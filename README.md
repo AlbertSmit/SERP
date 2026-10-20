@@ -25,7 +25,7 @@ supported product modes.
 | --- | --- | --- |
 | Default | BM25 / FTS5, fixed RRF with an in-word 4-gram channel, truncation packing | JS engine: `packHybrid`, `retrieveRanked`, `packRanked` |
 | Deep | EBR: Porter BM25 first hop, untyped bridge entities, per-entity coverage, fixed RRF (`k = 60`) | Python lab only (`experiments/stages/lab/hotpot.py`) |
-| Structured | CESR-U: exact constraints, universal/identity coverage, minimal evidence set under a budget | Python lab only (`experiments/stages/lab/cesr_u.py`) |
+| Structured | CESR-U: exact constraints, universal/identity coverage, minimal evidence set under a budget | Python lab only (`experiments/stages/lab/cesr_u.py`, `cesr_u_auto.py`) |
 | Optional | RM3 expansion as a per-workload profile; a cross-encoder as a post-fusion reranker | Python lab only |
 
 Only the default mode is in the shipped engine. The MCP `pack_context` tool now
@@ -66,9 +66,15 @@ often than BM25 on three multi-hop datasets. It is **not** a general ranker:
 CESR-U chooses the smallest set of chunks that satisfies explicit constraints
 ("the definition of X and every caller of X") within a token budget. It is a
 **packing/selection objective**. It becomes retrieval only when the constraints
-fully determine the evidence set. It has been validated only on synthetic code
-queries with **oracle constraints and graph-generated qrels**. On real PR-derived
-code search with constraints extracted from text, CESR did not beat BM25.
+fully determine the evidence set.
+
+It has been validated on synthetic code queries with graph-generated qrels. With
+a fixed text parser it plans **77.6%** of the queries, is oracle-identical on every
+query it can plan, and beats RRF on `all@10` by `+0.436 / +0.215 / +0.134` at
+500/1000/2000 tokens. The unplannable 22.4% is mostly `two_hop` (the bridge name
+is not in the text) plus a few imported-callee cases. The cue phrases are the
+generator's own templates, so this validates the plumbing, not paraphrase
+robustness. On real PR-derived code search, CESR did not beat BM25.
 
 ### Optional: RM3 and a neural reranker
 

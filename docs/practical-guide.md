@@ -43,12 +43,17 @@ set, for example "the definition of `X` and every caller of `X`" over a code
 graph. It returns the smallest set that satisfies those constraints within the
 budget. It is a packing objective, not a search engine:
 
-- Its results rest on oracle constraints and synthetic graph qrels.
-- On real PR-derived code search, with constraints extracted from text, it did
-  not beat BM25.
+- A fixed text parser plans 77.6% of the synthetic code queries and is
+  oracle-identical on every query it can plan. `two_hop` is not plannable because
+  the bridge name is not in the text.
+- The results still rest on synthetic graph qrels; on real PR-derived code
+  search, with constraints extracted from text, it did not beat BM25.
+- The cue phrases are the query generator's own templates, so this validates the
+  plumbing, not paraphrase robustness.
 - At small budgets it can exceed the budget to satisfy mandatory constraints.
 
-It exists only in the Python lab (`experiments/stages/lab/cesr_u.py`).
+It exists only in the Python lab (`experiments/stages/lab/cesr_u.py` and
+`cesr_u_auto.py`).
 
 ## Optional profiles
 

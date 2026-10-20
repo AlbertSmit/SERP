@@ -12,8 +12,11 @@
   all@10 +0.124 on 2Wiki and +0.065 on MuSiQue (paragraph identity). It hurts
   single-hop retrieval. Typed bridges and the text-only router are negative
   results.
-- CESR-U is a structured evidence-set packing objective. It has been validated
-  only on synthetic code queries, with oracle constraints and graph qrels.
+- CESR-U is a structured evidence-set packing objective. A fixed text parser now
+  plans 77.6% of the synthetic code queries and is oracle-identical on every
+  query it can plan; `two_hop` is not plannable because the bridge name is not in
+  the text. The results still use synthetic graph qrels and generator-template
+  cues, so this validates the plumbing, not paraphrase robustness.
 - The code graph and CESR do not beat BM25 on real PR-derived code search. The
   TS 7 AST graph improves correctness, not retrieval.
 - RM3 is a per-workload option. The cross-encoder is an optional reranker and
