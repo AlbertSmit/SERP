@@ -147,6 +147,7 @@ something BM25 structurally cannot: retrieve both supporting facts.
 | Does EBR improve a neural reranker? | yes; CE(EBR pool) +0.0095 nDCG, +0.0370 both@10 over CE(Porter pool) | keep EBR as a first-stage candidate generator |
 | Does code-graph EBR transfer to SERP's domain? | synthetic: +0.320 both@10 upper bound; +0.20 on the clean two-hop slice; +0.10 at 20% edge loss | keep as a relational channel, not a global ranker |
 | Do typed relations improve the bridge channel? | **no, they hurt everywhere**: both@10 -0.080 vs untyped at fixed channel set; typed second-hop reach 0.162 vs untyped 0.686 | drop bridge typing; keep broad cross-seed consensus |
-| Does EBR hurt single-hop retrieval? | not yet tested | next gate: SciFact/Touche regression + router |
+| Does EBR hurt single-hop retrieval? | **yes**: SciFact test nDCG -0.044; Touche R@100 -0.037; entity channel -0.48 | not a universal replacement |
+| Can a text-only router fix that? | partially: 65% fire on HotpotQA, 7% on SciFact, 0% on Touche/NFCorpus; routed still -0.005 on SciFact and gives back 0.035 both@10 on HotpotQA | router is a safety valve, not a benefit predictor |
 | Is EBR field-novel? | no; entity-based multi-hop IR is prior art | claim a measured project result, not novelty |
 | Is TS 7's AST graph worth it? | yes for correctness, not retrieval: TS7 20/20 call precision vs regex 18/20; fused both@10 0.606 vs 0.608 | use TS7 AST behind `unstable/*` with a version pin; checker opt-in |

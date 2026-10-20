@@ -1,0 +1,2706 @@
+{
+ "config": {
+  "beir_sets": [
+   "scifact/train",
+   "scifact/test",
+   "touche/test",
+   "nfcorpus/dev"
+  ],
+  "hotpot_splits": [
+   "dev",
+   "test"
+  ],
+  "seeds": 20,
+  "bridges": 20,
+  "max_df_frac": 0.05,
+  "rrf_k": 60,
+  "router": "lab/router.py, rules frozen on HotpotQA dev + SciFact train",
+  "data_root": "/Users/asmit/Personal/algo"
+ },
+ "beir": {
+  "scifact": {
+   "train": {
+    "queries": 809,
+    "router_fire_rate": 0.05315203955500618,
+    "fired_cues": {
+     "pair_relation": 3,
+     "anaphora": 39,
+     "comparison": 2
+    },
+    "summary": {
+     "porter": {
+      "ndcg": 0.6976157025989969,
+      "r100": 0.9325916769674496,
+      "mrr": 0.6686694331626346
+     },
+     "entity": {
+      "ndcg": 0.22403622801926917,
+      "r100": 0.36516275236918005,
+      "mrr": 0.20258598701120334
+     },
+     "bridge": {
+      "ndcg": 0.6429528436145671,
+      "r100": 0.7682941903584671,
+      "mrr": 0.6288755469225186
+     },
+     "rrf_porter_bridge": {
+      "ndcg": 0.6740923726938187,
+      "r100": 0.9199629171817059,
+      "mrr": 0.6515254968901446
+     },
+     "rrf_porter_entity": {
+      "ndcg": 0.5423324271950107,
+      "r100": 0.9264112072517512,
+      "mrr": 0.48977966134950063
+     },
+     "rrf_porter_bridge_entity": {
+      "ndcg": 0.6551536617483249,
+      "r100": 0.9156365883807169,
+      "mrr": 0.6217773265053859
+     },
+     "routed": {
+      "ndcg": 0.6911268148817793,
+      "r100": 0.9313555830243099,
+      "mrr": 0.6605215139207722
+     }
+    },
+    "paired_vs_porter": {
+     "entity": {
+      "ndcg": {
+       "delta": -0.4735794745797277,
+       "ci95": [
+        -0.502741504775899,
+        -0.4414537395422771
+       ],
+       "wtl": [
+        30,
+        232,
+        547
+       ]
+      },
+      "r100": {
+       "delta": -0.5674289245982694,
+       "ci95": [
+        -0.6011124845488257,
+        -0.5302384631231973
+       ],
+       "wtl": [
+        0,
+        337,
+        472
+       ]
+      },
+      "mrr": {
+       "delta": -0.4660834461514313,
+       "ci95": [
+        -0.49584357280200914,
+        -0.4342753276629977
+       ],
+       "wtl": [
+        28,
+        240,
+        541
+       ]
+      }
+     },
+     "bridge": {
+      "ndcg": {
+       "delta": -0.05466285898442981,
+       "ci95": [
+        -0.06503692615927527,
+        -0.04413787038404908
+       ],
+       "wtl": [
+        31,
+        621,
+        157
+       ]
+      },
+      "r100": {
+       "delta": -0.1642974866089823,
+       "ci95": [
+        -0.19036104243922536,
+        -0.13926400906468894
+       ],
+       "wtl": [
+        5,
+        655,
+        149
+       ]
+      },
+      "mrr": {
+       "delta": -0.03979388624011616,
+       "ci95": [
+        -0.04887436969019169,
+        -0.030830598720740877
+       ],
+       "wtl": [
+        30,
+        637,
+        142
+       ]
+      }
+     },
+     "rrf_porter_bridge": {
+      "ndcg": {
+       "delta": -0.023523329905178133,
+       "ci95": [
+        -0.03217827852507333,
+        -0.015294517737256076
+       ],
+       "wtl": [
+        52,
+        646,
+        111
+       ]
+      },
+      "r100": {
+       "delta": -0.012628759785743716,
+       "ci95": [
+        -0.0236516275236918,
+        -0.0015435723114956817
+       ],
+       "wtl": [
+        10,
+        779,
+        20
+       ]
+      },
+      "mrr": {
+       "delta": -0.017143936272490043,
+       "ci95": [
+        -0.02454509780838582,
+        -0.01019413296839132
+       ],
+       "wtl": [
+        42,
+        666,
+        101
+       ]
+      }
+     },
+     "rrf_porter_entity": {
+      "ndcg": {
+       "delta": -0.15528327540398612,
+       "ci95": [
+        -0.17611972834512735,
+        -0.13291717078405232
+       ],
+       "wtl": [
+        52,
+        438,
+        319
+       ]
+      },
+      "r100": {
+       "delta": -0.006180469715698393,
+       "ci95": [
+        -0.012051915945611866,
+        -0.0012360939431396785
+       ],
+       "wtl": [
+        2,
+        801,
+        6
+       ]
+      },
+      "mrr": {
+       "delta": -0.17888977181313398,
+       "ci95": [
+        -0.2032424657131085,
+        -0.15295024231365395
+       ],
+       "wtl": [
+        47,
+        452,
+        310
+       ]
+      }
+     },
+     "rrf_porter_bridge_entity": {
+      "ndcg": {
+       "delta": -0.04246204085067196,
+       "ci95": [
+        -0.055498810449506004,
+        -0.029645155950587098
+       ],
+       "wtl": [
+        72,
+        566,
+        171
+       ]
+      },
+      "r100": {
+       "delta": -0.01695508858673259,
+       "ci95": [
+        -0.029235681911825295,
+        -0.004654408735063873
+       ],
+       "wtl": [
+        12,
+        773,
+        24
+       ]
+      },
+      "mrr": {
+       "delta": -0.04689210665724881,
+       "ci95": [
+        -0.0614056031353621,
+        -0.03213960749112171
+       ],
+       "wtl": [
+        63,
+        585,
+        161
+       ]
+      }
+     },
+     "routed": {
+      "ndcg": {
+       "delta": -0.00648888771721766,
+       "ci95": [
+        -0.010463165901997298,
+        -0.0030292453283731133
+       ],
+       "wtl": [
+        0,
+        797,
+        12
+       ]
+      },
+      "r100": {
+       "delta": -0.0012360939431396785,
+       "ci95": [
+        -0.003708281829419036,
+        0.0
+       ],
+       "wtl": [
+        0,
+        808,
+        1
+       ]
+      },
+      "mrr": {
+       "delta": -0.008147919241862383,
+       "ci95": [
+        -0.013361918005768438,
+        -0.003604243922538119
+       ],
+       "wtl": [
+        0,
+        798,
+        11
+       ]
+      }
+     }
+    },
+    "paired_routed_minus_ebr": {
+     "ndcg": {
+      "delta": 0.03597315313345431,
+      "ci95": [
+       0.02427676573523831,
+       0.0485263279469169
+      ],
+      "wtl": [
+       159,
+       578,
+       72
+      ]
+     }
+    },
+    "fired_delta_by_cue": {
+     "anaphora": {
+      "queries": 39,
+      "delta_ndcg": -0.13460282469818174,
+      "wtl_ndcg": [
+       0,
+       27,
+       12
+      ]
+     },
+     "comparison": {
+      "queries": 2,
+      "delta_ndcg": 0.0,
+      "wtl_ndcg": [
+       0,
+       2,
+       0
+      ]
+     },
+     "pair_relation": {
+      "queries": 3,
+      "delta_ndcg": -0.16666666666666666,
+      "wtl_ndcg": [
+       0,
+       2,
+       1
+      ]
+     }
+    },
+    "fired_examples": [
+     {
+      "qid": "32",
+      "question": "A country's Vaccine Alliance (GAVI) eligibility is not indictivate of accelerated adoption of the Hub vaccine.",
+      "cues": [
+       "pair_relation"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 1.0
+     },
+     {
+      "qid": "47",
+      "question": "A strong bias in the phage genome locations where the spacers were derived has been observed in many CRISPR subtypes that confer the immunity to phage.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 0.6934264036172708
+     },
+     {
+      "qid": "159",
+      "question": "BRCA 1 mutation carriers' risk of breast and ovarian cancer depends on where the mutation is located.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 0.43067655807339306
+     },
+     {
+      "qid": "200",
+      "question": "CD28 initiates tonic signaling in conventional T cells, which causes an exhaustion phenotype and limited efficiency.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 1.0
+     },
+     {
+      "qid": "227",
+      "question": "Cancers that initially benefit from epidermal growth factor receptor targeted therapies later become refractory through several mechanisms.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 0.6309297535714575
+     },
+     {
+      "qid": "262",
+      "question": "Cis-acting lncRNAs control the expression of genes that are positioned in the vicinity of their transcription sites.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 0.0,
+      "ebr_ndcg": 0.0
+     },
+     {
+      "qid": "347",
+      "question": "Differentiation of progenitor cells to myeloid cells is skewed when insulin signaling is suppressed.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 0.6309297535714575
+     },
+     {
+      "qid": "401",
+      "question": "Expression of MSX2 is induced 3 hours after the addition of BMP4, which is earlier than T and CDX2.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 1.0
+     },
+     {
+      "qid": "418",
+      "question": "Fibroblast Growth Factor is a ligand which signals through receptor tyrosine kinases.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 0.0,
+      "ebr_ndcg": 0.0
+     },
+     {
+      "qid": "484",
+      "question": "H4 G94P proteins induce chromatin assembly, which increases free histones.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 0.0,
+      "ebr_ndcg": 0.0
+     },
+     {
+      "qid": "486",
+      "question": "H4 G94P proteins inhibit chromatin assembly, which decreases free histones.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 0.0,
+      "ebr_ndcg": 0.0
+     },
+     {
+      "qid": "492",
+      "question": "HOXB4 facilitates HSC expansion when co-cultured with HSCs.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 1.0
+     },
+     {
+      "qid": "523",
+      "question": "Higher plasma levels of I-carnitine, when associated with trimethylamine N-oxide, are negatively correlated with cardiovascular events in humans.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 1.0
+     },
+     {
+      "qid": "524",
+      "question": "Higher plasma levels of I-carnitine, when associated with trimethylamine N-oxide, are positively correlated with cardiovascular events in humans.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 1.0
+     },
+     {
+      "qid": "553",
+      "question": "IgA plasma cells that are specific for transglutaminase 2 are scarce in the duodenal mucosa of celiac disease patients when the disease is active.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 1.0
+     },
+     {
+      "qid": "572",
+      "question": "In chronic viral infections or tumors, peptides that selectively inhibit PTPRS can be utilized to boost insufficient activity of pDCs.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 0.0,
+      "ebr_ndcg": 0.0
+     },
+     {
+      "qid": "621",
+      "question": "Individuals with Alzheimers who participate in six months of physical activity improve cognitive function for up to 18 months.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 1.0
+     },
+     {
+      "qid": "633",
+      "question": "Inhibiting focal adhesion formation increases the rate at which cells convert mechanical strain into inflammation and fibrosis.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 1.0
+     },
+     {
+      "qid": "650",
+      "question": "Integrating classroom-based collaborative learning with Web-based collaborative learning offers the best class performance.",
+      "cues": [
+       "pair_relation"
+      ],
+      "porter_ndcg": 0.6309297535714575,
+      "ebr_ndcg": 0.6309297535714575
+     },
+     {
+      "qid": "658",
+      "question": "It is not proven that moderate consumption of candy and chocolate reduces the risk of cardiovascular disease (CVD) specifically.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 0.38685280723454163
+     },
+     {
+      "qid": "760",
+      "question": "Mathematical models predict that using Artemisinin-based combination therapy over nongametocytocidal drugs have only a modest impact in reducing malaria transmission.",
+      "cues": [
+       "anaphora",
+       "pair_relation"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 0.5
+     },
+     {
+      "qid": "767",
+      "question": "Men are more susceptible to death due to pneumonia when compared to women.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 0.6309297535714575
+     },
+     {
+      "qid": "771",
+      "question": "Metastatic colorectal cancer treated with a single agent fluoropyrimidines resulted in similar efficacy and better quality of life when compared with oxaliplatin-based chemotherapy in elderly patients.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 1.0
+     },
+     {
+      "qid": "780",
+      "question": "Mice that lack Interferon-\u03b3 or its receptor are highly susceptible to experimental autoimmune myocarditis.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 0.5437713091520254
+     },
+     {
+      "qid": "812",
+      "question": "Mutant mice lacking SVCT2 have severely reduced ascorbic acid levels in both brain and adrenals.",
+      "cues": [
+       "comparison"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 1.0
+     }
+    ],
+    "fired_subset": {
+     "queries": 43,
+     "porter": {
+      "ndcg": 0.8359626658222601,
+      "r100": 0.9302325581395349,
+      "mrr": 0.8284883720930233
+     },
+     "rrf_porter_bridge_entity": {
+      "ndcg": 0.7138810341192582,
+      "r100": 0.9069767441860465,
+      "mrr": 0.6751937984496125
+     },
+     "paired_ebr_vs_porter": {
+      "ndcg": {
+       "delta": -0.12208163170300203,
+       "ci95": [
+        -0.18978080869698233,
+        -0.062075157167360215
+       ],
+       "wtl": [
+        0,
+        31,
+        12
+       ]
+      },
+      "r100": {
+       "delta": -0.023255813953488372,
+       "ci95": [
+        -0.06976744186046512,
+        0.0
+       ],
+       "wtl": [
+        0,
+        42,
+        1
+       ]
+      },
+      "mrr": {
+       "delta": -0.15329457364341087,
+       "ci95": [
+        -0.2434108527131783,
+        -0.07208333333333337
+       ],
+       "wtl": [
+        0,
+        32,
+        11
+       ]
+      }
+     }
+    },
+    "silent_subset": {
+     "queries": 766,
+     "porter": {
+      "ndcg": 0.6898494892587875,
+      "r100": 0.9327241079199304,
+      "mrr": 0.6596978739276389
+     },
+     "rrf_porter_bridge_entity": {
+      "ndcg": 0.6518569554664057,
+      "r100": 0.9161227154046997,
+      "mrr": 0.6187787517095611
+     },
+     "paired_ebr_vs_porter": {
+      "ndcg": {
+       "delta": -0.0379925337923819,
+       "ci95": [
+        -0.05047922737994372,
+        -0.025513083026303344
+       ],
+       "wtl": [
+        72,
+        535,
+        159
+       ]
+      },
+      "r100": {
+       "delta": -0.016601392515230635,
+       "ci95": [
+        -0.029439730200174066,
+        -0.004348890339425602
+       ],
+       "wtl": [
+        12,
+        731,
+        23
+       ]
+      },
+      "mrr": {
+       "delta": -0.04091912221807783,
+       "ci95": [
+        -0.05544732220564467,
+        -0.026569286439554064
+       ],
+       "wtl": [
+        63,
+        553,
+        150
+       ]
+      }
+     }
+    }
+   },
+   "test": {
+    "queries": 300,
+    "router_fire_rate": 0.07,
+    "fired_cues": {
+     "anaphora": 17,
+     "pair_relation": 4,
+     "comparison": 1
+    },
+    "summary": {
+     "porter": {
+      "ndcg": 0.6837761829479072,
+      "r100": 0.9279999999999999,
+      "mrr": 0.6477513227513227
+     },
+     "entity": {
+      "ndcg": 0.20188553293567527,
+      "r100": 0.3441666666666667,
+      "mrr": 0.18103571428571427
+     },
+     "bridge": {
+      "ndcg": 0.6244123528410109,
+      "r100": 0.7804444444444444,
+      "mrr": 0.5984378306878306
+     },
+     "rrf_porter_bridge": {
+      "ndcg": 0.6583225932078806,
+      "r100": 0.927,
+      "mrr": 0.6233280423280423
+     },
+     "rrf_porter_entity": {
+      "ndcg": 0.5359287765565338,
+      "r100": 0.9252222222222222,
+      "mrr": 0.4992023809523809
+     },
+     "rrf_porter_bridge_entity": {
+      "ndcg": 0.6398123345227766,
+      "r100": 0.9236666666666667,
+      "mrr": 0.6090224867724868
+     },
+     "routed": {
+      "ndcg": 0.6788384259452638,
+      "r100": 0.9279999999999999,
+      "mrr": 0.6430291005291005
+     }
+    },
+    "paired_vs_porter": {
+     "entity": {
+      "ndcg": {
+       "delta": -0.4818906500122319,
+       "ci95": [
+        -0.5265648416645121,
+        -0.4370209580594474
+       ],
+       "wtl": [
+        6,
+        85,
+        209
+       ]
+      },
+      "r100": {
+       "delta": -0.5838333333333334,
+       "ci95": [
+        -0.6375013888888889,
+        -0.5338750000000001
+       ],
+       "wtl": [
+        1,
+        118,
+        181
+       ]
+      },
+      "mrr": {
+       "delta": -0.4667156084656085,
+       "ci95": [
+        -0.514124537037037,
+        -0.41887662037037043
+       ],
+       "wtl": [
+        7,
+        85,
+        208
+       ]
+      }
+     },
+     "bridge": {
+      "ndcg": {
+       "delta": -0.05936383010689629,
+       "ci95": [
+        -0.07913201519911389,
+        -0.04027974510769356
+       ],
+       "wtl": [
+        13,
+        222,
+        65
+       ]
+      },
+      "r100": {
+       "delta": -0.14755555555555555,
+       "ci95": [
+        -0.19200833333333336,
+        -0.10610833333333335
+       ],
+       "wtl": [
+        4,
+        242,
+        54
+       ]
+      },
+      "mrr": {
+       "delta": -0.049313492063492066,
+       "ci95": [
+        -0.06761474867724868,
+        -0.03269837962962965
+       ],
+       "wtl": [
+        11,
+        230,
+        59
+       ]
+      }
+     },
+     "rrf_porter_bridge": {
+      "ndcg": {
+       "delta": -0.025453589740026608,
+       "ci95": [
+        -0.04072818542402338,
+        -0.010725809417699418
+       ],
+       "wtl": [
+        24,
+        232,
+        44
+       ]
+      },
+      "r100": {
+       "delta": -0.0010000000000000002,
+       "ci95": [
+        -0.017666666666666667,
+        0.015666666666666666
+       ],
+       "wtl": [
+        4,
+        292,
+        4
+       ]
+      },
+      "mrr": {
+       "delta": -0.02442328042328042,
+       "ci95": [
+        -0.03775205026455026,
+        -0.011692791005291017
+       ],
+       "wtl": [
+        18,
+        244,
+        38
+       ]
+      }
+     },
+     "rrf_porter_entity": {
+      "ndcg": {
+       "delta": -0.1478474063913734,
+       "ci95": [
+        -0.1823169696929161,
+        -0.11571727744353752
+       ],
+       "wtl": [
+        14,
+        169,
+        117
+       ]
+      },
+      "r100": {
+       "delta": -0.002777777777777778,
+       "ci95": [
+        -0.012777777777777779,
+        0.007777777777777777
+       ],
+       "wtl": [
+        1,
+        296,
+        3
+       ]
+      },
+      "mrr": {
+       "delta": -0.14854894179894182,
+       "ci95": [
+        -0.1875447420634921,
+        -0.11096335978835979
+       ],
+       "wtl": [
+        17,
+        173,
+        110
+       ]
+      }
+     },
+     "rrf_porter_bridge_entity": {
+      "ndcg": {
+       "delta": -0.04396384842513054,
+       "ci95": [
+        -0.06451702592885299,
+        -0.024841531040914487
+       ],
+       "wtl": [
+        27,
+        207,
+        66
+       ]
+      },
+      "r100": {
+       "delta": -0.004333333333333333,
+       "ci95": [
+        -0.022666666666666665,
+        0.013333333333333334
+       ],
+       "wtl": [
+        4,
+        291,
+        5
+       ]
+      },
+      "mrr": {
+       "delta": -0.03872883597883598,
+       "ci95": [
+        -0.0628919642857143,
+        -0.016182010582010586
+       ],
+       "wtl": [
+        26,
+        212,
+        62
+       ]
+      }
+     },
+     "routed": {
+      "ndcg": {
+       "delta": -0.004937757002643461,
+       "ci95": [
+        -0.010785435854913279,
+        -0.0008363457940590319
+       ],
+       "wtl": [
+        1,
+        294,
+        5
+       ]
+      },
+      "r100": {
+       "delta": 0.0,
+       "ci95": [
+        0.0,
+        0.0
+       ],
+       "wtl": [
+        0,
+        300,
+        0
+       ]
+      },
+      "mrr": {
+       "delta": -0.004722222222222222,
+       "ci95": [
+        -0.01,
+        -0.0008333333333333334
+       ],
+       "wtl": [
+        0,
+        295,
+        5
+       ]
+      }
+     }
+    },
+    "paired_routed_minus_ebr": {
+     "ndcg": {
+      "delta": 0.039026091422487086,
+      "ci95": [
+       0.020118752257585384,
+       0.058722582735751754
+      ],
+      "wtl": [
+       61,
+       213,
+       26
+      ]
+     }
+    },
+    "fired_delta_by_cue": {
+     "anaphora": {
+      "queries": 17,
+      "delta_ndcg": -0.06542687378614681,
+      "wtl_ndcg": [
+       1,
+       12,
+       4
+      ]
+     },
+     "comparison": {
+      "queries": 1,
+      "delta_ndcg": 0.0,
+      "wtl_ndcg": [
+       0,
+       1,
+       0
+      ]
+     },
+     "pair_relation": {
+      "queries": 4,
+      "delta_ndcg": -0.125,
+      "wtl_ndcg": [
+       0,
+       2,
+       2
+      ]
+     }
+    },
+    "fired_examples": [
+     {
+      "qid": "75",
+      "question": "Active H. pylori urease has a polymeric structure that compromises two subunits, UreA and UreB.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 0.5,
+      "ebr_ndcg": 0.5
+     },
+     {
+      "qid": "141",
+      "question": "Auditory entrainment is strengthened when people see congruent visual and auditory information.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 0.9197207891481876,
+      "ebr_ndcg": 1.0
+     },
+     {
+      "qid": "230",
+      "question": "Carriers of the alcohol aldehyde dehydrogenase deficiency mutation drink less that non-carries.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 1.0
+     },
+     {
+      "qid": "303",
+      "question": "DMRT1 is a sex-determining gene that is epigenetically regulated by the MHM region.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 0.0,
+      "ebr_ndcg": 0.0
+     },
+     {
+      "qid": "478",
+      "question": "Golli-deficient T-cells prefer to differentiate into an anergic phenotype in the adaptive immune response when there are increased levels of Ca2+ in the cytosol.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 1.0
+     },
+     {
+      "qid": "528",
+      "question": "Human T-lymphotropic virus type-I-associated myelopathy / tropical spastic paraparesis (HAM/TSP) patients produce Immunoglobulin G (IgG) antibodies which cross-react with an immunodominant epitope in Tax.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 1.0
+     },
+     {
+      "qid": "552",
+      "question": "IgA plasma cells that are specific for transglutaminase 2 accumulate in the duodenal mucosa on commencement of a gluten-free diet.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 1.0
+     },
+     {
+      "qid": "649",
+      "question": "Integrating classroom-based collaborative learning with Web-based collaborative learning leads to subpar class performance",
+      "cues": [
+       "pair_relation"
+      ],
+      "porter_ndcg": 0.6309297535714575,
+      "ebr_ndcg": 0.6309297535714575
+     },
+     {
+      "qid": "759",
+      "question": "Mathematical models predict that using Artemisinin-based combination therapy over nongametocytocidal drugs have a dramatic impact in reducing malaria transmission.",
+      "cues": [
+       "anaphora",
+       "pair_relation"
+      ],
+      "porter_ndcg": 0.6309297535714575,
+      "ebr_ndcg": 0.5
+     },
+     {
+      "qid": "770",
+      "question": "Metastatic colorectal cancer treated with a single agent fluoropyrimidines resulted in reduced efficacy and lower quality of life when compared with oxaliplatin-based chemotherapy in elderly patients.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 1.0
+     },
+     {
+      "qid": "781",
+      "question": "Mice that lack Interferon-\u03b3 or its receptor exhibit high resistance to experimental autoimmune myocarditis.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 0.6309297535714575,
+      "ebr_ndcg": 0.43067655807339306
+     },
+     {
+      "qid": "811",
+      "question": "Mutant mice lacking SVCT2 have greatly increased ascorbic acid levels in both brain and adrenals.",
+      "cues": [
+       "comparison"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 1.0
+     },
+     {
+      "qid": "845",
+      "question": "Neutrophil extracellular traps (NETs) are released by ANCA-stimulated neutrophils.",
+      "cues": [
+       "pair_relation"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 1.0
+     },
+     {
+      "qid": "1020",
+      "question": "Rapid up-regulation and higher basal expression of interferon-induced genes increase survival of granule cell neurons that are infected by West Nile virus.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 0.43067655807339306,
+      "ebr_ndcg": 0.0
+     },
+     {
+      "qid": "1021",
+      "question": "Rapid up-regulation and higher basal expression of interferon-induced genes reduce survival of granule cell neurons that are infected by West Nile virus.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 0.43067655807339306,
+      "ebr_ndcg": 0.0
+     },
+     {
+      "qid": "1086",
+      "question": "Sildenafil improves erectile function in men who experience sexual dysfunction as a result of the use of SSRI antidepressants.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 1.0
+     },
+     {
+      "qid": "1187",
+      "question": "The YAP1 and TEAD complex tanslocates into the nucleus where it interacts with transcription factors and DNA-binding proteins that modulate target gene transcription.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 1.0
+     },
+     {
+      "qid": "1282",
+      "question": "Therapeutic use of the drug Dapsone to treat pyoderma gangrenous is based on anecdotal evidence.",
+      "cues": [
+       "pair_relation"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 0.6309297535714575
+     },
+     {
+      "qid": "1298",
+      "question": "Thigh-length graduated compression stockings (GCS) did not reduce deep vein thrombosis in patients admitted to hospital who are immobile because of acute stroke.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 1.0
+     },
+     {
+      "qid": "1332",
+      "question": "Tumor necrosis factor alpha (TNF-\u03b1) and interleukin-1 (IL-1) are pro-inflammatory cytokines that inhibit IL-6 and IL-10.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 0.0,
+      "ebr_ndcg": 0.0
+     },
+     {
+      "qid": "1339",
+      "question": "Ultrasound guidance significantly raises the number of traumatic procedures when attempting needle insertion.",
+      "cues": [
+       "anaphora"
+      ],
+      "porter_ndcg": 1.0,
+      "ebr_ndcg": 1.0
+     }
+    ],
+    "fired_subset": {
+     "queries": 21,
+     "porter": {
+      "ndcg": 0.7701839602861594,
+      "r100": 0.9523809523809523,
+      "mrr": 0.7301587301587302
+     },
+     "rrf_porter_bridge_entity": {
+      "ndcg": 0.6996445745341099,
+      "r100": 0.9523809523809523,
+      "mrr": 0.6626984126984127
+     },
+     "paired_ebr_vs_porter": {
+      "ndcg": {
+       "delta": -0.07053938575204943,
+       "ci95": [
+        -0.1362549102927041,
+        -0.01286276839856039
+       ],
+       "wtl": [
+        1,
+        15,
+        5
+       ]
+      },
+      "r100": {
+       "delta": 0.0,
+       "ci95": [
+        0.0,
+        0.0
+       ],
+       "wtl": [
+        0,
+        21,
+        0
+       ]
+      },
+      "mrr": {
+       "delta": -0.06746031746031747,
+       "ci95": [
+        -0.13095238095238096,
+        -0.011904761904761904
+       ],
+       "wtl": [
+        0,
+        16,
+        5
+       ]
+      }
+     }
+    },
+    "silent_subset": {
+     "queries": 279,
+     "porter": {
+      "ndcg": 0.6772723717504043,
+      "r100": 0.9261648745519713,
+      "mrr": 0.6415486146668943
+     },
+     "rrf_porter_bridge_entity": {
+      "ndcg": 0.6353088325864398,
+      "r100": 0.9215053763440861,
+      "mrr": 0.6049823633156967
+     },
+     "paired_ebr_vs_porter": {
+      "ndcg": {
+       "delta": -0.041963539163964614,
+       "ci95": [
+        -0.06327924732442801,
+        -0.021658977505550292
+       ],
+       "wtl": [
+        26,
+        192,
+        61
+       ]
+      },
+      "r100": {
+       "delta": -0.004659498207885305,
+       "ci95": [
+        -0.024372759856630823,
+        0.013987455197132568
+       ],
+       "wtl": [
+        4,
+        270,
+        5
+       ]
+      },
+      "mrr": {
+       "delta": -0.036566251351197586,
+       "ci95": [
+        -0.06165407919440177,
+        -0.011592386357171356
+       ],
+       "wtl": [
+        26,
+        196,
+        57
+       ]
+      }
+     }
+    }
+   }
+  },
+  "touche": {
+   "test": {
+    "queries": 49,
+    "router_fire_rate": 0.0,
+    "fired_cues": {},
+    "summary": {
+     "porter": {
+      "ndcg": 0.3262447470772381,
+      "r100": 0.5647341005965234,
+      "mrr": 0.577891156462585
+     },
+     "entity": {
+      "ndcg": 0.029761617296945164,
+      "r100": 0.08116974784032688,
+      "mrr": 0.07510528020732102
+     },
+     "bridge": {
+      "ndcg": 0.28586900338684657,
+      "r100": 0.3318767630826602,
+      "mrr": 0.6277210884353741
+     },
+     "rrf_porter_bridge": {
+      "ndcg": 0.3494381424602198,
+      "r100": 0.5553150339960649,
+      "mrr": 0.6240524781341108
+     },
+     "rrf_porter_entity": {
+      "ndcg": 0.22564662090986357,
+      "r100": 0.5112935574543138,
+      "mrr": 0.44213637836086817
+     },
+     "rrf_porter_bridge_entity": {
+      "ndcg": 0.3479070079001086,
+      "r100": 0.5279496568537572,
+      "mrr": 0.641156462585034
+     },
+     "routed": {
+      "ndcg": 0.3262447470772381,
+      "r100": 0.5647341005965234,
+      "mrr": 0.577891156462585
+     }
+    },
+    "paired_vs_porter": {
+     "entity": {
+      "ndcg": {
+       "delta": -0.29648312978029295,
+       "ci95": [
+        -0.35827025518359334,
+        -0.23617859770075647
+       ],
+       "wtl": [
+        4,
+        3,
+        42
+       ]
+      },
+      "r100": {
+       "delta": -0.4835643527561965,
+       "ci95": [
+        -0.5516429784859057,
+        -0.41647809237816047
+       ],
+       "wtl": [
+        0,
+        0,
+        49
+       ]
+      },
+      "mrr": {
+       "delta": -0.502785876255264,
+       "ci95": [
+        -0.6264532717849044,
+        -0.37778952057013276
+       ],
+       "wtl": [
+        5,
+        3,
+        41
+       ]
+      }
+     },
+     "bridge": {
+      "ndcg": {
+       "delta": -0.04037574369039154,
+       "ci95": [
+        -0.07821112197461735,
+        -0.002144697431175536
+       ],
+       "wtl": [
+        14,
+        4,
+        31
+       ]
+      },
+      "r100": {
+       "delta": -0.23285733751386326,
+       "ci95": [
+        -0.27907304109017744,
+        -0.18724950689037675
+       ],
+       "wtl": [
+        2,
+        3,
+        44
+       ]
+      },
+      "mrr": {
+       "delta": 0.04982993197278913,
+       "ci95": [
+        -0.03725340136054422,
+        0.14303996598639449
+       ],
+       "wtl": [
+        11,
+        22,
+        16
+       ]
+      }
+     },
+     "rrf_porter_bridge": {
+      "ndcg": {
+       "delta": 0.02319339538298166,
+       "ci95": [
+        -0.010139177443345027,
+        0.05629801424243399
+       ],
+       "wtl": [
+        25,
+        4,
+        20
+       ]
+      },
+      "r100": {
+       "delta": -0.009419066600458525,
+       "ci95": [
+        -0.033737602944605344,
+        0.014404903784435099
+       ],
+       "wtl": [
+        12,
+        22,
+        15
+       ]
+      },
+      "mrr": {
+       "delta": 0.04616132167152575,
+       "ci95": [
+        -0.015408163265306118,
+        0.10890549076773558
+       ],
+       "wtl": [
+        13,
+        28,
+        8
+       ]
+      }
+     },
+     "rrf_porter_entity": {
+      "ndcg": {
+       "delta": -0.10059812616737453,
+       "ci95": [
+        -0.1468359514114818,
+        -0.054780566901664635
+       ],
+       "wtl": [
+        11,
+        8,
+        30
+       ]
+      },
+      "r100": {
+       "delta": -0.05344054314220959,
+       "ci95": [
+        -0.07355235496523917,
+        -0.03342641597466547
+       ],
+       "wtl": [
+        3,
+        18,
+        28
+       ]
+      },
+      "mrr": {
+       "delta": -0.13575477810171685,
+       "ci95": [
+        -0.24859653385163588,
+        -0.007984086491739584
+       ],
+       "wtl": [
+        9,
+        16,
+        24
+       ]
+      }
+     },
+     "rrf_porter_bridge_entity": {
+      "ndcg": {
+       "delta": 0.021662260822870486,
+       "ci95": [
+        -0.012467003921644284,
+        0.05465235654410979
+       ],
+       "wtl": [
+        24,
+        4,
+        21
+       ]
+      },
+      "r100": {
+       "delta": -0.036784443742766286,
+       "ci95": [
+        -0.062830485660328,
+        -0.011046043046176231
+       ],
+       "wtl": [
+        11,
+        18,
+        20
+       ]
+      },
+      "mrr": {
+       "delta": 0.06326530612244897,
+       "ci95": [
+        -0.02142857142857143,
+        0.15409863945578223
+       ],
+       "wtl": [
+        14,
+        27,
+        8
+       ]
+      }
+     },
+     "routed": {
+      "ndcg": {
+       "delta": 0.0,
+       "ci95": [
+        0.0,
+        0.0
+       ],
+       "wtl": [
+        0,
+        49,
+        0
+       ]
+      },
+      "r100": {
+       "delta": 0.0,
+       "ci95": [
+        0.0,
+        0.0
+       ],
+       "wtl": [
+        0,
+        49,
+        0
+       ]
+      },
+      "mrr": {
+       "delta": 0.0,
+       "ci95": [
+        0.0,
+        0.0
+       ],
+       "wtl": [
+        0,
+        49,
+        0
+       ]
+      }
+     }
+    },
+    "paired_routed_minus_ebr": {
+     "ndcg": {
+      "delta": -0.021662260822870486,
+      "ci95": [
+       -0.05465235654410982,
+       0.01246700392164424
+      ],
+      "wtl": [
+       21,
+       4,
+       24
+      ]
+     }
+    },
+    "fired_delta_by_cue": {},
+    "fired_examples": [],
+    "silent_subset": {
+     "queries": 49,
+     "porter": {
+      "ndcg": 0.3262447470772381,
+      "r100": 0.5647341005965234,
+      "mrr": 0.577891156462585
+     },
+     "rrf_porter_bridge_entity": {
+      "ndcg": 0.3479070079001086,
+      "r100": 0.5279496568537572,
+      "mrr": 0.641156462585034
+     },
+     "paired_ebr_vs_porter": {
+      "ndcg": {
+       "delta": 0.021662260822870486,
+       "ci95": [
+        -0.012467003921644284,
+        0.05465235654410979
+       ],
+       "wtl": [
+        24,
+        4,
+        21
+       ]
+      },
+      "r100": {
+       "delta": -0.036784443742766286,
+       "ci95": [
+        -0.062830485660328,
+        -0.011046043046176231
+       ],
+       "wtl": [
+        11,
+        18,
+        20
+       ]
+      },
+      "mrr": {
+       "delta": 0.06326530612244897,
+       "ci95": [
+        -0.02142857142857143,
+        0.15409863945578223
+       ],
+       "wtl": [
+        14,
+        27,
+        8
+       ]
+      }
+     }
+    }
+   }
+  },
+  "nfcorpus": {
+   "dev": {
+    "queries": 324,
+    "router_fire_rate": 0.0,
+    "fired_cues": {},
+    "summary": {
+     "porter": {
+      "ndcg": 0.29182602421003445,
+      "r100": 0.22620611001419647,
+      "mrr": 0.49312414266117965
+     },
+     "entity": {
+      "ndcg": 0.025640900859571315,
+      "r100": 0.017174530280890787,
+      "mrr": 0.05358245149911816
+     },
+     "bridge": {
+      "ndcg": 0.23858147668272764,
+      "r100": 0.1541979025774191,
+      "mrr": 0.4791691162061532
+     },
+     "rrf_porter_bridge": {
+      "ndcg": 0.27668101690707,
+      "r100": 0.24294864985114561,
+      "mrr": 0.484220066627474
+     },
+     "rrf_porter_entity": {
+      "ndcg": 0.29039070656287197,
+      "r100": 0.22525677625210166,
+      "mrr": 0.4910444836370762
+     },
+     "rrf_porter_bridge_entity": {
+      "ndcg": 0.28219719440886576,
+      "r100": 0.2426948038899758,
+      "mrr": 0.49065868116794037
+     },
+     "routed": {
+      "ndcg": 0.29182602421003445,
+      "r100": 0.22620611001419647,
+      "mrr": 0.49312414266117965
+     }
+    },
+    "paired_vs_porter": {
+     "entity": {
+      "ndcg": {
+       "delta": -0.2661851233504632,
+       "ci95": [
+        -0.2991141551695121,
+        -0.23386151644150865
+       ],
+       "wtl": [
+        6,
+        112,
+        206
+       ]
+      },
+      "r100": {
+       "delta": -0.2090315797333057,
+       "ci95": [
+        -0.23505141427208148,
+        -0.18390357939284876
+       ],
+       "wtl": [
+        0,
+        86,
+        238
+       ]
+      },
+      "mrr": {
+       "delta": -0.4395416911620615,
+       "ci95": [
+        -0.48945819248481276,
+        -0.39063002155594756
+       ],
+       "wtl": [
+        6,
+        120,
+        198
+       ]
+      }
+     },
+     "bridge": {
+      "ndcg": {
+       "delta": -0.053244547527306826,
+       "ci95": [
+        -0.0677531107205499,
+        -0.03914198119872895
+       ],
+       "wtl": [
+        51,
+        138,
+        135
+       ]
+      },
+      "r100": {
+       "delta": -0.07200820743677736,
+       "ci95": [
+        -0.09416510527134564,
+        -0.05154628694637656
+       ],
+       "wtl": [
+        54,
+        102,
+        168
+       ]
+      },
+      "mrr": {
+       "delta": -0.013955026455026453,
+       "ci95": [
+        -0.026998273074661964,
+        -0.0013575960219478775
+       ],
+       "wtl": [
+        19,
+        257,
+        48
+       ]
+      }
+     },
+     "rrf_porter_bridge": {
+      "ndcg": {
+       "delta": -0.015145007302964475,
+       "ci95": [
+        -0.02538491938124453,
+        -0.005076190708934429
+       ],
+       "wtl": [
+        70,
+        152,
+        102
+       ]
+      },
+      "r100": {
+       "delta": 0.01674253983694912,
+       "ci95": [
+        0.005090047978894065,
+        0.02955038151922415
+       ],
+       "wtl": [
+        85,
+        173,
+        66
+       ]
+      },
+      "mrr": {
+       "delta": -0.008904076033705662,
+       "ci95": [
+        -0.018857167352537726,
+        0.0006050668724279772
+       ],
+       "wtl": [
+        15,
+        270,
+        39
+       ]
+      }
+     },
+     "rrf_porter_entity": {
+      "ndcg": {
+       "delta": -0.0014353176471624937,
+       "ci95": [
+        -0.010269526489651234,
+        0.00775194475537074
+       ],
+       "wtl": [
+        11,
+        298,
+        15
+       ]
+      },
+      "r100": {
+       "delta": -0.0009493337620948314,
+       "ci95": [
+        -0.002630744630535775,
+        8.230452674897121e-05
+       ],
+       "wtl": [
+        1,
+        320,
+        3
+       ]
+      },
+      "mrr": {
+       "delta": -0.0020796590241034685,
+       "ci95": [
+        -0.01911314422888497,
+        0.013889531893004103
+       ],
+       "wtl": [
+        10,
+        303,
+        11
+       ]
+      }
+     },
+     "rrf_porter_bridge_entity": {
+      "ndcg": {
+       "delta": -0.009628829801168701,
+       "ci95": [
+        -0.021346556018842135,
+        0.0020961851459698564
+       ],
+       "wtl": [
+        74,
+        150,
+        100
+       ]
+      },
+      "r100": {
+       "delta": 0.01648869387577929,
+       "ci95": [
+        0.004748833558823138,
+        0.029336579527207415
+       ],
+       "wtl": [
+        85,
+        171,
+        68
+       ]
+      },
+      "mrr": {
+       "delta": -0.002465461493239271,
+       "ci95": [
+        -0.01575601974328826,
+        0.010990287575935722
+       ],
+       "wtl": [
+        17,
+        270,
+        37
+       ]
+      }
+     },
+     "routed": {
+      "ndcg": {
+       "delta": 0.0,
+       "ci95": [
+        0.0,
+        0.0
+       ],
+       "wtl": [
+        0,
+        324,
+        0
+       ]
+      },
+      "r100": {
+       "delta": 0.0,
+       "ci95": [
+        0.0,
+        0.0
+       ],
+       "wtl": [
+        0,
+        324,
+        0
+       ]
+      },
+      "mrr": {
+       "delta": 0.0,
+       "ci95": [
+        0.0,
+        0.0
+       ],
+       "wtl": [
+        0,
+        324,
+        0
+       ]
+      }
+     }
+    },
+    "paired_routed_minus_ebr": {
+     "ndcg": {
+      "delta": 0.009628829801168701,
+      "ci95": [
+       -0.0020961851459698573,
+       0.021346556018842115
+      ],
+      "wtl": [
+       100,
+       150,
+       74
+      ]
+     }
+    },
+    "fired_delta_by_cue": {},
+    "fired_examples": [],
+    "silent_subset": {
+     "queries": 324,
+     "porter": {
+      "ndcg": 0.29182602421003445,
+      "r100": 0.22620611001419647,
+      "mrr": 0.49312414266117965
+     },
+     "rrf_porter_bridge_entity": {
+      "ndcg": 0.28219719440886576,
+      "r100": 0.2426948038899758,
+      "mrr": 0.49065868116794037
+     },
+     "paired_ebr_vs_porter": {
+      "ndcg": {
+       "delta": -0.009628829801168701,
+       "ci95": [
+        -0.021346556018842135,
+        0.0020961851459698564
+       ],
+       "wtl": [
+        74,
+        150,
+        100
+       ]
+      },
+      "r100": {
+       "delta": 0.01648869387577929,
+       "ci95": [
+        0.004748833558823138,
+        0.029336579527207415
+       ],
+       "wtl": [
+        85,
+        171,
+        68
+       ]
+      },
+      "mrr": {
+       "delta": -0.002465461493239271,
+       "ci95": [
+        -0.01575601974328826,
+        0.010990287575935722
+       ],
+       "wtl": [
+        17,
+        270,
+        37
+       ]
+      }
+     }
+    }
+   }
+  }
+ },
+ "hotpot": {
+  "dev": {
+   "queries": 1400,
+   "router_fire_rate": 0.6535714285714286,
+   "fired_cues": {
+    "pair_relation": 445,
+    "anaphora": 599,
+    "whchain": 278,
+    "comparison": 116
+   },
+   "summary": {
+    "porter": {
+     "ndcg@10": 0.7356946401497102,
+     "both@10": 0.6107142857142858,
+     "recall@10": 0.7967857142857143,
+     "both@5": 0.4521428571428571
+    },
+    "routed": {
+     "ndcg@10": 0.7495256125329042,
+     "both@10": 0.6807142857142857,
+     "recall@10": 0.8328571428571429,
+     "both@5": 0.5028571428571429
+    },
+    "rrf_porter_bridge_entity": {
+     "ndcg@10": 0.75583754522945,
+     "both@10": 0.7121428571428572,
+     "recall@10": 0.8478571428571429,
+     "both@5": 0.5264285714285715
+    }
+   },
+   "paired_vs_porter": {
+    "routed": {
+     "ndcg@10": {
+      "delta": 0.013830972383194116,
+      "ci95": [
+       0.0073127826344673505,
+       0.020718074853826863
+      ],
+      "wtl": [
+       315,
+       865,
+       220
+      ]
+     },
+     "both@10": {
+      "delta": 0.07,
+      "ci95": [
+       0.05141071428571429,
+       0.0878749999999999
+      ],
+      "wtl": [
+       141,
+       1216,
+       43
+      ]
+     },
+     "recall@10": {
+      "delta": 0.036071428571428574,
+      "ci95": [
+       0.026071428571428572,
+       0.04536607142857138
+      ],
+      "wtl": [
+       147,
+       1206,
+       47
+      ]
+     },
+     "both@5": {
+      "delta": 0.05071428571428571,
+      "ci95": [
+       0.03142857142857143,
+       0.07
+      ],
+      "wtl": [
+       129,
+       1213,
+       58
+      ]
+     }
+    },
+    "rrf_porter_bridge_entity": {
+     "ndcg@10": {
+      "delta": 0.020142905079739835,
+      "ci95": [
+       0.012294974379259258,
+       0.028041892497138326
+      ],
+      "wtl": [
+       484,
+       582,
+       334
+      ]
+     },
+     "both@10": {
+      "delta": 0.10142857142857142,
+      "ci95": [
+       0.07928571428571428,
+       0.12285714285714286
+      ],
+      "wtl": [
+       202,
+       1138,
+       60
+      ]
+     },
+     "recall@10": {
+      "delta": 0.05107142857142857,
+      "ci95": [
+       0.039285714285714285,
+       0.0625
+      ],
+      "wtl": [
+       212,
+       1118,
+       70
+      ]
+     },
+     "both@5": {
+      "delta": 0.07428571428571429,
+      "ci95": [
+       0.052125000000000005,
+       0.09642857142857143
+      ],
+      "wtl": [
+       186,
+       1132,
+       82
+      ]
+     }
+    }
+   },
+   "paired_routed_minus_ebr": {
+    "both@10": {
+     "delta": -0.03142857142857143,
+     "ci95": [
+      -0.04428571428571428,
+      -0.02
+     ],
+     "wtl": [
+      17,
+      1322,
+      61
+     ]
+    },
+    "ndcg@10": {
+     "delta": -0.0063119326965457145,
+     "ci95": [
+      -0.010714900235476563,
+      -0.0019870463080039445
+     ],
+     "wtl": [
+      114,
+      1117,
+      169
+     ]
+    }
+   },
+   "fired_delta_by_cue": {
+    "anaphora": {
+     "queries": 599,
+     "delta_both@10": 0.11686143572621036,
+     "wtl_both@10": [
+      100,
+      469,
+      30
+     ]
+    },
+    "comparison": {
+     "queries": 116,
+     "delta_both@10": 0.07758620689655173,
+     "wtl_both@10": [
+      12,
+      101,
+      3
+     ]
+    },
+    "pair_relation": {
+     "queries": 445,
+     "delta_both@10": 0.10112359550561797,
+     "wtl_both@10": [
+      68,
+      354,
+      23
+     ]
+    },
+    "whchain": {
+     "queries": 278,
+     "delta_both@10": 0.1079136690647482,
+     "wtl_both@10": [
+      47,
+      214,
+      17
+     ]
+    }
+   },
+   "by_type": {
+    "bridge": {
+     "queries": 1138,
+     "summary": {
+      "porter": {
+       "ndcg@10": 0.7228473829832035,
+       "both@10": 0.5571177504393673,
+       "recall@10": 0.7684534270650264
+      },
+      "routed": {
+       "ndcg@10": 0.7381815097855811,
+       "both@10": 0.6362038664323374,
+       "recall@10": 0.8093145869947276
+      },
+      "rrf_porter_bridge_entity": {
+       "ndcg@10": 0.744424115005274,
+       "both@10": 0.671353251318102,
+       "recall@10": 0.8260105448154658
+      }
+     },
+     "paired_routed_vs_porter": {
+      "both@10": {
+       "delta": 0.07908611599297012,
+       "ci95": [
+        0.05799648506151142,
+        0.10105448154657294
+       ],
+       "wtl": [
+        129,
+        970,
+        39
+       ]
+      },
+      "ndcg@10": {
+       "delta": 0.01533412680237748,
+       "ci95": [
+        0.007588487275583634,
+        0.02321029275797957
+       ],
+       "wtl": [
+        257,
+        708,
+        173
+       ]
+      }
+     }
+    },
+    "comparison": {
+     "queries": 262,
+     "summary": {
+      "porter": {
+       "ndcg@10": 0.7914968487584298,
+       "both@10": 0.8435114503816794,
+       "recall@10": 0.9198473282442748
+      },
+      "routed": {
+       "ndcg@10": 0.7987988527102091,
+       "both@10": 0.8740458015267175,
+       "recall@10": 0.9351145038167938
+      },
+      "rrf_porter_bridge_entity": {
+       "ndcg@10": 0.8054119100962911,
+       "both@10": 0.8893129770992366,
+       "recall@10": 0.9427480916030534
+      }
+     },
+     "paired_routed_vs_porter": {
+      "both@10": {
+       "delta": 0.030534351145038167,
+       "ci95": [
+        0.0,
+        0.061068702290076333
+       ],
+       "wtl": [
+        12,
+        246,
+        4
+       ]
+      },
+      "ndcg@10": {
+       "delta": 0.007302003951779358,
+       "ci95": [
+        -0.004013369899080768,
+        0.0193044302862309
+       ],
+       "wtl": [
+        58,
+        157,
+        47
+       ]
+      }
+     }
+    }
+   },
+   "fired_subset": {
+    "queries": 915,
+    "summary": {
+     "porter": {
+      "both@10": 0.6054644808743169,
+      "ndcg@10": 0.745775315189629
+     },
+     "rrf_porter_bridge_entity": {
+      "both@10": 0.7125683060109289,
+      "ndcg@10": 0.7669374587267566
+     }
+    },
+    "paired_ebr_vs_porter": {
+     "both@10": {
+      "delta": 0.10710382513661203,
+      "ci95": [
+       0.07868852459016394,
+       0.13442622950819672
+      ],
+      "wtl": [
+       141,
+       731,
+       43
+      ]
+     },
+     "ndcg@10": {
+      "delta": 0.021162143537127608,
+      "ci95": [
+       0.011166479533578239,
+       0.031320645575780896
+      ],
+      "wtl": [
+       315,
+       380,
+       220
+      ]
+     }
+    }
+   },
+   "silent_subset": {
+    "queries": 485,
+    "summary": {
+     "porter": {
+      "both@10": 0.6206185567010309,
+      "ndcg@10": 0.7166764594042963
+     },
+     "rrf_porter_bridge_entity": {
+      "both@10": 0.711340206185567,
+      "ndcg@10": 0.7348964713118509
+     }
+    },
+    "paired_ebr_vs_porter": {
+     "both@10": {
+      "delta": 0.09072164948453608,
+      "ci95": [
+       0.05768041237113403,
+       0.12577319587628866
+      ],
+      "wtl": [
+       61,
+       407,
+       17
+      ]
+     },
+     "ndcg@10": {
+      "delta": 0.01822001190755464,
+      "ci95": [
+       0.005228227526337911,
+       0.03063990203373352
+      ],
+      "wtl": [
+       169,
+       202,
+       114
+      ]
+     }
+    }
+   }
+  },
+  "test": {
+   "queries": 6005,
+   "router_fire_rate": 0.6524562864279767,
+   "fired_cues": {
+    "comparison": 546,
+    "pair_relation": 1830,
+    "anaphora": 2548,
+    "whchain": 1055
+   },
+   "summary": {
+    "porter": {
+     "ndcg@10": 0.733133620964633,
+     "both@10": 0.611323896752706,
+     "recall@10": 0.796669442131557,
+     "both@5": 0.46328059950041633
+    },
+    "routed": {
+     "ndcg@10": 0.7478877473357324,
+     "both@10": 0.6815986677768526,
+     "recall@10": 0.8320566194837635,
+     "both@5": 0.5057452123230641
+    },
+    "rrf_porter_bridge_entity": {
+     "ndcg@10": 0.7556487260075218,
+     "both@10": 0.7167360532889259,
+     "recall@10": 0.8493755203996669,
+     "both@5": 0.5305578684429642
+    }
+   },
+   "paired_vs_porter": {
+    "routed": {
+     "ndcg@10": {
+      "delta": 0.014754126371099484,
+      "ci95": [
+       0.011503087993832673,
+       0.0181116977536595
+      ],
+      "wtl": [
+       1392,
+       3652,
+       961
+      ]
+     },
+     "both@10": {
+      "delta": 0.07027477102414655,
+      "ci95": [
+       0.06094920899250624,
+       0.07960033305578684
+      ],
+      "wtl": [
+       616,
+       5195,
+       194
+      ]
+     },
+     "recall@10": {
+      "delta": 0.03538717735220649,
+      "ci95": [
+       0.03080557868442964,
+       0.04029975020815987
+      ],
+      "wtl": [
+       645,
+       5144,
+       216
+      ]
+     },
+     "both@5": {
+      "delta": 0.042464612822647796,
+      "ci95": [
+       0.03330141548709409,
+       0.05129059117402165
+      ],
+      "wtl": [
+       516,
+       5228,
+       261
+      ]
+     }
+    },
+    "rrf_porter_bridge_entity": {
+     "ndcg@10": {
+      "delta": 0.02251510504288884,
+      "ci95": [
+       0.018539460992009777,
+       0.026469580454663102
+      ],
+      "wtl": [
+       2147,
+       2414,
+       1444
+      ]
+     },
+     "both@10": {
+      "delta": 0.10541215653621981,
+      "ci95": [
+       0.09425478767693589,
+       0.11607410491257282
+      ],
+      "wtl": [
+       902,
+       4834,
+       269
+      ]
+     },
+     "recall@10": {
+      "delta": 0.052706078268109906,
+      "ci95": [
+       0.04687552039966694,
+       0.058455453788509554
+      ],
+      "wtl": [
+       954,
+       4734,
+       317
+      ]
+     },
+     "both@5": {
+      "delta": 0.06727726894254787,
+      "ci95": [
+       0.056119900083263945,
+       0.07843463780183181
+      ],
+      "wtl": [
+       777,
+       4855,
+       373
+      ]
+     }
+    }
+   },
+   "paired_routed_minus_ebr": {
+    "both@10": {
+     "delta": -0.03513738551207327,
+     "ci95": [
+      -0.041465445462114905,
+      -0.029138218151540406
+     ],
+     "wtl": [
+      75,
+      5644,
+      286
+     ]
+    },
+    "ndcg@10": {
+     "delta": -0.007760978671789357,
+     "ci95": [
+      -0.010057010876496901,
+      -0.005443502839254935
+     ],
+     "wtl": [
+      483,
+      4767,
+      755
+     ]
+    }
+   },
+   "fired_delta_by_cue": {
+    "anaphora": {
+     "queries": 2548,
+     "delta_both@10": 0.12872841444270017,
+     "wtl_both@10": [
+      444,
+      1988,
+      116
+     ]
+    },
+    "comparison": {
+     "queries": 546,
+     "delta_both@10": 0.020146520146520148,
+     "wtl_both@10": [
+      45,
+      467,
+      34
+     ]
+    },
+    "pair_relation": {
+     "queries": 1830,
+     "delta_both@10": 0.09016393442622951,
+     "wtl_both@10": [
+      259,
+      1477,
+      94
+     ]
+    },
+    "whchain": {
+     "queries": 1055,
+     "delta_both@10": 0.13838862559241707,
+     "wtl_both@10": [
+      197,
+      807,
+      51
+     ]
+    }
+   },
+   "by_type": {
+    "bridge": {
+     "queries": 4780,
+     "summary": {
+      "porter": {
+       "ndcg@10": 0.7194823483450895,
+       "both@10": 0.55,
+       "recall@10": 0.7650627615062762
+      },
+      "routed": {
+       "ndcg@10": 0.7358146511991552,
+       "both@10": 0.6357740585774059,
+       "recall@10": 0.8081589958158996
+      },
+      "rrf_porter_bridge_entity": {
+       "ndcg@10": 0.7425770143417614,
+       "both@10": 0.6728033472803348,
+       "recall@10": 0.8256276150627615
+      }
+     },
+     "paired_routed_vs_porter": {
+      "both@10": {
+       "delta": 0.08577405857740586,
+       "ci95": [
+        0.07489539748953974,
+        0.09686192468619247
+       ],
+       "wtl": [
+        561,
+        4068,
+        151
+       ]
+      },
+      "ndcg@10": {
+       "delta": 0.01633230285406572,
+       "ci95": [
+        0.012409992249734412,
+        0.020380824089478763
+       ],
+       "wtl": [
+        1149,
+        2870,
+        761
+       ]
+      }
+     }
+    },
+    "comparison": {
+     "queries": 1225,
+     "summary": {
+      "porter": {
+       "ndcg@10": 0.7864014439208918,
+       "both@10": 0.8506122448979592,
+       "recall@10": 0.92
+      },
+      "routed": {
+       "ndcg@10": 0.7949974612400903,
+       "both@10": 0.8604081632653061,
+       "recall@10": 0.9253061224489796
+      },
+      "rrf_porter_bridge_entity": {
+       "ndcg@10": 0.8066550784665701,
+       "both@10": 0.8881632653061224,
+       "recall@10": 0.9420408163265306
+      }
+     },
+     "paired_routed_vs_porter": {
+      "both@10": {
+       "delta": 0.009795918367346938,
+       "ci95": [
+        -0.006530612244897959,
+        0.026122448979591838
+       ],
+       "wtl": [
+        55,
+        1127,
+        43
+       ]
+      },
+      "ndcg@10": {
+       "delta": 0.008596017319198564,
+       "ci95": [
+        0.0027344601839821626,
+        0.014429236374847231
+       ],
+       "wtl": [
+        243,
+        782,
+        200
+       ]
+      }
+     }
+    }
+   },
+   "fired_subset": {
+    "queries": 3918,
+    "summary": {
+     "porter": {
+      "both@10": 0.6059213884635017,
+      "ndcg@10": 0.7379516037315702
+     },
+     "rrf_porter_bridge_entity": {
+      "both@10": 0.7136294027565084,
+      "ndcg@10": 0.7605648066050904
+     }
+    },
+    "paired_ebr_vs_porter": {
+     "both@10": {
+      "delta": 0.10770801429300664,
+      "ci95": [
+       0.09341500765696784,
+       0.12123532414497193
+      ],
+      "wtl": [
+       616,
+       3108,
+       194
+      ]
+     },
+     "ndcg@10": {
+      "delta": 0.022613202873520265,
+      "ci95": [
+       0.01715231816792173,
+       0.027730385860587764
+      ],
+      "wtl": [
+       1392,
+       1565,
+       961
+      ]
+     }
+    }
+   },
+   "silent_subset": {
+    "queries": 2087,
+    "summary": {
+     "porter": {
+      "both@10": 0.6214662194537613,
+      "ndcg@10": 0.7240886490044699
+     },
+     "rrf_porter_bridge_entity": {
+      "both@10": 0.7225682798275036,
+      "ndcg@10": 0.7464195914692975
+     }
+    },
+    "paired_ebr_vs_porter": {
+     "both@10": {
+      "delta": 0.10110206037374221,
+      "ci95": [
+       0.08337326305701964,
+       0.11931001437470053
+      ],
+      "wtl": [
+       286,
+       1726,
+       75
+      ]
+     },
+     "ndcg@10": {
+      "delta": 0.022330942464827547,
+      "ci95": [
+       0.015539637979149576,
+       0.028987220498290053
+      ],
+      "wtl": [
+       755,
+       849,
+       483
+      ]
+     }
+    }
+   }
+  }
+ }
+}
