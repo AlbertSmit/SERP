@@ -56,6 +56,8 @@ same server, and existing configurations using `node mcp_server.js` still work.
 | --- | --- | --- |
 | `store_memory` | Store a chunk and its token statistics | Required `content`; optional `doc_id` and `chunk_id` |
 | `pack_context` | Return chunks within a token budget | Required `query`; optional `budget` (default 250, range 30–4,000), `mode` (`hybrid` default, `legacy` P4), `use_bridges`, `temporal_mode`, `reinforce_access` |
+| `index_output` | Index large text into a session-scoped scratch index and return a receipt | Exactly one of `content` or `path` (regular file of at most 20 MB); optional `source` (defaults to `out_<n>`), `label` |
+| `search_output` | Return scratch chunks within a token budget | Required `query`; optional `budget` (default 250, range 64–4,000), `source` |
 
 Budgets count the engine's lexical tokens, not a model tokenizer's. Bridges and
 temporal weighting are legacy options and default to off. Access reinforcement
@@ -74,6 +76,24 @@ const chunkIds = engine.packHybrid('JWT validation gateway', { budget: 250 })
 [docs/api.md](docs/api.md) covers the staged API (`retrieveRanked`, `fuseRrf`,
 `packRanked`), index backfills for existing databases, the coverage gate, and the
 legacy `packContext` path.
+
+## Keep large tool output out of the context
+
+Output from a command or a file is split into chunks of whole lines, each at most 64 engine tokens, and stored in an in-memory scratch index owned by the server process. The scratch index is never mixed with `store_memory`/`pack_context` memory, and it disappears when the server restarts. `search_output` uses the same BM25 + 4-gram RRF + truncation as `pack_context`.
+
+Flow: redirect the command's output to a file with your agent's own shell, call `index_output` with `path`, then call `search_output`. Passing `content` inline does not save tokens for text the model had to write out.
+
+Security: `path` reads any regular file the server process can read. There is deliberately no command-execution tool.
+
+Measured with `node scripts/output-benchmark.js` on four committed outputs from this repository (a `git log -p` commit, a source file, `package-lock.json`, a TAP test run) and 16 questions in `test/fixtures/outputs/questions.json`, fixed before the first run:
+
+| budget | evidence_retained | returned_tokens | raw_tokens | token_savings | char_savings |
+|---|---|---|---|---|---|
+| 120 | 10/16 | 1483 | 56656 | 97.4% | 97.9% |
+| 250 | 13/16 | 2930 | 56656 | 94.8% | 95.5% |
+| 500 | 13/16 | 4251 | 56656 | 92.5% | 93.4% |
+
+Savings count engine tokens and characters, not model tokens, against pasting the whole output into the context. They exclude the receipt (18–45 engine tokens per output) and any follow-up searches. Evidence retained is the share of questions whose answer string appears in the returned chunks; three questions miss at every budget (a lockfile version, a delta in a diff table, a test total), so a larger budget does not fix every lookup.
 
 ## What to expect
 
@@ -101,6 +121,7 @@ legacy `packContext` path.
 ```text
 src/engine/engine.js         SQLite storage, retrieval stages, packers, legacy P4 path
 src/engine/tokenize.js       Code-aware tokenization and token counting
+src/engine/scratch.js        Scratch index: chunking, receipts, budgeted search over tool output
 src/mcp/server.js            MCP tools, server factory and stdio startup
 mcp_server.js                Compatibility entry point
 scripts/                     Codebase demo, stress suite, chunk benchmark, legacy benchmarks
@@ -119,6 +140,7 @@ engine, and importing the engine does not load the MCP server.
 npm run demo:codebase -- /path/to/repository   # rebuilds codebase_graph.sqlite in the cwd
 npm run stress                                 # throughput, spam, pooling and decay probes
 node scripts/stage-benchmark.js                # chunk-level packing benchmark (needs mcp_memory.sqlite)
+node scripts/output-benchmark.js               # scratch-index savings next to evidence retained
 ```
 
 These scripts print observations; they are separate from the test suite. The

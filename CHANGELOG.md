@@ -13,6 +13,13 @@
 - Fix ESLint: ignore the cloned benchmark repositories, `.venv` and the TS 7
   graph lab, and remove dead code from the legacy benchmark scripts.
 - Document the P4 precision trade-off at nominal budgets.
+- Add MCP tools `index_output` and `search_output`: a session-scoped in-memory
+  scratch index for large tool output, kept separate from memory. They return a
+  receipt instead of content and search with BM25 + 4-gram RRF + truncation
+  within a budget.
+- Add `src/engine/scratch.js` (`chunkText`, `indexText`, `searchText`).
+- Add `scripts/output-benchmark.js` with committed fixtures and pre-registered
+  questions. It reports savings only next to evidence retention.
 
 ## 1.2.1 — 2026-10-20
 

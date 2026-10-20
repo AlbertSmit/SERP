@@ -1,0 +1,1341 @@
+commit 3faffe31d170bc1e9997a4ee58f1ab649ae2f023
+Author: SERP Lab <serp-lab@local>
+Date:   Tue Oct 20 16:57:40 2026 +0200
+
+    benchmark: add paired bootstrap CIs; packing gap is mostly underfill
+
+diff --git a/PLAN.md b/PLAN.md
+index c606930..b8749e3 100644
+--- a/PLAN.md
++++ b/PLAN.md
+@@ -140,7 +140,7 @@ something BM25 structurally cannot: retrieve both supporting facts.
+ | Does char4/VC find relevant docs BM25 misses on Touche? | yes; three-way RRF +0.0459 nDCG, +0.0215 R@100, 25/6 new/lost | keep as a lexical recall layer |
+ | Does fixed RRF stay non-inferior on nDCG? | yes on Touche; SciFact within margin | keep RRF |
+ | Does the gram channel activate on unknown identifiers? | yes ungated; fixed with exact-term gate | gate mandatory |
+-| Does residual/P4 packing beat truncation at a budget? | no; residual/P4 underfill and lose recall | demote P4 behind a flag |
++| Does residual/P4 packing beat truncation at a budget? | at nominal budget, no: truncation docRecall +0.110 [+0.077,+0.147] vs P4 and +0.116 vs residual; at matched tokens recall is a tie (P4 +0.010 ns, residual -0.002 ns). The nominal gap is budget underfill, not packing quality | truncation default; P4 experimental |
+ | Is P4 the product differentiator? | no evidence; P4 scoring is tied with truncation at matched tokens | reposition SERP as budgeted evidence selection |
+ | Can a no-embedding method beat BM25 on multi-hop? | yes; EBR +0.105 both@10, +0.023 nDCG on HotpotQA test | continue EBR, gate by query type |
+ | Does EBR transfer beyond HotpotQA? | **yes**: 2Wiki dev all@10 +0.124, R@100 +0.133, nDCG +0.057; MuSiQue paragraph-level all@10 +0.065, R@100 +0.083, nDCG +0.033; all CIs above zero | keep the multi-hop direction; EBR is not Hotpot-specific |
+diff --git a/README.md b/README.md
+index 52dacbb..a7e987d 100644
+--- a/README.md
++++ b/README.md
+@@ -89,12 +89,16 @@ robustness. On real PR-derived code search, CESR did not beat BM25.
+ Truncation is the default: take the fused ranks in order and skip chunks that
+ do not fit. P4, residual and greedy packers stay available through
+ `packRanked({ packer })` as **experimental** options. On the chunk benchmark
+-(SciFact test, 300 queries, no CIs), current P4 and residual packing use about
+-46–48 of 250 tokens. Their document recall is 0.49, against 0.60 for truncation.
+-At matched token budgets, truncation still beats current P4. The coverage gate
++(SciFact test, 300 queries, paired bootstrap 95% CIs), current P4 and residual
++packing use about 46–48 of 250 tokens, so their lower recall (0.49 vs 0.60) is
++mostly budget underfill: at matched token spend truncation is not significantly
++better than P4 on document recall (+0.010 [−0.022, +0.039]), and against
++residual it is a recall tie with a small document-precision gain (+0.037
++[+0.010, +0.064]). P4 never beats truncation at equal tokens. The coverage gate
+ trades recall for precision: at 250 tokens, gated truncation is 0.601 document
+-recall / 0.206 document precision, while no-gate truncation is 0.688 / 0.101.
+-The gate is a precision control, not a free win.
++recall / 0.206 document precision, while no-gate truncation is 0.688 / 0.101;
++both differences are significant. The gate is a precision control, not a free
++win.
+ 
+ ## What SERP is not
+ 
+@@ -127,7 +131,7 @@ All numbers are paired deltas with 95% bootstrap CIs, read from
+ | Learned per-query selector | same 7 sets | **failed**: macro 0.4620 vs 0.4675; ArguAna −0.014 [−0.021, −0.007], Quora −0.023 [−0.025, −0.020]. A per-query oracle would gain +0.034, but that headroom was not learnable | `selective_lexical.json` |
+ | RM3 vs BM25 | same 7 sets | NFCorpus +0.013, SciDocs +0.005, TREC-COVID +0.028 (CIs above 0); ArguAna −0.040 [−0.051, −0.030], Quora −0.017 [−0.019, −0.015] | `lexical_portfolio.json` |
+ | Code graph / CESR on real PRs | zustand, n = 92 merged PRs, edited-file qrels | **did not beat BM25**. R@10 / nDCG@10: BM25 0.828 / 0.685; graph RRF 0.787 / 0.621 (nDCG −0.064 [−0.123, −0.006]); CESR 0.842 / 0.703 (nDCG +0.018 [−0.028, +0.066], 90/92 ties). Gate failed | `real_repo.json` |
+-| Packing (P4/residual vs truncation) | SciFact test chunks, n = 300, budget 250 | doc recall: truncation 0.601, P4 0.491, residual 0.486, using 166 vs 47 vs 48 tokens; no CIs | `stage-benchmark.json` |
++| Packing (P4/residual vs truncation) | SciFact test chunks, n = 300, budget 250 | doc recall: truncation 0.601, P4 0.491, residual 0.486, using 166 vs 47 vs 48 tokens. Nominal-budget Δ vs P4 +0.110 [+0.077, +0.147]; at matched tokens +0.010 [−0.022, +0.039] (ns), so the gap is mostly underfill | `stage-benchmark.json` |
+ 
+ ### Synthetic and capability results (circular; not relevance evidence)
+ 
+@@ -151,9 +155,10 @@ P4 does not beat truncation. Do not cite them as evidence that P4 beats BM25.
+ 
+ - EBR, CESR-U, RM3 and the cross-encoder are Python research code. They are not
+   in the JS engine or the MCP server.
+-- `packContext` (library) remains the legacy P4 path, which loses recall to
+-  truncation on the chunk benchmark. The MCP tool defaults to `packHybrid` +
+-  truncation; legacy P4 is available via `mode: "legacy"`.
++- `packContext` (library) remains the legacy P4 path, which loses nominal-budget
++  recall to truncation on the chunk benchmark by underfilling the budget. The MCP
++  tool defaults to `packHybrid` + truncation; legacy P4 is available via
++  `mode: "legacy"`.
+ - The HotpotQA "test" split is a held-out 80% of the official dev set, retrieved
+   from its 66,581 distractor paragraphs, not full Wikipedia. The 2Wiki and
+   MuSiQue results are on dev splits with frozen constants. The router was
+@@ -165,7 +170,9 @@ P4 does not beat truncation. Do not cite them as evidence that P4 beats BM25.
+ - SciFact was used in earlier research and is a sanity check only. Touche has
+   49 queries.
+ - The neural reference is one model (MiniLM-L-6) on 1,000 queries.
+-- Packing benchmarks report no CIs.
++- Packing CIs are paired over 300 SciFact queries. The nominal-budget gap to
++  P4/residual is mostly budget underfill: at matched token spend, document-recall
++  differences against P4 are not significant.
+ - Non-goals: another weight search, tuning on test sets, a universal scorer.
+ 
+ ## Reproduce
+diff --git a/experiments/stages/JS_BENCHMARK.md b/experiments/stages/JS_BENCHMARK.md
+index c9a824d..8fdd556 100644
+--- a/experiments/stages/JS_BENCHMARK.md
++++ b/experiments/stages/JS_BENCHMARK.md
+@@ -64,8 +64,8 @@ after seeing results.
+ 
+ ## Results (SciFact test, 300 queries)
+ 
+-Latest frozen run, `results/stage-benchmark.json`. Means; no confidence intervals
+-yet.
++Latest frozen run, `results/stage-benchmark.json`. Means over the 300 queries that
++have qrels; paired uncertainty is reported in the next section.
+ 
+ | budget | system | doc recall | chunk recall | tokens | picks |
+ |---:|---|---:|---:|---:|---:|
+@@ -94,9 +94,81 @@ Removing the coverage gate lifts truncation substantially:
+ The gate trades recall for precision. Without it, truncation selects more
+ relevant documents but also many more irrelevant ones. For evidence-completeness
+ workloads (the deep mode), the no-gate variant is the better recall ceiling; for
+-ordinary search, the gate is a precision control. Neither choice is free. There
+-are still no confidence intervals; a paired bootstrap is the next benchmark
+-improvement.
++ordinary search, the gate is a precision control. Both differences are
++statistically significant in both directions (below).
++
++## Paired bootstrap
++
++`scripts/stage-benchmark.js` retains per-query `docRecall`, `docPrecision`,
++`chunkRecall`, `chunkPrecision`, `tokens` and `selected` for every system and
++budget, then runs a paired percentile bootstrap over queries: 1,000 resamples,
++seed 1729, 95% interval, n = 300. Δ is A − B on the same queries; W/T/L counts
++queries where A is higher/tied/lower. `results/stage-benchmark.json` stores the
++summary under `paired` (33 comparisons; per-query arrays stay in memory).
++
++Nominal-budget comparisons (`hybrid_truncate` at 120/250/500 tokens):
++
++| A vs B | budget | metric | Δ | 95% CI | W/T/L | CI excludes 0 |
++|---|---:|---|---:|---|---:|:---:|
++| `hybrid_truncate` vs `p4_current` | 120 | docRecall | +0.072 | [+0.041, +0.107] | 28/270/2 | yes |
++| `hybrid_truncate` vs `p4_current` | 120 | docPrecision | −0.101 | [−0.130, −0.070] | 30/178/92 | yes |
++| `hybrid_truncate` vs `p4_current` | 250 | docRecall | +0.110 | [+0.077, +0.147] | 40/260/0 | yes |
++| `hybrid_truncate` vs `p4_current` | 250 | docPrecision | −0.167 | [−0.202, −0.133] | 34/150/116 | yes |
++| `hybrid_truncate` vs `p4_current` | 500 | docRecall | +0.141 | [+0.103, +0.182] | 48/252/0 | yes |
++| `hybrid_truncate` vs `p4_current` | 500 | docPrecision | −0.189 | [−0.225, −0.154] | 42/139/119 | yes |
++| `hybrid_truncate` vs `hybrid_residual` | 120 | docRecall | +0.078 | [+0.043, +0.115] | 31/265/4 | yes |
++| `hybrid_truncate` vs `hybrid_residual` | 120 | docPrecision | −0.066 | [−0.095, −0.038] | 35/184/81 | yes |
++| `hybrid_truncate` vs `hybrid_residual` | 250 | docRecall | +0.116 | [+0.078, +0.156] | 44/253/3 | yes |
++| `hybrid_truncate` vs `hybrid_residual` | 250 | docPrecision | −0.133 | [−0.165, −0.103] | 37/153/110 | yes |
++| `hybrid_truncate` vs `hybrid_residual` | 500 | docRecall | +0.146 | [+0.107, +0.188] | 50/250/0 | yes |
++| `hybrid_truncate` vs `hybrid_residual` | 500 | docPrecision | −0.155 | [−0.188, −0.125] | 42/146/112 | yes |
++| `hybrid_truncate` vs `hybrid_truncate_nogate` | 120 | docRecall | −0.061 | [−0.092, −0.032] | 2/275/23 | yes |
++| `hybrid_truncate` vs `hybrid_truncate_nogate` | 120 | docPrecision | +0.084 | [+0.058, +0.111] | 106/167/27 | yes |
++| `hybrid_truncate` vs `hybrid_truncate_nogate` | 250 | docRecall | −0.087 | [−0.122, −0.052] | 4/265/31 | yes |
++| `hybrid_truncate` vs `hybrid_truncate_nogate` | 250 | docPrecision | +0.104 | [+0.078, +0.134] | 129/129/42 | yes |
++| `hybrid_truncate` vs `hybrid_truncate_nogate` | 500 | docRecall | −0.110 | [−0.152, −0.072] | 6/254/40 | yes |
++| `hybrid_truncate` vs `hybrid_truncate_nogate` | 500 | docPrecision | +0.127 | [+0.100, +0.159] | 154/97/49 | yes |
++| `hybrid_truncate` vs `hybrid_p4` | 120 | docRecall | +0.033 | [+0.005, +0.062] | 19/274/7 | yes |
++| `hybrid_truncate` vs `hybrid_p4` | 250 | docRecall | +0.012 | [−0.008, +0.030] | 9/287/4 | no |
++| `hybrid_truncate` vs `hybrid_p4` | 500 | docRecall | +0.000 | [−0.011, +0.010] | 3/294/3 | no |
++
++Matched-token comparisons. `p4_current` and `hybrid_residual` stop at about 46
++tokens regardless of the budget, so these rows are identical across budgets;
++they compare truncation at the tokens the other system actually spent.
++
++| A vs B | budget | metric | Δ | 95% CI | W/T/L | CI excludes 0 |
++|---|---:|---|---:|---|---:|:---:|
++| `hybrid_truncate_matched_p4_current` vs `p4_current` | 120 | docRecall | +0.010 | [−0.022, +0.039] | 14/276/10 | no |
++| `hybrid_truncate_matched_p4_current` vs `p4_current` | 120 | docPrecision | +0.018 | [−0.004, +0.040] | 26/259/15 | no |
++| `hybrid_truncate_matched_p4_current` vs `p4_current` | 250 | docRecall | +0.010 | [−0.022, +0.039] | 14/276/10 | no |
++| `hybrid_truncate_matched_p4_current` vs `p4_current` | 250 | docPrecision | +0.018 | [−0.004, +0.040] | 27/258/15 | no |
++| `hybrid_truncate_matched_p4_current` vs `p4_current` | 500 | docRecall | +0.010 | [−0.022, +0.039] | 14/276/10 | no |
++| `hybrid_truncate_matched_p4_current` vs `p4_current` | 500 | docPrecision | +0.018 | [−0.004, +0.040] | 27/258/15 | no |
++| `hybrid_truncate_matched_residual` vs `hybrid_residual` | 120 | docRecall | −0.002 | [−0.037, +0.031] | 15/268/17 | no |
++| `hybrid_truncate_matched_residual` vs `hybrid_residual` | 120 | docPrecision | +0.037 | [+0.010, +0.064] | 41/238/21 | yes |
++| `hybrid_truncate_matched_residual` vs `hybrid_residual` | 250 | docRecall | −0.002 | [−0.037, +0.031] | 15/268/17 | no |
++| `hybrid_truncate_matched_residual` vs `hybrid_residual` | 250 | docPrecision | +0.037 | [+0.010, +0.064] | 41/238/21 | yes |
++| `hybrid_truncate_matched_residual` vs `hybrid_residual` | 500 | docRecall | −0.002 | [−0.037, +0.031] | 15/268/17 | no |
++| `hybrid_truncate_matched_residual` vs `hybrid_residual` | 500 | docPrecision | +0.037 | [+0.010, +0.064] | 41/238/21 | yes |
++
++**Honest reading.** The headline recall advantage is statistically real at the
++nominal budget, but it is mostly budget utilization, not packing quality:
++`p4_current` and `hybrid_residual` stop at ~46 tokens at every budget, while
++truncation is handed 120/250/500. At matched token spend, truncation versus
++`p4_current` is a tie on docRecall (+0.010 [−0.022, +0.039]) and docPrecision
++(+0.018 [−0.004, +0.040]), and versus `hybrid_residual` it is a docRecall tie
++(−0.002 [−0.037, +0.031]) with a small docPrecision gain (+0.037 [+0.010,
+++0.064]). Against `hybrid_p4`, which uses the same RRF retrieval and the same
++~257 tokens, truncation is a tie at 500 (0.000 [−0.011, +0.010]), not
++significantly different at 250 (+0.012 [−0.008, +0.030]), and ahead only at 120
++(+0.033 [+0.005, +0.062]). So truncation's case is not "more relevant documents
++per token": it is that truncation spends the budget, is simpler, is never beaten
++by P4 at equal tokens, and is slightly more precise than residual at matched
++spend. The no-gate result is also confirmed in both directions at every budget:
++it significantly raises docRecall and significantly lowers docPrecision. P4
++should stay behind the flag because it does not beat truncation at equal tokens
++and it underfills a larger budget, not because truncation dominates it on
++recall per token.
+ 
+ Exact identifiers: 100 positives, `exactTop1 = 1.000`, `exactTop10 = 1.000`,
+ `nearMissAbove = 0`; negative activation `0` for single, underscore, mixed and
+@@ -106,5 +178,9 @@ prose-like groups. This is a synthetic invariant, not a relevance result.
+ 
+ Keep a packer only if it preserves at least as many relevant documents as
+ `hybrid_truncate` at the same budget and does not increase exact-ID near-miss
+-activation. If `p4_current` does not beat `hybrid_truncate`, P4 is not the product
+-differentiator; keep it behind a flag and market the budgeted selection instead.
++activation. P4 does not beat truncation at equal tokens, and `p4_current`
++underfills a larger budget, so it remains behind a flag rather than the default.
++The CI evidence does **not** support a claim that truncation preserves more
++relevant documents per token; at matched tokens the recall difference against
++`p4_current` is not significant. Market budgeted selection, not a recall-per-token
++win over P4.
+diff --git a/experiments/stages/results/stage-benchmark.json b/experiments/stages/results/stage-benchmark.json
+index ed80b9e..707ea32 100644
+--- a/experiments/stages/results/stage-benchmark.json
++++ b/experiments/stages/results/stage-benchmark.json
+@@ -10,7 +10,7 @@
+     "coverage": 0.5885059808912516,
+     "tokens": 87.06666666666666,
+     "selected": 3.4466666666666668,
+-    "ms": 9.079588646666279,
++    "ms": 7.473954213333097,
+     "queries": 300
+    },
+    "word_truncate_nogate": {
+@@ -21,7 +21,7 @@
+     "coverage": 0.7180751391784599,
+     "tokens": 117.69333333333333,
+     "selected": 5.333333333333333,
+-    "ms": 8.857360033333432,
++    "ms": 7.253757093333026,
+     "queries": 300
+    },
+    "hybrid_truncate": {
+@@ -32,7 +32,7 @@
+     "coverage": 0.5877257403665566,
+     "tokens": 90.78666666666666,
+     "selected": 3.526666666666667,
+-    "ms": 112.25482321333398,
++    "ms": 92.7580680633335,
+     "queries": 300
+    },
+    "hybrid_truncate_nogate": {
+@@ -43,7 +43,7 @@
+     "coverage": 0.6942923514869731,
+     "tokens": 117.71,
+     "selected": 5.213333333333333,
+-    "ms": 112.26466081666571,
++    "ms": 92.49360180000063,
+     "queries": 300
+    },
+    "hybrid_greedy": {
+@@ -54,7 +54,7 @@
+     "coverage": 0.6113797048039774,
+     "tokens": 60.22666666666667,
+     "selected": 2.5866666666666664,
+-    "ms": 112.50183804999959,
++    "ms": 93.05009678666664,
+     "queries": 300
+    },
+    "hybrid_residual": {
+@@ -65,7 +65,7 @@
+     "coverage": 0.557378205083007,
+     "tokens": 46.66,
+     "selected": 1.8233333333333333,
+-    "ms": 118.58453053333426,
++    "ms": 102.2887069366661,
+     "queries": 300
+    },
+    "hybrid_p4": {
+@@ -76,7 +76,7 @@
+     "coverage": 0.5968398368359129,
+     "tokens": 90.76333333333334,
+     "selected": 3.34,
+-    "ms": 112.35597987333317,
++    "ms": 92.53104363000047,
+     "queries": 300
+    },
+    "p4_current": {
+@@ -87,7 +87,7 @@
+     "coverage": 0.5411343901789519,
+     "tokens": 45.3,
+     "selected": 1.6766666666666667,
+-    "ms": 9.700630130000853,
++    "ms": 8.085570046667241,
+     "queries": 300
+    },
+    "hybrid_truncate_matched_residual": {
+@@ -98,7 +98,7 @@
+     "coverage": 0.5077632066954149,
+     "tokens": 43.83,
+     "selected": 1.7766666666666666,
+-    "ms": 112.24597459999937,
++    "ms": 92.196584836667,
+     "queries": 300
+    },
+    "hybrid_truncate_matched_p4_current": {
+@@ -109,7 +109,7 @@
+     "coverage": 0.49957329791861005,
+     "tokens": 42.88666666666666,
+     "selected": 1.7333333333333334,
+-    "ms": 112.16230220999915,
++    "ms": 92.22011777666644,
+     "queries": 300
+    }
+   },
+@@ -122,7 +122,7 @@
+     "coverage": 0.6374706314040375,
+     "tokens": 156.1,
+     "selected": 5.826666666666667,
+-    "ms": 12.138949060001371,
++    "ms": 7.270469449999509,
+     "queries": 300
+    },
+    "word_truncate_nogate": {
+@@ -133,7 +133,7 @@
+     "coverage": 0.8305480858527159,
+     "tokens": 247.67666666666668,
+     "selected": 10.33,
+-    "ms": 11.579217689999593,
++    "ms": 7.076873726668031,
+     "queries": 300
+    },
+    "hybrid_truncate": {
+@@ -144,7 +144,7 @@
+     "coverage": 0.6421602421373017,
+     "tokens": 165.71333333333334,
+     "selected": 6.036666666666667,
+-    "ms": 134.87140458000124,
++    "ms": 91.1141737266661,
+     "queries": 300
+    },
+    "hybrid_truncate_nogate": {
+@@ -155,7 +155,7 @@
+     "coverage": 0.7990135908200717,
+     "tokens": 247.69666666666666,
+     "selected": 10.13,
+-    "ms": 135.24714469999842,
++    "ms": 90.79884973000027,
+     "queries": 300
+    },
+    "hybrid_greedy": {
+@@ -166,7 +166,7 @@
+     "coverage": 0.6200576716958223,
+     "tokens": 64.99666666666667,
+     "selected": 2.68,
+-    "ms": 136.8182808633371,
++    "ms": 90.72590363333603,
+     "queries": 300
+    },
+    "hybrid_residual": {
+@@ -177,7 +177,7 @@
+     "coverage": 0.5595321648487313,
+     "tokens": 47.81666666666667,
+     "selected": 1.8333333333333333,
+-    "ms": 149.11009665666828,
++    "ms": 102.18186667333192,
+     "queries": 300
+    },
+    "hybrid_p4": {
+@@ -188,7 +188,7 @@
+     "coverage": 0.6506832615092342,
+     "tokens": 165.75666666666666,
+     "selected": 5.82,
+-    "ms": 135.56855737667047,
++    "ms": 90.78950697000255,
+     "queries": 300
+    },
+    "p4_current": {
+@@ -199,7 +199,7 @@
+     "coverage": 0.544121827578154,
+     "tokens": 46.50333333333333,
+     "selected": 1.6833333333333333,
+-    "ms": 13.277379456667889,
++    "ms": 7.9544823399999105,
+     "queries": 300
+    },
+    "hybrid_truncate_matched_residual": {
+@@ -210,7 +210,7 @@
+     "coverage": 0.5087228705609612,
+     "tokens": 44.67666666666667,
+     "selected": 1.8,
+-    "ms": 135.24531584000002,
++    "ms": 90.82888544333352,
+     "queries": 300
+    },
+    "hybrid_truncate_matched_p4_current": {
+@@ -221,7 +221,7 @@
+     "coverage": 0.5006377236889181,
+     "tokens": 43.833333333333336,
+     "selected": 1.7666666666666666,
+-    "ms": 134.93867737666693,
++    "ms": 90.75120988666681,
+     "queries": 300
+    }
+   },
+@@ -234,7 +234,7 @@
+     "coverage": 0.6648440833735896,
+     "tokens": 237.23,
+     "selected": 8.59,
+-    "ms": 13.433545123336758,
++    "ms": 7.247800853336036,
+     "queries": 300
+    },
+    "word_truncate_nogate": {
+@@ -245,7 +245,7 @@
+     "coverage": 0.9068574312243446,
+     "tokens": 497.36,
+     "selected": 20.2,
+-    "ms": 12.70616084000057,
++    "ms": 7.031956656665037,
+     "queries": 300
+    },
+    "hybrid_truncate": {
+@@ -256,7 +256,7 @@
+     "coverage": 0.6731693173988236,
+     "tokens": 256.91333333333336,
+     "selected": 9.066666666666666,
+-    "ms": 153.4133053000027,
++    "ms": 90.44781524333288,
+     "queries": 300
+    },
+    "hybrid_truncate_nogate": {
+@@ -267,7 +267,7 @@
+     "coverage": 0.8797117191963095,
+     "tokens": 497.4,
+     "selected": 19.54,
+-    "ms": 151.1429802833358,
++    "ms": 90.28917280666705,
+     "queries": 300
+    },
+    "hybrid_greedy": {
+@@ -278,7 +278,7 @@
+     "coverage": 0.6212664629046134,
+     "tokens": 66.89,
+     "selected": 2.69,
+-    "ms": 151.55821029333086,
++    "ms": 90.29290138000118,
+     "queries": 300
+    },
+    "hybrid_residual": {
+@@ -289,7 +289,7 @@
+     "coverage": 0.5595321648487313,
+     "tokens": 47.81666666666667,
+     "selected": 1.8333333333333333,
+-    "ms": 169.3909519399951,
++    "ms": 94.27563845333682,
+     "queries": 300
+    },
+    "hybrid_p4": {
+@@ -300,7 +300,7 @@
+     "coverage": 0.6749890162185225,
+     "tokens": 256.68666666666667,
+     "selected": 8.966666666666667,
+-    "ms": 152.40082944666347,
++    "ms": 90.00749571333658,
+     "queries": 300
+    },
+    "p4_current": {
+@@ -311,7 +311,7 @@
+     "coverage": 0.544121827578154,
+     "tokens": 46.50333333333333,
+     "selected": 1.6833333333333333,
+-    "ms": 14.625104013334106,
++    "ms": 7.700536963337606,
+     "queries": 300
+    },
+    "hybrid_truncate_matched_residual": {
+@@ -322,7 +322,7 @@
+     "coverage": 0.5087228705609612,
+     "tokens": 44.67666666666667,
+     "selected": 1.8,
+-    "ms": 153.50302303666558,
++    "ms": 90.23074708333434,
+     "queries": 300
+    },
+    "hybrid_truncate_matched_p4_current": {
+@@ -333,11 +333,613 @@
+     "coverage": 0.5006377236889181,
+     "tokens": 43.833333333333336,
+     "selected": 1.7666666666666666,
+-    "ms": 151.92095984999906,
++    "ms": 90.2413430700036,
+     "queries": 300
+    }
+   }
+  },
++ "paired": {
++  "method": "paired percentile bootstrap over queries",
++  "resamples": 1000,
++  "seed": 1729,
++  "level": 0.95,
++  "comparisons": [
++   {
++    "budget": 120,
++    "a": "hybrid_truncate",
++    "b": "p4_current",
++    "metric": "docRecall",
++    "queries": 300,
++    "mean_a": 0.5633333333333335,
++    "mean_b": 0.49111111111111116,
++    "delta": 0.0722222222222223,
++    "ci95": [
++     0.041097222222222174,
++     0.10667361111111111
++    ],
++    "wins": 28,
++    "ties": 270,
++    "losses": 2,
++    "ci_excludes_zero": true
++   },
++   {
++    "budget": 120,
++    "a": "hybrid_truncate",
++    "b": "p4_current",
++    "metric": "docPrecision",
++    "queries": 300,
++    "mean_a": 0.27337301587301566,
++    "mean_b": 0.37444444444444436,
++    "delta": -0.1010714285714287,
++    "ci95": [
++     -0.13041607142857134,
++     -0.07006448412698404
++    ],
++    "wins": 30,
++    "ties": 178,
++    "losses": 92,
++    "ci_excludes_zero": true
++   },
++   {
++    "budget": 120,
++    "a": "hybrid_truncate",
++    "b": "hybrid_residual",
++    "metric": "docRecall",
++    "queries": 300,
++    "mean_a": 0.5633333333333335,
++    "mean_b": 0.48555555555555563,
++    "delta": 0.07777777777777783,
++    "ci95": [
++     0.0425,
++     0.11527777777777781
++    ],
++    "wins": 31,
++    "ties": 265,
++    "losses": 4,
++    "ci_excludes_zero": true
++   },
++   {
++    "budget": 120,
++    "a": "hybrid_truncate",
++    "b": "hybrid_residual",
++    "metric": "docPrecision",
++    "queries": 300,
++    "mean_a": 0.27337301587301566,
++    "mean_b": 0.33944444444444444,
++    "delta": -0.06607142857142878,
++    "ci95": [
++     -0.09468333333333326,
++     -0.038379365079365
++    ],
++    "wins": 35,
++    "ties": 184,
++    "losses": 81,
++    "ci_excludes_zero": true
++   },
++   {
++    "budget": 120,
++    "a": "hybrid_truncate",
++    "b": "hybrid_truncate_nogate",
++    "metric": "docRecall",
++    "queries": 300,
++    "mean_a": 0.5633333333333335,
++    "mean_b": 0.6244444444444444,
++    "delta": -0.061111111111110894,
++    "ci95": [
++     -0.09166666666666666,
++     -0.031652777777777794
++    ],
++    "wins": 2,
++    "ties": 275,
++    "losses": 23,
++    "ci_excludes_zero": true
++   },
++   {
++    "budget": 120,
++    "a": "hybrid_truncate",
++    "b": "hybrid_truncate_nogate",
++    "metric": "docPrecision",
++    "queries": 300,
++    "mean_a": 0.27337301587301566,
++    "mean_b": 0.18938888888888913,
++    "delta": 0.08398412698412652,
++    "ci95": [
++     0.05818035714285704,
++     0.11075515873015852
++    ],
++    "wins": 106,
++    "ties": 167,
++    "losses": 27,
++    "ci_excludes_zero": true
++   },
++   {
++    "budget": 120,
++    "a": "hybrid_truncate",
++    "b": "hybrid_p4",
++    "metric": "docRecall",
++    "queries": 300,
++    "mean_a": 0.5633333333333335,
++    "mean_b": 0.5302777777777778,
++    "delta": 0.033055555555555616,
++    "ci95": [
++     0.004993055555555564,
++     0.0616736111111111
++    ],
++    "wins": 19,
++    "ties": 274,
++    "losses": 7,
++    "ci_excludes_zero": true
++   },
++   {
++    "budget": 120,
++    "a": "hybrid_truncate_matched_p4_current",
++    "b": "p4_current",
++    "metric": "docRecall",
++    "queries": 300,
++    "mean_a": 0.501388888888889,
++    "mean_b": 0.49111111111111116,
++    "delta": 0.01027777777777783,
++    "ci95": [
++     -0.02166666666666667,
++     0.03945833333333345
++    ],
++    "wins": 14,
++    "ties": 276,
++    "losses": 10,
++    "ci_excludes_zero": false
++   },
++   {
++    "budget": 120,
++    "a": "hybrid_truncate_matched_p4_current",
++    "b": "p4_current",
++    "metric": "docPrecision",
++    "queries": 300,
++    "mean_a": 0.3927777777777776,
++    "mean_b": 0.37444444444444436,
++    "delta": 0.018333333333333257,
++    "ci95": [
++     -0.00417361111111115,
++     0.040006944444444435
++    ],
++    "wins": 26,
++    "ties": 259,
++    "losses": 15,
++    "ci_excludes_zero": false
++   },
++   {
++    "budget": 120,
++    "a": "hybrid_truncate_matched_residual",
++    "b": "hybrid_residual",
++    "metric": "docRecall",
++    "queries": 300,
++    "mean_a": 0.48333333333333334,
++    "mean_b": 0.48555555555555563,
++    "delta": -0.002222222222222292,
++    "ci95": [
++     -0.03666666666666667,
++     0.031395833333333296
++    ],
++    "wins": 15,
++    "ties": 268,
++    "losses": 17,
++    "ci_excludes_zero": false
++   },
++   {
++    "budget": 120,
++    "a": "hybrid_truncate_matched_residual",
++    "b": "hybrid_residual",
++    "metric": "docPrecision",
++    "queries": 300,
++    "mean_a": 0.3767777777777777,
++    "mean_b": 0.33944444444444444,
++    "delta": 0.037333333333333274,
++    "ci95": [
++     0.010381944444444478,
++     0.06389444444444478
++    ],
++    "wins": 41,
++    "ties": 238,
++    "losses": 21,
++    "ci_excludes_zero": true
++   },
++   {
++    "budget": 250,
++    "a": "hybrid_truncate",
++    "b": "p4_current",
++    "metric": "docRecall",
++    "queries": 300,
++    "mean_a": 0.6013888888888889,
++    "mean_b": 0.49111111111111116,
++    "delta": 0.1102777777777777,
++    "ci95": [
++     0.07721527777777776,
++     0.14722222222222228
++    ],
++    "wins": 40,
++    "ties": 260,
++    "losses": 0,
++    "ci_excludes_zero": true
++   },
++   {
++    "budget": 250,
++    "a": "hybrid_truncate",
++    "b": "p4_current",
++    "metric": "docPrecision",
++    "queries": 300,
++    "mean_a": 0.20558204758204765,
++    "mean_b": 0.3722222222222221,
++    "delta": -0.16664017464017447,
++    "ci95": [
++     -0.20157788831538803,
++     -0.13342087750212717
++    ],
++    "wins": 34,
++    "ties": 150,
++    "losses": 116,
++    "ci_excludes_zero": true
++   },
++   {
++    "budget": 250,
++    "a": "hybrid_truncate",
++    "b": "hybrid_residual",
++    "metric": "docRecall",
++    "queries": 300,
++    "mean_a": 0.6013888888888889,
++    "mean_b": 0.48555555555555563,
++    "delta": 0.11583333333333323,
++    "ci95": [
++     0.07831944444444437,
++     0.1558472222222222
++    ],
++    "wins": 44,
++    "ties": 253,
++    "losses": 3,
++    "ci_excludes_zero": true
++   },
++   {
++    "budget": 250,
++    "a": "hybrid_truncate",
++    "b": "hybrid_residual",
++    "metric": "docPrecision",
++    "queries": 300,
++    "mean_a": 0.20558204758204765,
++    "mean_b": 0.33833333333333326,
++    "delta": -0.1327512857512856,
++    "ci95": [
++     -0.16467257996632992,
++     -0.1032754800754799
++    ],
++    "wins": 37,
++    "ties": 153,
++    "losses": 110,
++    "ci_excludes_zero": true
++   },
++   {
++    "budget": 250,
++    "a": "hybrid_truncate",
++    "b": "hybrid_truncate_nogate",
++    "metric": "docRecall",
++    "queries": 300,
++    "mean_a": 0.6013888888888889,
++    "mean_b": 0.6880555555555555,
++    "delta": -0.08666666666666667,
++    "ci95": [
++     -0.12170833333333338,
++     -0.05162500000000004
++    ],
++    "wins": 4,
++    "ties": 265,
++    "losses": 31,
++    "ci_excludes_zero": true
++   },
++   {
++    "budget": 250,
++    "a": "hybrid_truncate",
++    "b": "hybrid_truncate_nogate",
++    "metric": "docPrecision",
++    "queries": 300,
++    "mean_a": 0.20558204758204765,
++    "mean_b": 0.10143882968882965,
++    "delta": 0.104143217893218,
++    "ci95": [
++     0.0776266895141897,
++     0.13377492484367498
++    ],
++    "wins": 129,
++    "ties": 129,
++    "losses": 42,
++    "ci_excludes_zero": true
++   },
++   {
++    "budget": 250,
++    "a": "hybrid_truncate",
++    "b": "hybrid_p4",
++    "metric": "docRecall",
++    "queries": 300,
++    "mean_a": 0.6013888888888889,
++    "mean_b": 0.5897222222222221,
++    "delta": 0.011666666666666714,
++    "ci95": [
++     -0.008333333333333333,
++     0.03
++    ],
++    "wins": 9,
++    "ties": 287,
++    "losses": 4,
++    "ci_excludes_zero": false
++   },
++   {
++    "budget": 250,
++    "a": "hybrid_truncate_matched_p4_current",
++    "b": "p4_current",
++    "metric": "docRecall",
++    "queries": 300,
++    "mean_a": 0.501388888888889,
++    "mean_b": 0.49111111111111116,
++    "delta": 0.01027777777777783,
++    "ci95": [
++     -0.02166666666666667,
++     0.03945833333333345
++    ],
++    "wins": 14,
++    "ties": 276,
++    "losses": 10,
++    "ci_excludes_zero": false
++   },
++   {
++    "budget": 250,
++    "a": "hybrid_truncate_matched_p4_current",
++    "b": "p4_current",
++    "metric": "docPrecision",
++    "queries": 300,
++    "mean_a": 0.39027777777777767,
++    "mean_b": 0.3722222222222221,
++    "delta": 0.018055555555555547,
++    "ci95": [
++     -0.004444444444444382,
++     0.04000000000000005
++    ],
++    "wins": 27,
++    "ties": 258,
++    "losses": 15,
++    "ci_excludes_zero": false
++   },
++   {
++    "budget": 250,
++    "a": "hybrid_truncate_matched_residual",
++    "b": "hybrid_residual",
++    "metric": "docRecall",
++    "queries": 300,
++    "mean_a": 0.48333333333333334,
++    "mean_b": 0.48555555555555563,
++    "delta": -0.002222222222222292,
++    "ci95": [
++     -0.03666666666666667,
++     0.031395833333333296
++    ],
++    "wins": 15,
++    "ties": 268,
++    "losses": 17,
++    "ci_excludes_zero": false
++   },
++   {
++    "budget": 250,
++    "a": "hybrid_truncate_matched_residual",
++    "b": "hybrid_residual",
++    "metric": "docPrecision",
++    "queries": 300,
++    "mean_a": 0.37511111111111106,
++    "mean_b": 0.33833333333333326,
++    "delta": 0.0367777777777778,
++    "ci95": [
++     0.009829166666666682,
++     0.06355972222222231
++    ],
++    "wins": 41,
++    "ties": 238,
++    "losses": 21,
++    "ci_excludes_zero": true
++   },
++   {
++    "budget": 500,
++    "a": "hybrid_truncate",
++    "b": "p4_current",
++    "metric": "docRecall",
++    "queries": 300,
++    "mean_a": 0.6319444444444445,
++    "mean_b": 0.49111111111111116,
++    "delta": 0.14083333333333337,
++    "ci95": [
++     0.10333333333333333,
++     0.1816736111111112
++    ],
++    "wins": 48,
++    "ties": 252,
++    "losses": 0,
++    "ci_excludes_zero": true
++   },
++   {
++    "budget": 500,
++    "a": "hybrid_truncate",
++    "b": "p4_current",
++    "metric": "docPrecision",
++    "queries": 300,
++    "mean_a": 0.18352237950960887,
++    "mean_b": 0.3722222222222221,
++    "delta": -0.18869984271261325,
++    "ci95": [
++     -0.2250493789996979,
++     -0.1537705159989502
++    ],
++    "wins": 42,
++    "ties": 139,
++    "losses": 119,
++    "ci_excludes_zero": true
++   },
++   {
++    "budget": 500,
++    "a": "hybrid_truncate",
++    "b": "hybrid_residual",
++    "metric": "docRecall",
++    "queries": 300,
++    "mean_a": 0.6319444444444445,
++    "mean_b": 0.48555555555555563,
++    "delta": 0.1463888888888889,
++    "ci95": [
++     0.10721527777777785,
++     0.18806250000000005
++    ],
++    "wins": 50,
++    "ties": 250,
++    "losses": 0,
++    "ci_excludes_zero": true
++   },
++   {
++    "budget": 500,
++    "a": "hybrid_truncate",
++    "b": "hybrid_residual",
++    "metric": "docPrecision",
++    "queries": 300,
++    "mean_a": 0.18352237950960887,
++    "mean_b": 0.33833333333333326,
++    "delta": -0.1548109538237244,
++    "ci95": [
++     -0.18842540957816656,
++     -0.12470775806974477
++    ],
++    "wins": 42,
++    "ties": 146,
++    "losses": 112,
++    "ci_excludes_zero": true
++   },
++   {
++    "budget": 500,
++    "a": "hybrid_truncate",
++    "b": "hybrid_truncate_nogate",
++    "metric": "docRecall",
++    "queries": 300,
++    "mean_a": 0.6319444444444445,
++    "mean_b": 0.7423333333333333,
++    "delta": -0.11038888888888876,
++    "ci95": [
++     -0.15207638888888889,
++     -0.07249583333333333
++    ],
++    "wins": 6,
++    "ties": 254,
++    "losses": 40,
++    "ci_excludes_zero": true
++   },
++   {
++    "budget": 500,
++    "a": "hybrid_truncate",
++    "b": "hybrid_truncate_nogate",
++    "metric": "docPrecision",
++    "queries": 300,
++    "mean_a": 0.18352237950960887,
++    "mean_b": 0.05621076379930752,
++    "delta": 0.12731161571030136,
++    "ci95": [
++     0.09951251655759252,
++     0.15901671320314306
++    ],
++    "wins": 154,
++    "ties": 97,
++    "losses": 49,
++    "ci_excludes_zero": true
++   },
++   {
++    "budget": 500,
++    "a": "hybrid_truncate",
++    "b": "hybrid_p4",
++    "metric": "docRecall",
++    "queries": 300,
++    "mean_a": 0.6319444444444445,
++    "mean_b": 0.6319444444444445,
++    "delta": 0,
++    "ci95": [
++     -0.010833333333333334,
++     0.01
++    ],
++    "wins": 3,
++    "ties": 294,
++    "losses": 3,
++    "ci_excludes_zero": false
++   },
++   {
++    "budget": 500,
++    "a": "hybrid_truncate_matched_p4_current",
++    "b": "p4_current",
++    "metric": "docRecall",
++    "queries": 300,
++    "mean_a": 0.501388888888889,
++    "mean_b": 0.49111111111111116,
++    "delta": 0.01027777777777783,
++    "ci95": [
++     -0.02166666666666667,
++     0.03945833333333345
++    ],
++    "wins": 14,
++    "ties": 276,
++    "losses": 10,
++    "ci_excludes_zero": false
++   },
++   {
++    "budget": 500,
++    "a": "hybrid_truncate_matched_p4_current",
++    "b": "p4_current",
++    "metric": "docPrecision",
++    "queries": 300,
++    "mean_a": 0.39027777777777767,
++    "mean_b": 0.3722222222222221,
++    "delta": 0.018055555555555547,
++    "ci95": [
++     -0.004444444444444382,
++     0.04000000000000005
++    ],
++    "wins": 27,
++    "ties": 258,
++    "losses": 15,
++    "ci_excludes_zero": false
++   },
++   {
++    "budget": 500,
++    "a": "hybrid_truncate_matched_residual",
++    "b": "hybrid_residual",
++    "metric": "docRecall",
++    "queries": 300,
++    "mean_a": 0.48333333333333334,
++    "mean_b": 0.48555555555555563,
++    "delta": -0.002222222222222292,
++    "ci95": [
++     -0.03666666666666667,
++     0.031395833333333296
++    ],
++    "wins": 15,
++    "ties": 268,
++    "losses": 17,
++    "ci_excludes_zero": false
++   },
++   {
++    "budget": 500,
++    "a": "hybrid_truncate_matched_residual",
++    "b": "hybrid_residual",
++    "metric": "docPrecision",
++    "queries": 300,
++    "mean_a": 0.37511111111111106,
++    "mean_b": 0.33833333333333326,
++    "delta": 0.0367777777777778,
++    "ci95": [
++     0.009829166666666682,
++     0.06355972222222231
++    ],
++    "wins": 41,
++    "ties": 238,
++    "losses": 21,
++    "ci_excludes_zero": true
++   }
++  ]
++ },
+  "exactIdentifiers": {
+   "positives": 100,
+   "exactFound": 1,
+diff --git a/scripts/stage-benchmark.js b/scripts/stage-benchmark.js
+index 2a6c22f..c839eb6 100644
+--- a/scripts/stage-benchmark.js
++++ b/scripts/stage-benchmark.js
+@@ -44,6 +44,23 @@ const SYSTEM_SPECS = {
+   hybrid_truncate_matched_p4_current: {channels: ['word', 'gram'], packer: 'truncate'},
+ };
+ const SYSTEMS = Object.keys(SYSTEM_SPECS);
++const PER_QUERY_METRICS = [
++  'chunkRecall', 'docRecall', 'chunkPrecision', 'docPrecision', 'tokens', 'selected',
++];
++// The paired comparisons the packing decision rests on. The matched rows are
++// included because p4_current underfills the budget: comparing truncation at
++// 120/250/500 tokens with P4 at ~46 tokens is not a packing comparison.
++const PAIRED_COMPARISONS = [
++  {a: 'hybrid_truncate', b: 'p4_current', metrics: ['docRecall', 'docPrecision']},
++  {a: 'hybrid_truncate', b: 'hybrid_residual', metrics: ['docRecall', 'docPrecision']},
++  {a: 'hybrid_truncate', b: 'hybrid_truncate_nogate', metrics: ['docRecall', 'docPrecision']},
++  {a: 'hybrid_truncate', b: 'hybrid_p4', metrics: ['docRecall']},
++  {a: 'hybrid_truncate_matched_p4_current', b: 'p4_current',
++    metrics: ['docRecall', 'docPrecision']},
++  {a: 'hybrid_truncate_matched_residual', b: 'hybrid_residual',
++    metrics: ['docRecall', 'docPrecision']},
++];
++const BOOTSTRAP = {resamples: 1000, seed: 1729, level: 0.95};
+ 
+ function readJsonl(file) {
+   return fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).map(JSON.parse);
+@@ -93,6 +110,7 @@ function evaluate(engine, queries, qrels, budget) {
+     chunkRecall: 0, docRecall: 0, chunkPrecision: 0, docPrecision: 0,
+     coverage: 0, tokens: 0, selected: 0, ms: 0, queries: 0,
+   }]));
++  const perQuery = Object.fromEntries(SYSTEMS.map(s => [s, emptyQuerySeries()]));
+   const cache = new Map();
+   function selectCached(queryText, system, at) {
+     const key = `${system}\u0000${at}\u0000${queryText}`;
+@@ -121,8 +139,13 @@ function evaluate(engine, queries, qrels, budget) {
+ 
+     for (const system of SYSTEMS) {
+       const at = matchedBudget[system] ?? budget;
+-      accumulate(rows[system], engine, selectCached(query.text, system, at),
+-        {relChunks, relDocs, queryTokens});
++      recordSelection({
++        row: rows[system],
++        series: perQuery[system],
++        engine,
++        selection: selectCached(query.text, system, at),
++        context: {relChunks, relDocs, queryTokens},
++      });
+     }
+   }
+ 
+@@ -132,25 +155,39 @@ function evaluate(engine, queries, qrels, budget) {
+       row[key] = row.queries ? row[key] / row.queries : 0;
+     }
+   }
+-  return rows;
++
++  return {rows, perQuery};
++}
++
++function emptyQuerySeries() {
++  return Object.fromEntries(PER_QUERY_METRICS.map(key => [key, []]));
++}
++
++function recordSelection({row, series, engine, selection, context}) {
++  const metrics = queryMetrics(engine, selection, context);
++  for (const key of [...PER_QUERY_METRICS, 'coverage']) row[key] += metrics[key];
++  for (const key of PER_QUERY_METRICS) series[key].push(metrics[key]);
++  row.ms += selection.ms;
++  row.queries += 1;
+ }
+ 
+-function accumulate(row, engine, selection, context) {
++function queryMetrics(engine, selection, context) {
+   const {relChunks, relDocs, queryTokens} = context;
+   const stats = selectionStats(engine, selection.chunkIds, relChunks, queryTokens);
+-  row.chunkRecall += stats.chunkHits / relChunks.size;
+   let docHits = 0;
+   for (const docId of relDocs) if (stats.selectedDocs.has(docId)) docHits += 1;
+-  row.docRecall += docHits / relDocs.size;
+-  row.chunkPrecision += selection.chunkIds.length
+-    ? stats.chunkHits / selection.chunkIds.length : 0;
+-  row.docPrecision += stats.selectedDocs.size
+-    ? docHits / stats.selectedDocs.size : 0;
+-  row.coverage += queryTokens.size ? stats.coveredTokens.size / queryTokens.size : 0;
+-  row.tokens += stats.tokens;
+-  row.selected += selection.chunkIds.length;
+-  row.ms += selection.ms;
+-  row.queries += 1;
++
++  return {
++    chunkRecall: stats.chunkHits / relChunks.size,
++    docRecall: docHits / relDocs.size,
++    chunkPrecision: selection.chunkIds.length
++      ? stats.chunkHits / selection.chunkIds.length : 0,
++    docPrecision: stats.selectedDocs.size
++      ? docHits / stats.selectedDocs.size : 0,
++    coverage: queryTokens.size ? stats.coveredTokens.size / queryTokens.size : 0,
++    tokens: stats.tokens,
++    selected: selection.chunkIds.length,
++  };
+ }
+ 
+ function selectionStats(engine, chunkIds, relChunks, queryTokens) {
+@@ -349,6 +386,111 @@ function compareTerms(left, right) {
+   return left < right ? -1 : 1;
+ }
+ 
++// ---------------------------------------------------------------------------
++// Paired bootstrap
++// ---------------------------------------------------------------------------
++
++function bootstrapComparisons(perQueryByBudget, budget) {
++  const perQuery = perQueryByBudget[budget];
++  const comparisons = [];
++  for (const pair of PAIRED_COMPARISONS) {
++    for (const metric of pair.metrics) {
++      comparisons.push(comparePair({perQuery, pair, metric, budget}));
++    }
++  }
++
++  return comparisons;
++}
++
++function comparePair({perQuery, pair, metric, budget}) {
++  const a = perQuery[pair.a][metric];
++  const b = perQuery[pair.b][metric];
++  const deltas = bootstrapDeltas(a, b).sort((left, right) => left - right);
++  const meanA = mean(a);
++  const meanB = mean(b);
++  const {wins, ties, losses} = outcomeCounts(a, b);
++  const tail = (1 - BOOTSTRAP.level) / 2;
++  const ciLow = quantile(deltas, tail);
++  const ciHigh = quantile(deltas, 1 - tail);
++
++  return {
++    budget,
++    a: pair.a,
++    b: pair.b,
++    metric,
++    queries: a.length,
++    mean_a: meanA,
++    mean_b: meanB,
++    delta: meanA - meanB,
++    ci95: [ciLow, ciHigh],
++    wins,
++    ties,
++    losses,
++    ci_excludes_zero: ciLow > 0 || ciHigh < 0,
++  };
++}
++
++function bootstrapDeltas(a, b) {
++  const n = a.length;
++  const random = mulberry32(BOOTSTRAP.seed);
++  const deltas = [];
++  for (let resample = 0; resample < BOOTSTRAP.resamples; resample++) {
++    let sumA = 0;
++    let sumB = 0;
++    for (let i = 0; i < n; i++) {
++      const index = Math.floor(random() * n);
++      sumA += a[index];
++      sumB += b[index];
++    }
++    deltas.push((sumA - sumB) / n);
++  }
++
++  return deltas;
++}
++
++// mulberry32: deterministic across platforms because Math.imul is exact 32-bit.
++function mulberry32(seed) {
++  let state = seed >>> 0;
++
++  return function random() {
++    state = (state + 0x6D2B79F5) >>> 0;
++    let t = state;
++    t = Math.imul(t ^ (t >>> 15), t | 1);
++    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
++
++    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
++  };
++}
++
++function outcomeCounts(a, b) {
++  let wins = 0;
++  let ties = 0;
++  let losses = 0;
++  for (let i = 0; i < a.length; i++) {
++    const delta = a[i] - b[i];
++    if (Math.abs(delta) < 1e-9) ties += 1;
++    else if (delta > 0) wins += 1;
++    else losses += 1;
++  }
++
++  return {wins, ties, losses};
++}
++
++function quantile(sorted, p) {
++  if (sorted.length === 0) return 0;
++  const position = (sorted.length - 1) * p;
++  const low = Math.floor(position);
++  const high = Math.ceil(position);
++  if (low === high) return sorted[low];
++
++  return sorted[low] + (sorted[high] - sorted[low]) * (position - low);
++}
++
++function mean(values) {
++  return values.length
++    ? values.reduce((total, value) => total + value, 0) / values.length : 0;
++}
++
+ // ---------------------------------------------------------------------------
+ // Report
+ // ---------------------------------------------------------------------------
+@@ -361,6 +503,21 @@ function printBudget(rows) {
+   }
+ }
+ 
++function printPaired(comparisons) {
++  const header = `${'budget'.padStart(6)} ${'comparison'.padEnd(58)} ${'metric'.padEnd(13)} ${'delta'.padStart(9)} ${'95% CI'.padStart(20)} ${'W/T/L'.padStart(12)}`;
++  console.log(header);
++  for (const comparison of comparisons) {
++    const label = `${comparison.a} vs ${comparison.b}`;
++    const ci = `[${formatSigned(comparison.ci95[0])}, ${formatSigned(comparison.ci95[1])}]`;
++    const outcomes = `${comparison.wins}/${comparison.ties}/${comparison.losses}`;
++    console.log(`${String(comparison.budget).padStart(6)} ${label.padEnd(58)} ${comparison.metric.padEnd(13)} ${formatSigned(comparison.delta).padStart(9)} ${ci.padStart(20)} ${outcomes.padStart(12)}`);
++  }
++}
++
++function formatSigned(value) {
++  return `${value >= 0 ? '+' : ''}${value.toFixed(4)}`;
++}
++
+ function printExact(suite) {
+   console.log(`positives ${suite.positives}  found ${suite.exactFound.toFixed(3)}  top1 ${suite.exactTop1.toFixed(3)}  top10 ${suite.exactTop10.toFixed(3)}  misses ${suite.misses}  meanRank ${suite.meanExactRank.toFixed(2)}`);
+   console.log(`near-miss above: ${suite.nearMissAbove.toFixed(3)} (${suite.nearMissEvaluated}/${suite.nearMissPositives} positives with variants evaluated)`);
+@@ -384,14 +541,29 @@ function main() {
+     const queries = readJsonl(path.join(DATA, 'queries.jsonl'));
+     const qrels = readQrels(path.join(DATA, 'qrels/test.tsv'));
+     const report = { database: DB, budgets: {} };
++    const perQueryByBudget = {};
+ 
+     for (const budget of BUDGETS) {
+       console.log(`\n== budget ${budget}`);
+-      const rows = evaluate(engine, queries, qrels, budget);
++      const {rows, perQuery} = evaluate(engine, queries, qrels, budget);
+       report.budgets[budget] = rows;
++      perQueryByBudget[budget] = perQuery;
+       printBudget(rows);
+     }
+ 
++    const comparisons = BUDGETS.flatMap(
++      (budget) => bootstrapComparisons(perQueryByBudget, budget),
++    );
++    report.paired = {
++      method: 'paired percentile bootstrap over queries',
++      resamples: BOOTSTRAP.resamples,
++      seed: BOOTSTRAP.seed,
++      level: BOOTSTRAP.level,
++      comparisons,
++    };
++    console.log('\n== paired bootstrap (1000 resamples, seed 1729, 95% CI)');
++    printPaired(comparisons);
++
+     report.exactIdentifiers = exactIdentifierSuite(engine);
+     console.log('\n== exact identifiers');
+     printExact(report.exactIdentifiers);

@@ -2,9 +2,13 @@ import { pathToFileURL } from 'node:url';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from 'zod';
+import { readFileSync, statSync } from 'node:fs';
+import { indexText, searchText } from '../engine/scratch.js';
 import { SQLiteContextEngine, DEFAULT_DB_PATH } from '../engine/engine.js';
 
-export function createMcpServer(engine) {
+const MAX_INDEX_BYTES = 20 * 1024 * 1024;
+
+export function createMcpServer(engine, scratch = new SQLiteContextEngine(":memory:")) {
   const server = new McpServer({
     name: "sqlite-context",
     version: "1.2.0",
@@ -96,7 +100,55 @@ export function createMcpServer(engine) {
     }
   );
 
+  server.tool(
+    "index_output",
+    "Index large text (command output, file content, a fetched page) into a session-scoped scratch index instead of the context. Returns a receipt, not the content; query it with search_output. Separate from store_memory/pack_context. Prefer path: inline content has already cost the tokens it took to write.",
+    {
+      content: z.string().max(MAX_INDEX_BYTES).optional().describe("Text to index"),
+      path: z.string().optional().describe("Index this regular file (at most 20 MB) instead of content"),
+      source: z.string().regex(/^[A-Za-z0-9_.-]{1,64}$/).optional().describe("Source id; defaults to out_<n>"),
+      label: z.string().max(200).default("").describe("Short description, e.g. the command that produced the output"),
+    },
+    async ({ content, path, source, label }) => {
+      try {
+        return jsonResult({ status: "indexed", ...indexText(scratch, outputText(content, path), { source, label }) });
+      } catch (error) {
+        return jsonError(error.message);
+      }
+    }
+  );
+
+  server.tool(
+    "search_output",
+    "Search the scratch index filled by index_output and return matching chunks within a token budget (BM25 + 4-gram RRF + truncation). Does not search store_memory memory.",
+    {
+      query: z.string().min(1).describe("What to find, e.g. an error code, symbol or message"),
+      budget: z.number().int().min(64).max(4000).default(250).describe("Maximum total engine tokens returned"),
+      source: z.string().optional().describe("Restrict to one source id from an index_output receipt"),
+    },
+    async ({ query, budget, source }) => jsonResult(searchText(scratch, query, { budget, source }))
+  );
+
   return server;
+}
+
+function outputText(content, path) {
+  if ((content === undefined) === (path === undefined)) throw new Error("Pass exactly one of content or path");
+  if (content !== undefined) return content;
+  const stats = statSync(path);
+  if (!stats.isFile() || stats.size > MAX_INDEX_BYTES) {
+    throw new Error(`Not a regular file of at most ${MAX_INDEX_BYTES} bytes: ${path}`);
+  }
+
+  return readFileSync(path, "utf8");
+}
+
+function jsonResult(value) {
+  return { content: [{ type: "text", text: JSON.stringify(value, null, 2) }] };
+}
+
+function jsonError(message) {
+  return { content: [{ type: "text", text: JSON.stringify({ error: message }) }], isError: true };
 }
 
 export async function startMcpServer() {

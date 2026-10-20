@@ -110,6 +110,39 @@ truncation.
 
 Scoring rules are in [history-p4.md](history-p4.md).
 
+## Scratch index for tool output
+
+`src/engine/scratch.js` holds session-scoped output indexing for the MCP
+`index_output` and `search_output` tools.
+
+- `chunkText(text, maxTokens)` splits text on newlines (CRLF tolerated). A line
+  over the token limit is split at single spaces. Lines are packed greedily, in
+  order and joined with `\n`, until the next line would exceed the limit. Chunks
+  with no tokens are dropped. `maxTokens` defaults to 64 engine tokens.
+- `indexText(engine, text, { source, label })` stores the chunks and returns a
+  receipt: `source`, `label`, `raw_tokens`, `raw_chars`, `chunks`, and `head`
+  (the first non-empty lines, each truncated). The source defaults to `out_<n>`.
+  A duplicate source or text with no indexable tokens throws.
+- `searchText(engine, query, { budget, source })` returns `query`, `budget_limit`,
+  `source`, `tokens_returned`, `chunks_count`, and `results` (each with `rank`,
+  `chunk_id`, `source`, `tokens_L`, `content`). `budget` defaults to 250. `source`
+  filters the fused top-100 pool, so a restricted search can return fewer
+  results than a full one.
+
+Use a separate engine instance for the scratch index
+(`new SQLiteContextEngine(':memory:')`), so memory stays isolated. A shared
+engine would mix IDF statistics and the candidate pool between memory and tool
+output.
+
+```js
+import { readFileSync } from 'node:fs'
+import { SQLiteContextEngine } from './src/engine/engine.js'
+import { indexText, searchText } from './src/engine/scratch.js'
+const scratch = new SQLiteContextEngine(':memory:')
+const receipt = indexText(scratch, readFileSync('build.log', 'utf8'), { label: 'npm test' })
+console.log(searchText(scratch, 'ERR_PAYMENT_DECLINED', { source: receipt.source }).results)
+```
+
 ## Tokenization
 
 Tokenization helpers are exported from `src/engine/tokenize.js`. The legacy

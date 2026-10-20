@@ -1,0 +1,148 @@
+TAP version 13
+# Subtest: selection order, budgets, temporal decay and reinforcement match the v2 snapshot
+ok 1 - selection order, budgets, temporal decay and reinforcement match the v2 snapshot
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+# Subtest: empty corpus, explicit undefined defaults and bridge candidates
+ok 2 - empty corpus, explicit undefined defaults and bridge candidates
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+# Subtest: per-term pooling finds a rare aspect behind 105 common matches
+ok 3 - per-term pooling finds a rare aspect behind 105 common matches
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+# Subtest: v2 information weights include unmatched substantive demand and stay positive
+ok 4 - v2 information weights include unmatched substantive demand and stay positive
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+# Subtest: bilingual stopwords are excluded and small vaults retain common terms
+ok 5 - bilingual stopwords are excluded and small vaults retain common terms
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+# Subtest: prefix, stem and compound matches receive the discount while headers receive a boost
+ok 6 - prefix, stem and compound matches receive the discount while headers receive a boost
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+# Subtest: small-vault trigram fallback retrieves close typos and abstains on unrelated text
+ok 7 - small-vault trigram fallback retrieves close typos and abstains on unrelated text
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+# Subtest: coverage gate admits shaped rare identifiers but not arbitrary unknown words
+ok 8 - coverage gate admits shaped rare identifiers but not arbitrary unknown words
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+# Subtest: packer rejects zero-gain candidates and applies residual and relative dropoff stops
+ok 9 - packer rejects zero-gain candidates and applies residual and relative dropoff stops
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+# Subtest: gramTokens marks short and long words without punctuation
+ok 10 - gramTokens marks short and long words without punctuation
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+# Subtest: buildGramIndex backfills from the word index and is idempotent
+ok 11 - buildGramIndex backfills from the word index and is idempotent
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+# Subtest: rankWordBm25 ranks substantive terms and excludes full documents
+ok 12 - rankWordBm25 ranks substantive terms and excludes full documents
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+# Subtest: rankGramBm25 recovers in-word variants and gates unknown identifiers
+ok 13 - rankGramBm25 recovers in-word variants and gates unknown identifiers
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+# Subtest: fuseRrf replaces rank order with exact-first order and is deterministic
+ok 14 - fuseRrf replaces rank order with exact-first order and is deterministic
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+# Subtest: packRanked respects the budget and reports coverage-gated skips
+ok 15 - packRanked respects the budget and reports coverage-gated skips
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+# Subtest: every packer stays within budget and only returns fused candidates
+ok 16 - every packer stays within budget and only returns fused candidates
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+# Subtest: retrieveRanked exposes channels and packHybrid composes the stages
+ok 17 - retrieveRanked exposes channels and packHybrid composes the stages
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+# Subtest: buildExactIndex backfills exact tokens from the word index and is idempotent
+ok 18 - buildExactIndex backfills exact tokens from the word index and is idempotent
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+# Subtest: rankGramBm25 filters unknown identifiers per token instead of all-or-nothing
+ok 19 - rankGramBm25 filters unknown identifiers per token instead of all-or-nothing
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+# Subtest: rankGramBm25 does not treat prose "figure 1" as the identifier figure_1
+ok 20 - rankGramBm25 does not treat prose "figure 1" as the identifier figure_1
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+# Subtest: retrieveRanked drops unknown identifiers from the word channel too
+ok 21 - retrieveRanked drops unknown identifiers from the word channel too
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+# Subtest: fuseRrf only marks identifier tokens with an exact term as exact
+ok 22 - fuseRrf only marks identifier tokens with an exact term as exact
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+# Subtest: packRankedDetailed gives every packer the same pool depth
+ok 23 - packRankedDetailed gives every packer the same pool depth
+  ---
+  duration_ms: 0
+  type: 'test'
+  ...
+1..23
+# tests 23
+# suites 0
+# pass 23
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 0

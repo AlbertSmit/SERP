@@ -1,0 +1,18 @@
+[
+  {"id": "patch-seed", "source": "git-log-p.txt", "question": "Which random seed does the paired bootstrap use?", "answer": "1729"},
+  {"id": "patch-count", "source": "git-log-p.txt", "question": "How many paired comparisons does stage-benchmark.json store?", "answer": "33 comparisons"},
+  {"id": "patch-delta", "source": "git-log-p.txt", "question": "What docRecall delta and confidence interval does hybrid_truncate vs p4_current have at budget 250?", "answer": "+0.110 | [+0.077, +0.147]"},
+  {"id": "patch-mulberry", "source": "git-log-p.txt", "question": "Which constant does mulberry32 add to its state on every call?", "answer": "0x6D2B79F5"},
+  {"id": "src-trigram", "source": "engine-source.txt", "question": "What value is TRIGRAM_ABSTENTION_THRESHOLD set to?", "answer": "TRIGRAM_ABSTENTION_THRESHOLD = 0.45"},
+  {"id": "src-full", "source": "engine-source.txt", "question": "How do ranked FTS queries exclude _full chunks?", "answer": "substr(chunk_id, -5) <> '_full'"},
+  {"id": "src-coverage", "source": "engine-source.txt", "question": "What is the default min_coverage for ranked packing?", "answer": "min_coverage: 0.315"},
+  {"id": "src-cache", "source": "engine-source.txt", "question": "How large is the chunk content LRU cache?", "answer": "this.MAX_CACHE_SIZE = 8000"},
+  {"id": "lock-sqlite", "source": "package-lock.txt", "question": "Which better-sqlite3 tarball does the lockfile resolve?", "answer": "better-sqlite3-13.0.3.tgz"},
+  {"id": "lock-zod-integrity", "source": "package-lock.txt", "question": "What is the integrity hash of zod?", "answer": "sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW"},
+  {"id": "lock-express", "source": "package-lock.txt", "question": "Which express version is locked?", "answer": "express-5.3.0.tgz"},
+  {"id": "lock-zod-funding", "source": "package-lock.txt", "question": "Where is the funding page for zod?", "answer": "github.com/sponsors/colinhacks"},
+  {"id": "tap-pooling", "source": "node-test-tap.txt", "question": "Which test checks per-term pooling?", "answer": "rare aspect behind 105 common matches"},
+  {"id": "tap-total", "source": "node-test-tap.txt", "question": "How many tests ran in total?", "answer": "# tests 23"},
+  {"id": "tap-figure", "source": "node-test-tap.txt", "question": "Did the figure_1 identifier test pass?", "answer": "as the identifier figure_1"},
+  {"id": "tap-fail", "source": "node-test-tap.txt", "question": "How many tests failed?", "answer": "# fail 0"}
+]
