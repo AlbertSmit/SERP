@@ -95,6 +95,44 @@ metric:
 Paired vs Porter: nDCG `+0.0135` [+0.0106, +0.0164], both@5 `+0.1152`
 [+0.1041, +0.1266]. The gain is not an artifact of the global candidate pool.
 
+## Neural reference: how close is this to a RAG component?
+
+A cross-encoder (`cross-encoder/ms-marco-MiniLM-L-6-v2`, 22.7M params, MPS) was
+used purely as a ruler on 1,000 held-out test questions. It is **not** part of
+EBR and not part of the no-embedding method.
+
+| system | nDCG@10 | both@10 | both@5 | R@10 |
+|---|---:|---:|---:|---:|
+| Porter BM25 | 0.719 | 0.599 | 0.450 | 0.788 |
+| EBR | 0.746 | 0.707 | 0.519 | 0.844 |
+| Cross-encoder over Porter top-100 | 0.818 | 0.717 | 0.608 | 0.856 |
+| Cross-encoder over EBR top-100 | **0.828** | **0.754** | **0.624** | **0.875** |
+
+Paired vs Porter: EBR nDCG `+0.0272` [+0.0171,+0.0368], both@10 `+0.1080`
+[+0.0820,+0.1370]. The cross-encoder over Porter: nDCG `+0.0995`
+[+0.0863,+0.1113], both@10 `+0.1180` [+0.0930,+0.1420].
+
+**The honest reading:**
+
+- EBR captures only **27%** of the cross-encoder's nDCG@10 gain. If the goal is
+  general relevance ordering, the neural reranker clearly wins.
+- EBR captures **92%** of the cross-encoder's both@10 gain (`+0.108` vs `+0.118`).
+  On the multi-hop capability HotpotQA is designed to test, the no-embedding
+  method is effectively at parity: `0.707` vs `0.717`.
+- They are complementary. Feeding EBR's pool to the same cross-encoder improves
+  it by `+0.0095` nDCG and `+0.0370` both@10, CIs above zero. Bridge expansion
+  supplies second-hop candidates that BM25's top-100 never contains.
+- On bridge questions EBR's both@10 (`0.667`) is above the cross-encoder over
+  BM25's pool (`0.658`). On comparison questions the cross-encoder dominates
+  (`0.954` vs `0.804` nDCG), because comparison is mostly relevance matching.
+- Cost: EBR `24.3 ms/query` on CPU vs cross-encoder `535.8 ms/query` on GPU, a
+  `22×` difference, with no model weights.
+
+The product position is therefore not "replace RAG". It is: **EBR is a
+no-embedding multi-hop recall and candidate-generation layer that reaches the
+neural reranker's both-facts recall at ~4% of the latency, and improves the
+neural reranker when used as its first stage.**
+
 ## What this establishes
 
 - A no-embedding method can improve **multi-hop supporting-fact retrieval** over a
@@ -103,6 +141,10 @@ Paired vs Porter: nDCG `+0.0135` [+0.0106, +0.0164], both@5 `+0.1152`
   second-hop entity postings, per-entity coverage, fixed RRF.
 - It is not a new scoring formula. It is a new retrieval **methodology** for this
   project, and it targets a capability BM25 structurally lacks.
+- It is not a replacement for a neural ranker. On plain nDCG it captures only
+  ~27% of a cross-encoder's gain. Its value is both-facts recall and candidate
+  generation: 92% of the cross-encoder's both@10 gain at ~4% of the latency, and
+  a better pool for the cross-encoder when the two are combined.
 
 ## Limits and next experiments
 
