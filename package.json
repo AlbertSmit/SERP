@@ -3,12 +3,17 @@
   "version": "1.2.1",
   "description": "Local memory retrieval for LLM agents: SQLite FTS5, BM25, token-budget packing and an MCP server. No embeddings.",
   "main": "src/engine/engine.js",
+  "bin": {
+    "sqlite-context": "src/cli.js"
+  },
   "scripts": {
     "test": "node --test test/*.test.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "check": "npm run lint && npm test",
     "start": "node src/mcp/server.js",
+    "stats": "node src/cli.js stats",
+    "doctor": "node src/cli.js doctor",
     "demo:codebase": "node scripts/index-codebase.js",
     "stress": "node scripts/stress-test.js"
   },

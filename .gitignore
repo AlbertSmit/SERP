@@ -4,6 +4,7 @@ __pycache__/
 .cache/
 .DS_Store
 *.sqlite
+sqlite-context.events.jsonl
 *.sqlite-shm
 *.sqlite-wal
 *.dylib

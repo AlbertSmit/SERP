@@ -30,7 +30,7 @@ test('MCP transport lists tools, stores memory and retrieves packed context', as
     await server.connect(serverTransport);
     await client.connect(clientTransport);
     const {tools} = await client.listTools();
-    assert.deepEqual(tools.map(x => x.name), ['pack_context', 'store_memory', 'index_output', 'search_output']);
+    assert.deepEqual(tools.map(x => x.name), ['pack_context', 'store_memory', 'index_output', 'search_output', 'usage_stats']);
     const stored = await client.callTool({name: 'store_memory', arguments: {
       content: 'SQLite context memory uses lexical retrieval.', doc_id: 'memory', chunk_id: 'memory_1',
     }});

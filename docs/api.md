@@ -143,6 +143,36 @@ const receipt = indexText(scratch, readFileSync('build.log', 'utf8'), { label: '
 console.log(searchText(scratch, 'ERR_PAYMENT_DECLINED', { source: receipt.source }).results)
 ```
 
+## Event log and usage stats
+
+`src/events.js` appends one JSON line per MCP tool call. `src/stats.js`
+summarizes those lines.
+
+- `eventLogPath(dbPath, env)` returns `SQLITE_CONTEXT_LOG` when set, `null`
+  when it is `off` or the database is `:memory:`, and otherwise
+  `sqlite-context.events.jsonl` next to the database.
+- `createEventLog(path)` returns `{ path, record(event) }`. Each record gets a
+  timestamp and a per-process `session` id. A failed write is ignored, so
+  logging never fails a tool call. `createEventLog(null)` records nothing.
+- `readEvents(path)` parses the log and skips malformed lines.
+- `summarize(events, { days })` returns `period` (from, to, sessions, calls),
+  `memory` (stored, recalls, empty rate, tokens returned, latency p50/p95),
+  `output` (indexed, raw tokens, searches, searches per index, empty rate,
+  tokens received, token savings, latency) and `errors`.
+
+Logged fields per tool:
+
+| Tool | Fields |
+| --- | --- |
+| `store_memory` | `doc_id`, `tokens`, `error` |
+| `pack_context` | `query`, `budget`, `mode`, `results`, `tokens_returned`, `latency_ms` |
+| `index_output` | `source`, `label`, `from_path`, `raw_tokens`, `receipt_tokens`, `chunks`, `latency_ms`, `error` |
+| `search_output` | `query`, `budget`, `source`, `results`, `tokens_returned`, `latency_ms` |
+
+`createMcpServer(engine, scratch, log)` takes the log as its third argument;
+`startMcpServer` builds it from `MCP_SQLITE_PATH`. `src/cli.js` exposes
+`runCli(argv, env)` for `stats` and `doctor`, which return an exit code.
+
 ## Tokenization
 
 Tokenization helpers are exported from `src/engine/tokenize.js`. The legacy

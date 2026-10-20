@@ -104,6 +104,7 @@ example queries.
 | `pack_context` | Returns stored chunks within a budget | `query` (required), `budget` (default 250, 30–4,000), `reinforce_access` (default on), `mode`, `use_bridges`, `temporal_mode` |
 | `index_output` | Indexes text or a file into a scratch index and returns a receipt | `path` (file up to 20 MB) or `content`; `source`, `label` |
 | `search_output` | Returns scratch-index chunks within a budget | `query` (required), `budget` (default 250, 64–4,000), `source` |
+| `usage_stats` | Summarizes logged usage | `days` |
 
 Things to know:
 
@@ -117,6 +118,29 @@ Things to know:
 - **`mode: "legacy"`, `use_bridges` and `temporal_mode`** switch to the older P4
   packer. It returns fewer tokens with lower recall; keep the default unless
   you're comparing.
+
+## Check health and usage
+
+```sh
+npm run doctor                     # Node, database, indexes, event log, Claude Code registration
+npm run doctor -- --fix            # backfill gram/exact indexes on an older database
+npm run stats -- --days 7          # recalls, empty results, tool-output savings, latency
+```
+
+Run them from the repository, with `MCP_SQLITE_PATH` set to the same database
+the server uses (or pass `--db`). The agent can ask for the same summary with
+the `usage_stats` tool.
+
+Every tool call is appended to `sqlite-context.events.jsonl` next to the
+database: the tool, query, budget, result count, tokens returned and latency.
+For `index_output` it records the raw size and the receipt size, not the
+content. The log stays on your machine but does contain your queries. Set
+`SQLITE_CONTEXT_LOG=off` to disable it, or point it at another file.
+
+`stats` reports tool-output savings as the raw tokens indexed versus the tokens
+the agent received (receipts plus search results). It can't tell whether a
+search found what the agent needed. A high empty-search rate, or many searches
+per indexed output, is the signal to look at.
 
 ## How well it works
 
@@ -172,6 +196,8 @@ src/engine/engine.js      Storage, retrieval stages, packers, legacy P4 path
 src/engine/tokenize.js    Code-aware tokenization and token counting
 src/engine/scratch.js     Scratch index for tool output
 src/mcp/server.js         MCP server
+src/cli.js                `sqlite-context stats` and `doctor`
+src/events.js, stats.js   Event log and its summary
 scripts/                  Demos and benchmarks
 test/                     Tests and fixtures
 experiments/stages/       Research lab (Python) and result data

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Log every MCP tool call to `sqlite-context.events.jsonl` next to the
+  database (`SQLITE_CONTEXT_LOG` to move it, `off` to disable). Add a
+  `usage_stats` MCP tool and a `sqlite-context` CLI with `stats` and `doctor`.
+- The server creates the database directory when it does not exist.
+
 - Rename the project from SERP to `sqlite-context`: the package name, the MCP
   server name (`sqlite-context`, previously `serp-context-engine`), and the
   repository.

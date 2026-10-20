@@ -2,13 +2,17 @@ import { pathToFileURL } from 'node:url';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from 'zod';
-import { readFileSync, statSync } from 'node:fs';
+import { mkdirSync, readFileSync, statSync } from 'node:fs';
+import { dirname } from 'node:path';
 import { indexText, searchText } from '../engine/scratch.js';
 import { SQLiteContextEngine, DEFAULT_DB_PATH } from '../engine/engine.js';
+import { tokenize } from '../engine/tokenize.js';
+import { createEventLog, eventLogPath, readEvents } from '../events.js';
+import { summarize } from '../stats.js';
 
 const MAX_INDEX_BYTES = 20 * 1024 * 1024;
 
-export function createMcpServer(engine, scratch = new SQLiteContextEngine(":memory:")) {
+export function createMcpServer(engine, scratch = new SQLiteContextEngine(":memory:"), log = createEventLog(null)) {
   const server = new McpServer({
     name: "sqlite-context",
     version: "1.2.0",
@@ -52,6 +56,10 @@ export function createMcpServer(engine, scratch = new SQLiteContextEngine(":memo
           content: engine.getContent(cid),
         };
       });
+      log.record({
+        tool: "pack_context", query, budget, mode: legacy ? "legacy" : "hybrid",
+        results: chunks.length, tokens_returned: usedTokens, latency_ms: Number(latencyMs),
+      });
 
       return {
         content: [
@@ -87,6 +95,7 @@ export function createMcpServer(engine, scratch = new SQLiteContextEngine(":memo
     },
     async ({ content, doc_id, chunk_id }) => {
       const meta = engine.storeMemory(content, doc_id, chunk_id || null);
+      log.record({ tool: "store_memory", doc_id, tokens: meta?.L ?? 0, error: meta ? undefined : "empty" });
       if (!meta) {
         return {
           content: [{ type: "text", text: JSON.stringify({ error: "Empty token content" }) }],
@@ -110,9 +119,19 @@ export function createMcpServer(engine, scratch = new SQLiteContextEngine(":memo
       label: z.string().max(200).default("").describe("Short description, e.g. the command that produced the output"),
     },
     async ({ content, path, source, label }) => {
+      const t0 = performance.now();
       try {
-        return jsonResult({ status: "indexed", ...indexText(scratch, outputText(content, path), { source, label }) });
+        const receipt = { status: "indexed", ...indexText(scratch, outputText(content, path), { source, label }) };
+        log.record({
+          tool: "index_output", source: receipt.source, label, from_path: path !== undefined,
+          raw_tokens: receipt.raw_tokens, receipt_tokens: tokenize(JSON.stringify(receipt)).length,
+          chunks: receipt.chunks, latency_ms: elapsed(t0),
+        });
+
+        return jsonResult(receipt);
       } catch (error) {
+        log.record({ tool: "index_output", error: error.message, latency_ms: elapsed(t0) });
+
         return jsonError(error.message);
       }
     }
@@ -126,7 +145,25 @@ export function createMcpServer(engine, scratch = new SQLiteContextEngine(":memo
       budget: z.number().int().min(64).max(4000).default(250).describe("Maximum total engine tokens returned"),
       source: z.string().optional().describe("Restrict to one source id from an index_output receipt"),
     },
-    async ({ query, budget, source }) => jsonResult(searchText(scratch, query, { budget, source }))
+    async ({ query, budget, source }) => {
+      const t0 = performance.now();
+      const found = searchText(scratch, query, { budget, source });
+      log.record({
+        tool: "search_output", query, budget, source: source || null,
+        results: found.chunks_count, tokens_returned: found.tokens_returned, latency_ms: elapsed(t0),
+      });
+
+      return jsonResult(found);
+    }
+  );
+
+  server.tool(
+    "usage_stats",
+    "Summarize this server's logged usage: memory recalls and empty results, tool-output indexing and searches, token savings, latency.",
+    {
+      days: z.number().int().min(1).max(365).optional().describe("Only count the last N days"),
+    },
+    async ({ days }) => jsonResult({ log: log.path, ...summarize(readEvents(log.path), { days }) })
   );
 
   return server;
@@ -143,6 +180,10 @@ function outputText(content, path) {
   return readFileSync(path, "utf8");
 }
 
+function elapsed(start) {
+  return Number((performance.now() - start).toFixed(2));
+}
+
 function jsonResult(value) {
   return { content: [{ type: "text", text: JSON.stringify(value, null, 2) }] };
 }
@@ -152,8 +193,10 @@ function jsonError(message) {
 }
 
 export async function startMcpServer() {
-  const engine = new SQLiteContextEngine(process.env.MCP_SQLITE_PATH || DEFAULT_DB_PATH);
-  const server = createMcpServer(engine);
+  const dbPath = process.env.MCP_SQLITE_PATH || DEFAULT_DB_PATH;
+  mkdirSync(dirname(dbPath), { recursive: true });
+  const engine = new SQLiteContextEngine(dbPath);
+  const server = createMcpServer(engine, undefined, createEventLog(eventLogPath(dbPath)));
   await server.connect(new StdioServerTransport());
 }
 

@@ -70,6 +70,22 @@ with your question. On the measurement set, three such lookups (a version, a
 number in a table, a test total) were missed at every budget. A narrower
 command (`grep`, `jq`, `tail`) is often cheaper still.
 
+## Measuring it
+
+Run `npm run stats -- --days 7` with `MCP_SQLITE_PATH` set to the server's
+database. What to look at:
+
+- **Empty rate** for `pack_context` and `search_output`. A high rate means
+  queries are phrased as sentences, or the content isn't stored or indexed.
+- **Searches per index.** Around one or two means the agent found what it
+  needed quickly; many means it kept searching, or the output should have been
+  read raw.
+- **Token savings** compares what the agent received with what it indexed. It
+  says nothing about whether the answer was found, so read it next to the empty
+  rate.
+
+`npm run doctor` checks the setup when the numbers look wrong.
+
 ## Optional profiles
 
 - **RM3:** enable it per workload only after you measure it there. It helps on
