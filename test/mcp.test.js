@@ -35,9 +35,19 @@ test('MCP transport lists tools, stores memory and retrieves packed context', as
     const packed = await client.callTool({name: 'pack_context', arguments: {query: 'sqlite', budget: 100}});
     const result = JSON.parse(packed.content[0].text);
     assert.equal(result.budget_limit, 100);
+    assert.equal(result.retrieval_mode, 'hybrid');
+    assert.equal(result.packer, 'truncate');
     assert.equal(result.chunks_count, 1);
     assert.equal(result.results[0].chunk_id, 'memory_1');
     assert.equal(engine.docStats.get('memory_1').access_count, 2);
+
+    const legacy = await client.callTool({name: 'pack_context', arguments: {
+      query: 'sqlite', budget: 100, mode: 'legacy',
+    }});
+    const legacyResult = JSON.parse(legacy.content[0].text);
+    assert.equal(legacyResult.retrieval_mode, 'legacy');
+    assert.equal(legacyResult.packer, 'p4');
+    assert.ok(legacyResult.tokens_packed <= 100);
     const empty = await client.callTool({name: 'store_memory', arguments: {content: '!!!!!'}});
     assert.equal(empty.isError, true);
   } finally {
