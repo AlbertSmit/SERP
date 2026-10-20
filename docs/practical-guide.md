@@ -55,6 +55,21 @@ budget. It is a packing objective, not a search engine:
 It exists only in the Python lab (`experiments/stages/lab/cesr_u.py` and
 `cesr_u_auto.py`).
 
+## Large tool output: index it, then search
+
+Use `index_output` when a command or file produces far more text than the
+answer you need: test runs, build logs, `git log -p`, lockfiles, large JSON.
+Redirect the output to a file with your own shell and pass `path`; passing
+`content` inline only saves tokens on later reads, because the model already
+wrote the text out. Then ask `search_output` for the specific thing (an error
+code, a symbol, a message) with a budget of about 250 tokens.
+
+Read the raw output instead when you need all of it (a diff you will apply, a
+file you will edit), or when the answer is a short value that shares few words
+with your question. On the measurement set, three such lookups (a version, a
+number in a table, a test total) were missed at every budget. A narrower
+command (`grep`, `jq`, `tail`) is often cheaper still.
+
 ## Optional profiles
 
 - **RM3:** enable it per workload only after you measure it there. It helps on

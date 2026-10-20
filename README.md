@@ -1,13 +1,18 @@
 # sqlite-context
 
-Local memory retrieval for LLM agents: SQLite FTS5, BM25, a token budget, and an
-MCP server. It needs no embedding model and no vector database.
+Local retrieval for LLM agents: SQLite FTS5, BM25, a token budget, and an MCP
+server. It needs no embedding model and no vector database. It does two jobs:
 
-You store text chunks. A query returns the best chunks that fit a token budget.
-Retrieval is word BM25 fused (RRF, `k = 60`) with a gated in-word 4-gram channel
-for spelling variants. Exact identifiers such as `error_42` always rank first,
-and unknown identifiers never match prose. Ranked chunks are packed by
-truncation.
+- **Memory.** You store text chunks; a query returns the best chunks that fit a
+  token budget.
+- **Large tool output.** Index a log, a diff or a big file into a scratch index
+  instead of the context, then search it within a budget
+  ([details](#keep-large-tool-output-out-of-the-context)).
+
+Retrieval is the same for both: word BM25 fused (RRF, `k = 60`) with a gated
+in-word 4-gram channel for spelling variants. Exact identifiers such as
+`error_42` always rank first, and unknown identifiers never match prose. Ranked
+chunks are packed by truncation.
 
 > **Status.** This project used to be called SERP, after its original P4
 > "Stretched-Exponential Residual Packing" scorer. A frozen research program
@@ -104,6 +109,7 @@ Savings count engine tokens and characters, not model tokens, against pasting th
 | Packing | **Truncation default.** P4/residual are experimental | P4 fills about 47 of 250 tokens: doc recall 0.49 vs 0.60, precision 0.37 vs 0.21 |
 | Multi-hop questions | Research prototype (Python) | EBR both@10 +0.105 on HotpotQA; transfers to 2Wiki and MuSiQue; hurts single-hop |
 | Structured code evidence | Research prototype (Python) | CESR-U works when the query names its constraints; synthetic queries only |
+| Large tool output | **Supported** (`index_output` / `search_output`) | 250-token budget: 94.8% fewer engine tokens than the full output, 13 of 16 pre-registered answers found |
 | Code search over PRs | **Not supported** | Code graph and CESR did not beat BM25 on real PRs |
 
 [docs/practical-guide.md](docs/practical-guide.md) explains when to use each mode.

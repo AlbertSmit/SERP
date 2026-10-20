@@ -171,6 +171,7 @@ All numbers are paired deltas with 95% bootstrap CIs, read from
 | CESR-U | 185 text-unique synthetic queries | all@10 0.919–0.924 vs CESR-code 0.849–0.854 and RRF 0.692–0.768 (vs CESR-code +0.070 [+0.022, +0.124]) | Oracle constraints, graph qrels. `two_hop` constraints use the hidden bridge name that also defines the qrels. 16% of queries exceed the 500-token budget |
 | CESR-U, parsed constraints | 250 synthetic queries, fixed text parser | plans 194/250; all@10 vs RRF on the 149 parsed text-unique queries +0.436 / +0.215 / +0.134 at 500/1000/2000 tokens; end to end +0.052 [+0.004, +0.096] on all 250 at 2,000 | Parser cues are the generator's templates; graph qrels; `two_hop` unplannable |
 | TS 7 AST graph | this project's code | call-edge precision 20/20 vs regex 18/20; fused both@10 0.606 vs 0.608 | A **correctness and chunk-segmentation** result, not a retrieval win. No CIs |
+| Scratch index for tool output | 4 committed outputs from this repository (about 57k engine tokens), 16 questions fixed before the first run | Answer found / tokens saved vs the full output: 10/16 / 97.4% at 120 tokens, 13/16 / 94.8% at 250, 13/16 / 92.5% at 500 | Questions written by this project, not independent; savings exclude receipts and follow-up searches. `scripts/output-benchmark.js` |
 | Exact identifiers | JS engine probe suite | 0 of 82 unknown-identifier probes activate retrieval | Synthetic invariant, not relevance |
 
 ### Historical P4 tables
